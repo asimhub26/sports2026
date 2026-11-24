@@ -658,6 +658,7 @@ async function pageDashboard() {
       h('div', null, h('b', null, a.name || 'Name not entered yet'), h('div', null, a.designation + (a.zone ? ' · ' + zoneLabel(a.zone) : '')), a.contact ? h('small', null, a.contact) : null));
     kids.push(h('h3', { class: 'sec' }, 'Administrators'));
     kids.push(h('div', { class: 'grid2' }, d.admins.zone.concat(d.admins.circle).map(person)));
+   if (S.profile && S.profile.role === 'Super Admin') {
     kids.push(h('h3', { class: 'sec' }, 'Recent activity'));
     kids.push(h('div', { class: 'card' }, d.recent.length ? d.recent.map(r => h('div', null, h('small', null, r.time.replace('T', ' ').slice(0, 16) + '  '), r.text)) : emptyNote('Nothing yet')));
     body.replaceChildren(...kids);
