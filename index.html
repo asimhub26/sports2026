@@ -38,7 +38,21 @@ input::placeholder{color:#A3AFA8}
 /* app shell */
 #app{display:flex;min-height:100%}
 #side{width:250px;flex:none;background:var(--dark);color:#fff;padding:14px 10px;overflow-y:auto;height:100vh;position:sticky;top:0;transition:width .2s}
-#side .brand{font-weight:700;margin:4px 8px 12px;font-size:15px}
+#side .brand{
+  margin:-14px -10px 12px;
+  padding:16px 12px 14px;
+  background:linear-gradient(180deg,#1B5C42,#154934);
+  border-bottom:1px solid rgba(255,255,255,.18);
+  text-align:center;
+}
+#side .brand .bphoto{
+  width:72px;height:72px;border-radius:50%;object-fit:cover;
+  display:block;margin:0 auto 9px;
+  border:2.5px solid rgba(232,163,23,.85);
+  box-shadow:0 4px 12px rgba(0,0,0,.28);
+  background:rgba(255,255,255,.12);
+}
+#side .brand .btitle{font-weight:700;font-size:15px;line-height:1.3;color:#fff}
 #side.collapsed{width:0;padding:0;overflow:hidden}
 .mi{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:transparent;color:#fff;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:13px}
 .mi .lbl{flex:1;min-width:0}
@@ -150,7 +164,13 @@ table.t td input,table.t td select{width:100%;min-width:90px;height:32px;text-al
  </form>
 </div>
 <div id="app" hidden>
- <nav id="side" aria-label="Main menu"><div class="brand">Khanakul West Sports 2026</div><div id="menu"></div></nav>
+<nav id="side" aria-label="Main menu">
+  <div class="brand">
+   <img id="brandPhoto" class="bphoto" alt="Secretary, Circle Sports" title="Secretary, Circle Sports" hidden>
+   <div class="btitle">Khanakul West Sports 2026</div>
+  </div>
+  <div id="menu"></div>
+ </nav>
  <div id="content">
   <header id="top">
    <button class="btn ghost small" id="burger" type="button" aria-label="Menu">☰</button>
@@ -469,6 +489,28 @@ async function initLogin() {
   }
 }
 
+ // Sorasori GitHub photo link dite chaile ekhane bosan; faka rakhle Admins sheet theke Secretary-r chhobi auto nebe
+const SECRETARY_PHOTO_URL = '';
+
+async function loadBrandPhoto(circleAdmins) {
+  const img = $('#brandPhoto');
+  if (!img) return;
+  let url = SECRETARY_PHOTO_URL;
+  if (!url) {
+    let list = Array.isArray(circleAdmins) ? circleAdmins : [];
+    if (!list.length) {
+      try { list = await call('apiGetAdmins'); } catch (e) { list = []; }
+    }
+    const sec = list.find(a => /circle/i.test(a.zone || '') && /secretary/i.test(a.designation || '') && a.photo)
+      || list.find(a => /secretary/i.test(a.designation || '') && a.photo);
+    url = sec ? sec.photo : '';
+  }
+  if (!url) { img.hidden = true; return; }
+  img.onerror = () => { img.hidden = true; };
+  img.src = url;
+  img.hidden = false;
+}
+ 
 function startSession(res) {
   S.token = res.token; S.profile = res.profile; S.menu = res.menu;
   store.set(S.token);
@@ -639,6 +681,7 @@ async function pageDashboard() {
   async function load() {
     const d = await busy(() => call('apiGetDashboard', zone));
     if (!d) return;
+   if (d.admins) loadBrandPhoto(d.admins.circle);
     const kids = [];
     const z = d.zone, c = d.circle;
     if (z) {
