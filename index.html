@@ -1232,32 +1232,118 @@ async function pageCerts() {
     const r = await busyTry(() => call('apiGetCertificateList', level, zoneKey));
     if (!r.ok) {
       box.replaceChildren(h('div', { class: 'note bad' }, r.error.message));
-      // The position settings and the test page do not depend on the list, so Circle Admin can still use them.
       if (level === 'circle' && wide) await drawSettings();
       return;
     }
     const d = r.data;
-    const rows = d.rows;
-    const boxes = [];
-    const tbody = h('tbody', null, rows.map(x => {
-      const cb = h('input', { type: 'checkbox', 'aria-label': 'Select ' + x.name, onchange: e => { e.target.checked ? picked.add(x.n) : picked.delete(x.n); } });
-      cb.checked = picked.has(x.n); boxes.push(cb);
-      return h('tr', null, h('td', null, cb), h('td', null, x.position), h('td', null, x.group + ' ' + x.gender + ' ' + x.event), h('td', null, x.name), h('td', null, x.schoolName + (x.zoneLabel ? ' (' + x.zoneLabel + ')' : '')));
-    }));
+    const rows = d.rows || [];
+
+    if (!rows.length) {
+      box.replaceChildren(
+        h('div', { class: 'note ok' }, level === 'zone' ? 'Certificates are made from the saved results of ' + d.label + '. A result entered now appears here at once.' : 'Circle certificates print only the changing words (name, school, event, position) on your pre-printed A4 paper.'),
+        emptyNote('No result has been entered yet, so there is no certificate.')
+      );
+      if (level === 'circle' && wide) await drawSettings();
+      return;
+    }
+
+    const f = { q: '', group: '', gender: '', event: '', pos: '', school: '', zone: '' };
+    const events = [...new Set(rows.map(x => x.event).filter(Boolean))];
+    const schools = [...new Set(rows.map(x => x.schoolName).filter(Boolean))].sort();
+    const zones = level === 'circle' ? [...new Set(rows.map(x => x.zoneLabel).filter(Boolean))].sort() : [];
+
+    const match = x =>
+      (!f.group || x.group === f.group) &&
+      (!f.gender || x.gender === f.gender) &&
+      (!f.event || x.event === f.event) &&
+      (!f.pos || x.position === f.pos) &&
+      (!f.school || x.schoolName === f.school) &&
+      (!f.zone || x.zoneLabel === f.zone) &&
+      (!f.q || [x.name, x.schoolName, x.zoneLabel, x.event, x.group, x.gender, x.position].join(' ').toLowerCase().includes(f.q.toLowerCase()));
+
+    const tbody = h('tbody');
+    const countChip = h('span', { class: 'chip', style: { marginLeft: 'auto' } });
+    const selBtn = h('button', { class: 'btn', type: 'button', onclick: () => picked.size ? makePdf([...picked], 'the selected certificates') : toast('Tick at least one certificate.', 'error') }, 'Download selected');
+    let visible = [];
+
+    const updateSelUI = () => {
+      selBtn.textContent = picked.size ? 'Download selected (' + picked.size + ')' : 'Download selected';
+      countChip.textContent = 'Showing ' + visible.length + ' of ' + rows.length + (picked.size ? ' · Selected: ' + picked.size : '');
+    };
+
+    const fill = () => {
+      visible = rows.filter(match);
+      tbody.replaceChildren(...visible.map(x => {
+        const cb = h('input', {
+          type: 'checkbox',
+          'aria-label': 'Select ' + x.name,
+          onchange: e => { e.target.checked ? picked.add(x.n) : picked.delete(x.n); updateSelUI(); }
+        });
+        cb.checked = picked.has(x.n);
+        return h('tr', null,
+          h('td', null, cb),
+          h('td', null, x.position),
+          h('td', null, x.group + ' ' + x.gender + ' ' + x.event),
+          h('td', null, x.name),
+          h('td', null, x.schoolName + (x.zoneLabel ? ' (' + x.zoneLabel + ')' : ''))
+        );
+      }));
+      if (!visible.length) {
+        tbody.appendChild(h('tr', null, h('td', { colspan: 5 }, emptyNote('No matching certificate found.'))));
+      }
+      updateSelUI();
+    };
+
+    const qInp = h('input', { placeholder: 'Search name, school or event', oninput: e => { f.q = e.target.value; fill(); } });
+    const gSel = select([['', 'All groups'], ['A', 'Group A'], ['B', 'Group B'], ['C', 'Group C']], '', v => { f.group = v; fill(); });
+    const genSel = select([['', 'All genders'], ['BOYS', 'BOYS'], ['GIRLS', 'GIRLS']], '', v => { f.gender = v; fill(); });
+    const evSel = select([['', 'All events']].concat(events.map(e => [e, e])), '', v => { f.event = v; fill(); });
+    const posSel = select([['', 'All positions'], ['1st', '1st'], ['2nd', '2nd'], ['3rd', '3rd']], '', v => { f.pos = v; fill(); });
+    const schSel = select([['', 'All schools']].concat(schools.map(s => [s, s])), '', v => { f.school = v; fill(); });
+    const zSel = zones.length ? select([['', 'All zones']].concat(zones.map(z => [z, z])), '', v => { f.zone = v; fill(); }) : null;
+
+    const clearFilters = () => {
+      f.q = f.group = f.gender = f.event = f.pos = f.school = f.zone = '';
+      qInp.value = gSel.value = genSel.value = evSel.value = posSel.value = schSel.value = '';
+      if (zSel) zSel.value = '';
+      fill();
+    };
+
     const makePdf = async (ids, label) => {
       toast('Preparing ' + label + '. It takes a few seconds.');
       const res = await busyTry(() => call('apiExportCertificates', level, zoneKey, ids));
       if (!res.ok) return toast(res.error.message, 'error');
       downloadB64(res.data); toast(res.data.count + ' certificate(s) ready. Open the PDF and print.', 'ok');
     };
+
+    fill();
+
     box.replaceChildren(
       h('div', { class: 'note ok' }, level === 'zone' ? 'Certificates are made from the saved results of ' + d.label + '. A result entered now appears here at once.' : 'Circle certificates print only the changing words (name, school, event, position) on your pre-printed A4 paper.'),
-      rows.length ? h('div', null,
-        h('div', { class: 'toolbar' },
-          h('button', { class: 'btn ghost', type: 'button', onclick: () => { const all = boxes.some(b => !b.checked); boxes.forEach((b, i) => { b.checked = all; all ? picked.add(rows[i].n) : picked.delete(rows[i].n); }); } }, 'Select all / none'),
-          h('button', { class: 'btn', type: 'button', onclick: () => picked.size ? makePdf([...picked], 'the selected certificates') : toast('Tick at least one certificate.', 'error') }, 'Download selected'),
-          h('button', { class: 'btn gold', type: 'button', onclick: () => makePdf([], 'all certificates') }, 'Download all (max ' + d.maxPerPrint + ')')),
-        h('div', { class: 'tw' }, h('table', { class: 't' }, h('thead', null, h('tr', null, ['', 'Position', 'Event', 'Name', 'School'].map(x => h('th', null, x)))), tbody))) : emptyNote('No result has been entered yet, so there is no certificate.'));
+      h('div', { class: 'toolbar' },
+        h('button', {
+          class: 'btn ghost',
+          type: 'button',
+          onclick: () => {
+            if (!visible.length) return;
+            const allVis = visible.every(x => picked.has(x.n));
+            visible.forEach(x => { allVis ? picked.delete(x.n) : picked.add(x.n); });
+            fill();
+          }
+        }, 'Select all / none'),
+        selBtn,
+        h('button', { class: 'btn gold', type: 'button', onclick: () => makePdf([], 'all certificates') }, 'Download all (max ' + d.maxPerPrint + ')'),
+        countChip
+      ),
+      h('div', { class: 'toolbar' },
+        qInp, gSel, genSel, evSel, posSel, schSel, zSel,
+        h('button', { class: 'btn ghost small', type: 'button', onclick: clearFilters }, 'Clear filters')
+      ),
+      h('div', { class: 'tw' }, h('table', { class: 't' },
+        h('thead', null, h('tr', null, ['', 'Position', 'Event', 'Name', 'School'].map(x => h('th', null, x)))),
+        tbody
+      ))
+    );
     if (level === 'circle' && wide) await drawSettings();
   }
 
