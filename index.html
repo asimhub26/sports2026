@@ -281,7 +281,7 @@ const confirmBox = (title, text, ok, cls) => dialog(title, h('div', null, text),
   [{ label: 'Cancel', value: false, cls: 'ghost' }, { label: ok || 'Yes', value: true, cls: cls || '' }]);
 
 // Apnar Apps Script Web App (/exec) URL-ti ekhane bosan (Deploy -> Manage deployments theke copy korun)
-const GAS_API_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwOaZVM6kRxGBzPc4qotoMGctLJ4LiVCSyUmLISQbpnQKg86P5EwOhUvCfsscDJS8ul/exec';
 
 function handleApiResponse(res, resolve, reject) {
   if (res && res.ok) return resolve(res.data);
