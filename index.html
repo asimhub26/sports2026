@@ -48,7 +48,7 @@ input::placeholder{color:#A3AFA8}
 #side .brand .bphoto{
   width:72px;height:72px;border-radius:50%;object-fit:cover;
   display:block;margin:0 auto 9px;
-  border:1.5px solid rgba(232,163,23,.85);
+  border:2.5px solid rgba(232,163,23,.85);
   box-shadow:0 4px 12px rgba(0,0,0,.28);
   background:rgba(255,255,255,.12);
 }
@@ -91,7 +91,11 @@ table.t{width:100%;border-collapse:collapse;font-size:13px}
 table.t th{text-align:center;padding:8px 6px;border-bottom:2px solid var(--ink);white-space:nowrap;position:sticky;top:0;background:#fff}
 table.t td{padding:5px 6px;border-bottom:1px solid #C9D3CC;vertical-align:middle;text-align:center}
 table.t tr.dirty td{background:#FFFBEA}
-table.t td input,table.t td select{width:100%;min-width:90px;height:32px;text-align:center;text-align-last:center}
+table.t td input:not([type="checkbox"]),table.t td select{width:100%;min-width:200px;height:36px;padding:0 8px;font-size:13.5px;text-align:left;text-align-last:left}
+table.t td input[type="date"]{min-width:150px;text-align:center}
+table.t td select{min-width:130px;text-align:center;text-align-last:center}
+table.t td input[inputmode="numeric"]{min-width:100px;text-align:center}
+table.t td input[type="checkbox"]{width:18px;height:18px;min-width:18px;cursor:pointer;accent-color:var(--green)}
 .chest{font-weight:700;text-align:center;background:#EEF2EF;border-radius:6px;padding:2px 8px;display:inline-block;min-width:34px}
 .bar{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:12px}.bar span.l{width:96px;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bar i{display:block;height:14px;border-radius:7px;background:var(--green);min-width:2px}
@@ -137,16 +141,56 @@ table.t td input,table.t td select{width:100%;min-width:90px;height:32px;text-al
  .sheetwrap{box-shadow:none;border-radius:0;padding:0;margin:0;overflow:visible;page-break-after:always;break-after:page}
  .sheetwrap:last-child{page-break-after:auto;break-after:auto}
 }
- /* Main page background picture */
+/* Create List Entry Table (Spacious Fields & Clean Light Borders) */
+table.t.create-tbl { width: max-content; min-width: 100%; border-collapse: collapse; border: 1px solid #C8D5CC; }
+table.t.create-tbl th { font-size: 12.5px; padding: 8px 8px; border: 1px solid #C8D5CC; border-bottom: 2px solid var(--ink); background: #F5F9F6; white-space: nowrap; }
+table.t.create-tbl td { padding: 6px; font-size: 13px; border: 1px solid #D5DFD8; white-space: nowrap; }
+table.t.create-tbl tbody tr:hover td { background-color: rgba(31, 107, 74, .04); }
+table.t.create-tbl tr.dirty td { background: #FFFBEA; }
+table.t.create-tbl input.cl-name, table.t.create-tbl input.cl-father { min-width: 230px; width: 100%; height: 36px; text-align: left; padding: 0 10px; font-size: 13.5px; text-transform: uppercase; }
+table.t.create-tbl input.cl-dob { min-width: 155px; width: 155px; height: 36px; text-align: center; font-size: 13.5px; }
+table.t.create-tbl select.cl-cls { min-width: 135px; width: 135px; height: 36px; text-align: center; text-align-last: center; font-size: 13.5px; }
+.gbadge { display: inline-block; margin-left: 3px; font-size: 10px; padding: 1px 5px; border-radius: 99px; background: var(--gold); color: var(--ink); font-weight: 700; vertical-align: middle; }
+/* Smooth Page Background Picture (no heavy blur / fixed lag) */
 #content {
   min-height: 100vh;
-  background: linear-gradient(rgba(243, 246, 242, 0.38), rgba(243, 246, 242, 0.38)),
-              url('https://github.com/asimhub26/sports2026/blob/main/sandakphu.JPG?raw=true') center center / cover no-repeat fixed;
+  background: linear-gradient(rgba(243, 246, 242, 0.78), rgba(243, 246, 242, 0.78)),
+              url('https://github.com/asimhub26/sports2026/blob/main/bg.jpg?raw=true') center top / cover no-repeat;
 }
-.card, .stat, .tw {
-  background: rgba(255, 255, 255, 0.90);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+.card, .stat, .tw { background: rgba(255, 255, 255, 0.93); }
+/* Update & We the teachers helpers */
+.ico-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 8px;
+  background: #fff; color: var(--green); cursor: pointer; font-size: 14px; flex: none;
+}
+.ico-btn:hover { background: var(--soft); border-color: var(--green); }
+.ico-btn.del { color: var(--red); }
+.ico-btn.del:hover { background: #FDECEA; border-color: var(--red); }
+.ok-banner {
+  background: #DCFCE7; color: #14532D; border: 1px solid #86EFAC;
+  border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; font-weight: 600; font-size: 13.5px;
+}
+.upd-field {
+  display: grid; grid-template-columns: 150px 1fr auto; gap: 10px; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid #E6EDE8;
+}
+.upd-field:last-child { border-bottom: 0; }
+.upd-field label { font-weight: 600; color: var(--dark); font-size: 13px; }
+.upd-field input, .upd-field select { width: 100%; min-width: 220px; height: 38px; font-size: 14px; padding: 0 10px; }
+.upd-field input:disabled, .upd-field select:disabled { background: #F4F7F5; color: var(--ink); opacity: .9; }
+.ev-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.ev-pill {
+  display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px;
+  border: 1px solid #C8D5CC; border-radius: 8px; background: #F1FAF4; font-size: 12.5px; cursor: pointer;
+}
+.ev-pill.chk { background: #D7F3E3; border-color: var(--green); font-weight: 600; }
+.ev-pill.dis { opacity: .45; cursor: not-allowed; background: #F4F5F6; }
+.ev-pill input[type="checkbox"] { width: 16px; height: 16px; min-width: 16px; accent-color: var(--green); }
+.add-box { background: #F1FAF4; border: 1.5px dashed var(--green); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+@media (max-width: 640px) {
+  .upd-field { grid-template-columns: 1fr auto; }
+  .upd-field label { grid-column: 1 / -1; }
 }
 </style>
 </head>
@@ -164,7 +208,7 @@ table.t td input,table.t td select{width:100%;min-width:90px;height:32px;text-al
  </form>
 </div>
 <div id="app" hidden>
-<nav id="side" aria-label="Main menu">
+ <nav id="side" aria-label="Main menu">
   <div class="brand">
    <img id="brandPhoto" class="bphoto" alt="Secretary, Circle Sports" title="Secretary, Circle Sports" hidden>
    <div class="btitle">Khanakul West Sports 2026</div>
@@ -176,6 +220,7 @@ table.t td input,table.t td select{width:100%;min-width:90px;height:32px;text-al
    <button class="btn ghost small" id="burger" type="button" aria-label="Menu">☰</button>
    <div class="who"><b id="whoName"></b></div>
    <span class="role" id="whoRole"></span>
+   <button class="btn ghost small" id="refreshBtn" type="button" title="Reload fresh data from server">↻ Refresh</button>
   </header>
   <main id="main"></main>
  </div>
@@ -235,9 +280,8 @@ function dialog(title, body, buttons) {
 const confirmBox = (title, text, ok, cls) => dialog(title, h('div', null, text),
   [{ label: 'Cancel', value: false, cls: 'ghost' }, { label: ok || 'Yes', value: true, cls: cls || '' }]);
 
-/** Calls a server function that returns {ok,data} / {ok:false,error,code}. */
-// ধাপ ২-এ কপি করা আপনার Apps Script Web App (/exec) লিংকটি এখানে বসান
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwOaZVM6kRxGBzPc4qotoMGctLJ4LiVCSyUmLISQbpnQKg86P5EwOhUvCfsscDJS8ul/exec';
+// Apnar Apps Script Web App (/exec) URL-ti ekhane bosan (Deploy -> Manage deployments theke copy korun)
+const GAS_API_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
 
 function handleApiResponse(res, resolve, reject) {
   if (res && res.ok) return resolve(res.data);
@@ -250,7 +294,7 @@ function handleApiResponse(res, resolve, reject) {
 
 /** Calls a server function that returns {ok,data} / {ok:false,error,code}. */
 async function api(name, ...args) {
-  // Apps Script-এর ভেতর থেকে খুললে আগের মতোই google.script.run ব্যবহার করবে
+  // Apps Script-er bhetor theke khulle google.script.run byabohar korbe
   if (typeof google !== 'undefined' && google.script && google.script.run) {
     return new Promise((resolve, reject) => {
       if (typeof google.script.run[name] !== 'function') {
@@ -262,12 +306,12 @@ async function api(name, ...args) {
     });
   }
 
-  // GitHub Pages থেকে খুললে fetch() দিয়ে Apps Script-এ রিকোয়েস্ট পাঠাবে
+  // GitHub Pages theke khulle fetch() diye Apps Script-e request pathabe
   let res;
   try {
     const resp = await fetch(GAS_API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // CORS preflight এড়ানোর জন্য text/plain জরুরি
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ fn: name, args: args }),
       redirect: 'follow'
     });
@@ -284,23 +328,86 @@ async function api(name, ...args) {
   if (err.code === 'PAGE_LOCKED') setTimeout(onPageLocked, 0);
   throw err;
 }
-const call = (name, ...args) => api(name, S.token, ...args);
+/* ---------- Browser Smart Cache (instant repeat visits, auto-cleared on any save) ---------- */
+const CLIENT_CACHE = new Map();
+const CACHE_TTL_MS = {
+  apiGetVenues: 600000,
+  apiGetAdmins: 600000,
+  apiGetDashboard: 180000,
+  apiGetZoneList: 180000,
+  apiGetSchoolsOfZone: 180000,
+  apiGetCircleList: 180000,
+  apiGetHigherList: 180000,
+  apiGetZoneResults: 180000,
+  apiGetCircleResults: 180000,
+  apiGetSubdivisionResults: 180000,
+  apiGetDistrictResults: 180000,
+  apiGetStateResults: 180000,
+  apiGetZoneScores: 180000,
+  apiGetCircleScores: 180000,
+  apiGetCertificateList: 180000,
+  apiGetReportPreview: 180000,
+  apiGetTeachersData: 300000
+};
+const MUTATION_APIS = new Set([
+  'apiSaveSchoolList', 'apiBulkUploadList', 'apiDeleteEntry',
+  'apiFinalSubmit', 'apiReopenList', 'apiFreezeChest', 'apiUnfreezeChest',
+  'apiFreezeCircleChest', 'apiUnfreezeCircleChest', 'apiSaveResults',
+  'apiZoneResultFinalSubmit', 'apiSaveLocks', 'apiSetCreateListEnabled',
+  'apiSetCertificateSettings', 'apiLogout',
+  'apiUpdateStudentByChest', 'apiUpdateSchoolInfo',
+  'apiAddTeacher', 'apiUpdateTeacher', 'apiDeleteTeacher',
+  'apiUpdateAdminInfo'
+]);
 
-let busyCount = 0;
-/** Shows the spinner while fn runs. Errors become a toast and the result is undefined. */
+function clearClientCache() { CLIENT_CACHE.clear(); }
+
+async function call(name, ...args) {
+  const ttl = CACHE_TTL_MS[name] || 0;
+  let cacheKey = '';
+  if (ttl) {
+    cacheKey = name + '|' + JSON.stringify(args);
+    const hit = CLIENT_CACHE.get(cacheKey);
+    if (hit && Date.now() < hit.exp) return hit.data;
+  }
+  const data = await api(name, S.token, ...args);
+  if (MUTATION_APIS.has(name)) {
+    clearClientCache();
+  } else if (ttl) {
+    CLIENT_CACHE.set(cacheKey, { exp: Date.now() + ttl, data });
+  }
+  return data;
+}
+
+let busyCount = 0, busyTimer = null;
+function busyStart() {
+  busyCount++;
+  if (busyCount === 1) {
+    busyTimer = setTimeout(() => { if (busyCount > 0) $('#overlay').hidden = false; }, 80);
+  }
+}
+function busyEnd() {
+  busyCount = Math.max(0, busyCount - 1);
+  if (!busyCount) {
+    if (busyTimer) { clearTimeout(busyTimer); busyTimer = null; }
+    $('#overlay').hidden = true;
+  }
+}
+
+/** Shows the spinner while fn runs (skips flash on instant cached loads). Errors become a toast and return undefined. */
 async function busy(fn, quiet) {
-  busyCount++; $('#overlay').hidden = false;
+  busyStart();
   try { return await fn(); }
   catch (e) { if (!quiet && e.code !== 'SESSION_EXPIRED') toast(e.message, 'error'); return undefined; }
-  finally { busyCount--; if (!busyCount) $('#overlay').hidden = true; }
+  finally { busyEnd(); }
 }
 
 /** Like busy(), but gives the error back ({ok:false,error}) instead of only showing a toast. */
 async function busyTry(fn) {
-  busyCount++; $('#overlay').hidden = false;
+  busyStart();
   try { return { ok: true, data: await fn() }; }
   catch (e) { return { ok: false, error: e }; }
-  finally { busyCount--; if (!busyCount) $('#overlay').hidden = true; }
+  finally { busyEnd(); }
 }
 
 function downloadB64(res) {
@@ -489,8 +596,8 @@ async function initLogin() {
   }
 }
 
- // Sorasori GitHub photo link dite chaile ekhane bosan; faka rakhle Admins sheet theke Secretary-r chhobi auto nebe
-const SECRETARY_PHOTO_URL = 'https://raw.githubusercontent.com/asimhub26/sports2026/refs/heads/main/IMG_20261123_081549.jpg';
+// Sorasori GitHub photo link dite chaile ekhane bosan; faka rakhle Admins sheet theke Secretary-r chhobi auto nebe
+const SECRETARY_PHOTO_URL = '';
 
 async function loadBrandPhoto(circleAdmins) {
   const img = $('#brandPhoto');
@@ -507,11 +614,12 @@ async function loadBrandPhoto(circleAdmins) {
   }
   if (!url) { img.hidden = true; return; }
   img.onerror = () => { img.hidden = true; };
-  img.src = url;
+  if (img.src !== url) img.src = url;
   img.hidden = false;
 }
- 
+
 function startSession(res) {
+  clearClientCache();
   S.token = res.token; S.profile = res.profile; S.menu = res.menu;
   store.set(S.token);
   $('#login').hidden = true; $('#app').hidden = false;
@@ -522,6 +630,7 @@ function startSession(res) {
 }
 
 function sessionEnded(msg) {
+  clearClientCache();
   S.token = null; S.profile = null; S.menu = []; store.set(null);
   $('#app').hidden = true; $('#login').hidden = false; $('#main').replaceChildren();
   loginError(msg || 'Please log in again.');
@@ -529,6 +638,7 @@ function sessionEnded(msg) {
 
 async function doLogout() {
   const t = S.token;
+  clearClientCache();
   try { await api('apiLogout', t); } catch (e) { /* the session is dropped here in any case */ }
   S.token = null; S.profile = null; S.menu = []; store.set(null);
   $('#app').hidden = true; $('#login').hidden = false; $('#main').replaceChildren(); loginError('');
@@ -558,6 +668,8 @@ const ICONS = {
   admins: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
   subhechha: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
   sheet: '<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/>',
+  teachers: '<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>',
+  update: '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>',
   lock: '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
   logout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>'
 };
@@ -617,6 +729,7 @@ function findMenuItem(items, id) {
 
 /** The server refused a save because an admin locked this page: refresh the menu and leave the page if it is locked now. */
 async function onPageLocked() {
+  clearClientCache();
   try { await refreshMenu(); } catch (e) { return; }
   const i = S.activeId.indexOf(':');
   const it = findMenuItem(S.menu, i < 0 ? S.activeId : S.activeId.slice(0, i));
@@ -641,6 +754,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const side = $('#side');
     if (window.innerWidth <= 860) side.classList.toggle('open'); else side.classList.toggle('collapsed');
   });
+  const refBtn = $('#refreshBtn');
+  if (refBtn) {
+    refBtn.addEventListener('click', () => {
+      clearClientCache();
+      if (S.activeId) go(S.activeId);
+    });
+  }
   initLogin();
 });
 
@@ -681,7 +801,7 @@ async function pageDashboard() {
   async function load() {
     const d = await busy(() => call('apiGetDashboard', zone));
     if (!d) return;
-   if (d.admins) loadBrandPhoto(d.admins.circle);
+    if (d.admins) loadBrandPhoto(d.admins.circle);
     const kids = [];
     const z = d.zone, c = d.circle;
     if (z) {
@@ -712,62 +832,86 @@ async function pageDashboard() {
       h('div', null, h('b', null, a.name || 'Name not entered yet'), h('div', null, a.designation + (a.zone ? ' · ' + zoneLabel(a.zone) : '')), a.contact ? h('small', null, a.contact) : null));
     kids.push(h('h3', { class: 'sec' }, 'Administrators'));
     kids.push(h('div', { class: 'grid2' }, d.admins.zone.concat(d.admins.circle).map(person)));
-   if (S.profile && S.profile.role === 'Super Admin') {
-  kids.push(h('h3', { class: 'sec' }, 'Recent activity'));
-  kids.push(h('div', { class: 'card' }, d.recent.length ? d.recent.map(r => h('div', null, h('small', null, r.time.replace('T', ' ').slice(0, 16) + '  '), r.text)) : emptyNote('Nothing yet')));
-}
+    if (S.profile && S.profile.role === 'Super Admin') {
+      kids.push(h('h3', { class: 'sec' }, 'Recent activity'));
+      kids.push(h('div', { class: 'card' }, d.recent.length ? d.recent.map(r => h('div', null, h('small', null, r.time.replace('T', ' ').slice(0, 16) + '  '), r.text)) : emptyNote('Nothing yet')));
+    }
     body.replaceChildren(...kids);
   }
   await load();
 }
 
-/* ====================== Create list ====================== */
+/* ====================== Create list (Checkbox Matrix) ====================== */
+const MATRIX_EVENTS = [
+  'SUTTLE RACE', '75M RUN', '100M RUN', '200M RUN',
+  'LONG JUMP', 'HIGH JUMP', 'YOGA', 'GYMNASTICS'
+];
+const GROUP_EVENTS = {
+  A: new Set(['SUTTLE RACE', '75M RUN', 'LONG JUMP', 'YOGA', 'GYMNASTICS']),
+  B: new Set(['100M RUN', '200M RUN', 'LONG JUMP', 'HIGH JUMP', 'YOGA', 'GYMNASTICS']),
+  C: new Set(['100M RUN', '200M RUN', 'LONG JUMP', 'HIGH JUMP', 'YOGA', 'GYMNASTICS'])
+};
+const SPECIAL_EVENTS = new Set(['YOGA', 'GYMNASTICS']);
+const normEv = s => String(s || '').replace(/\s+/g, '').toUpperCase();
+
 async function pageCreateList() {
   const role = S.profile.role, wide = isWide();
   const root = h('div'), head = h('div', { class: 'toolbar' }), area = h('div');
   root.append(head, area);
   setMain(root, 'Create list');
+
   let zoneKey = wide ? (S.createZone || ZONES[0].key) : S.profile.zone;
   let schoolNo = role === 'School Admin' ? S.profile.schoolNo : '';
-  let schools = [], data = null, rows = [], orig = [];
-  let ageRules = []; 
+  let schools = [], data = null, ageRules = [];
+  let orig = [], cur = [];
+  const filt = { group: '', gender: '', q: '' };
 
-  // --- নতুন ফাংশন: বয়স চেক করার ইনস্ট্যান্ট লজিক ---
-  // --- নতুন ফাংশন: বয়স চেক করার ইনস্ট্যান্ট লজিক ---
   function checkAge(group, event, dobIso) {
-    if (!ageRules || !ageRules.length) return null; // শিটের ডেটা লোড না হলে চেক করবে না
-    if (!dobIso || !group) return null;
-    
-    let bestRule = null;
-    for (let r of ageRules) {
-      if (r.group === group) {
-        if (r.event === event) { bestRule = r; break; }
-        if (r.event === "All" && !bestRule) { bestRule = r; }
-      }
+    if (!ageRules || !ageRules.length || !dobIso || !group) return null;
+    const g = String(group).toUpperCase(), evKey = normEv(event);
+    let best = null;
+    for (const r of ageRules) {
+      if (String(r.group).toUpperCase() !== g) continue;
+      const rEv = normEv(r.event);
+      if (rEv === evKey) { best = r; break; }
+      if (rEv === 'ALL' && !best) best = r;
     }
-    
-    if (bestRule) {
-      // dobIso এবং শিটের ডেট দুটিই YYYY-MM-DD ফরম্যাটে আছে, তাই ডাইরেক্ট তুলনা!
-      if (dobIso < bestRule.start || dobIso > bestRule.end) {
-        return "বয়স " + group + " গ্রুপের " + event + " ইভেন্টের নিয়মে পড়ছে না।";
-      }
+    if (best && (dobIso < best.start || dobIso > best.end)) {
+      return 'জন্মতারিখ (' + dobIso + ') Group ' + g + '-এর ' + event + ' ইভেন্টের বয়সের নিয়মে (' + best.start + ' থেকে ' + best.end + ') পড়ছে না।';
     }
     return null;
   }
-  // ------------------------------------------
-  // ------------------------------------------
 
-  const sig = r => [r.name, r.father, r.dobIso, r.cls].join('|');
-  const dirtyCount = () => rows.filter((r, i) => sig(r) !== orig[i]).length;
+  const rowDirty = i => orig[i] && cur[i] && (
+    cur[i].name.trim().toUpperCase() !== orig[i].name.trim().toUpperCase() ||
+    cur[i].father.trim().toUpperCase() !== orig[i].father.trim().toUpperCase() ||
+    cur[i].dob !== orig[i].dob ||
+    cur[i].cls !== orig[i].cls
+  );
+  const isDirty = () => cur.some((_, i) => rowDirty(i));
 
-  async function guard() { if (dirtyCount() && !(await confirmBox('Unsaved changes', 'You have changes that are not saved. Leave without saving?', 'Leave', 'danger'))) return false; return true; }
+  async function guard() {
+    if (isDirty() && !(await confirmBox('Unsaved changes', 'You have changes that are not saved. Leave without saving?', 'Leave', 'danger'))) return false;
+    return true;
+  }
 
   function drawHead() {
     head.replaceChildren();
-    if (wide) head.append(h('label', null, 'Zone'), zoneSelect(zoneKey, async v => { if (!(await guard())) { drawHead(); return; } zoneKey = v; S.createZone = v; schoolNo = ''; await loadSchools(); }));
-    if (role !== 'School Admin') head.append(h('label', null, 'School'),
-      select(schools.map(s => [s.schoolNo, s.schoolNo + ' - ' + s.schoolName + (s.finalSubmitted ? ' (submitted)' : '')]), schoolNo, async v => { if (!(await guard())) { drawHead(); return; } schoolNo = v; await loadSchool(); }));
+    if (wide) {
+      head.append(h('label', null, 'Zone'), zoneSelect(zoneKey, async v => {
+        if (!(await guard())) { drawHead(); return; }
+        zoneKey = v; S.createZone = v; schoolNo = ''; await loadSchools();
+      }));
+    }
+    if (role !== 'School Admin') {
+      head.append(h('label', null, 'School'),
+        select(schools.map(s => [s.schoolNo, s.schoolNo + ' - ' + s.schoolName + (s.finalSubmitted ? ' (submitted)' : '')]), schoolNo, async v => {
+          if (!(await guard())) { drawHead(); return; }
+          schoolNo = v; await loadSchool();
+        }));
+    }
   }
+
   async function loadSchools() {
     const z = await busy(() => call('apiGetSchoolsOfZone', zoneKey));
     if (!z) return;
@@ -776,162 +920,258 @@ async function pageCreateList() {
     drawHead();
     if (schoolNo) await loadSchool();
   }
+
+  function hydrateFromData(res) {
+    data = res;
+    ageRules = res.ageRules || [];
+    orig = (res.rows || []).map(r => ({
+      slot: r.slot,
+      name: r.name || '',
+      father: r.father || '',
+      dob: r.dobIso || '',
+      cls: r.cls || ''
+    }));
+    cur = orig.map(x => Object.assign({}, x));
+    draw();
+  }
+
   async function loadSchool() {
     area.replaceChildren();
-    try {
-      const res = await busy(() => call('apiGetSchoolList', schoolNo), true);
-      if (!res) throw new Error('x');
-      data = res; rows = data.rows.map(r => Object.assign({}, r)); orig = rows.map(sig); draw();
-    } catch (e) {
-      area.replaceChildren(h('div', { class: 'note' }, role === 'School Admin' ? 'Your list is not open for editing now (it may have been submitted, or Create list is switched off).' : 'This list cannot be opened now.'));
+    const r = await busyTry(() => call('apiGetSchoolList', schoolNo));
+    if (r.ok && r.data) {
+      hydrateFromData(r.data);
+      return;
     }
+    const errMsg = (r.error && r.error.message) ? r.error.message : 'Unable to open this list.';
+    area.replaceChildren(h('div', { class: 'note bad' },
+      role === 'School Admin'
+        ? 'Your list is not open for editing now: ' + errMsg
+        : 'This list cannot be opened now: ' + errMsg));
   }
-  function applyResult(res) { data = res; rows = res.rows.map(r => Object.assign({}, r)); orig = rows.map(sig); draw(); }
 
   function draw() {
     const st = data.status;
     const locked = !!st.locked;
-    const note = [];
-    if (locked) note.push(h('div', { class: 'note bad' }, 'This page is locked by admin. You can look at the list, but you cannot save any change.'));
-    if (!st.chestFrozen) note.push(h('div', { class: 'note' }, 'Chest numbers are temporary. They change automatically while schools are still entering data, and become final after every school of the zone does Final Submit. The same student keeps the same chest number in every event.'));
-    if (st.finalSubmitted) note.push(h('div', { class: 'note ok' }, 'This list has been submitted (Final Submit).'));
+    const rows = data.rows || [];
+
+    const notes = [];
+    if (locked) notes.push(h('div', { class: 'note bad' }, 'This page is locked by admin. You can look at the list, but you cannot save any change.'));
+    if (!st.chestFrozen) notes.push(h('div', { class: 'note' }, 'সর্বোচ্চ ২টি সাধারণ ইভেন্টে অংশগ্রহণ করা যাবে। YOGA বা GYMNASTICS-এ অংশগ্রহণ করলে অন্য কোনো ইভেন্টে নাম দেওয়া যাবে না। একই ছাত্র দুটি ইভেন্টে খেললে নাম ও বাবার নামের বানান হুবহু এক রাখুন।'));
+    if (st.finalSubmitted) notes.push(h('div', { class: 'note ok' }, 'This list has been submitted (Final Submit).'));
+
+    const dlNames = h('datalist', { id: 'clNameList' });
+    const dlFathers = h('datalist', { id: 'clFatherList' });
+    const refreshDatalists = () => {
+      const names = [...new Set(cur.map(x => x.name.trim().toUpperCase()).filter(Boolean))].sort();
+      const fathers = [...new Set(cur.map(x => x.father.trim().toUpperCase()).filter(Boolean))].sort();
+      dlNames.replaceChildren(...names.map(n => h('option', { value: n })));
+      dlFathers.replaceChildren(...fathers.map(n => h('option', { value: n })));
+    };
+    refreshDatalists();
+
+    const summaryEl = h('span', { class: 'chip', style: { marginLeft: 'auto' } });
+    const updateSummary = () => {
+      const filled = cur.filter(x => x.name.trim()).length;
+      const dirtyCnt = cur.filter((_, i) => rowDirty(i)).length;
+      summaryEl.textContent = 'Filled: ' + filled + ' / ' + rows.length + (dirtyCnt ? ' · ' + dirtyCnt + ' unsaved' : '');
+    };
+
     const tbody = h('tbody');
-    rows.forEach((r, i) => {
-      const tr = h('tr');
-      const mark = () => tr.classList.toggle('dirty', sig(r) !== orig[i]);
-      const text = (key, ph) => h('input', { value: r[key], placeholder: ph, maxlength: 60, autocomplete: 'off', disabled: locked,
-        oninput: e => { const p = e.target.selectionStart; e.target.value = e.target.value.toUpperCase(); try { e.target.setSelectionRange(p, p); } catch (x) { /* ignore */ } r[key] = e.target.value; mark(); } });
-      const dobLabel = h('small', null, fmtDob(r.dobIso));
-      
-      const dob = h('input', { 
-        type: 'date', 
-        disabled: locked, 
-        value: r.dobIso, 
-        min: '2010-01-01', 
-        max: new Date().toISOString().slice(0, 10), 
-        oninput: e => { 
-          const val = e.target.value;
-          if (val && val.length === 10) {
-             const ageErr = checkAge(r.group, r.event, val);
-             if (ageErr) {
-               toast('❌ ' + ageErr, 'error');
-               e.target.value = '';
-               r.dobIso = '';
-               dobLabel.textContent = '';
-               mark(); 
-               return;
-             }
+
+    function renderRows() {
+      tbody.replaceChildren();
+      const q = filt.q.trim().toLowerCase();
+
+      rows.forEach((r, i) => {
+        if (filt.group && r.group !== filt.group) return;
+        if (filt.gender && r.gender !== filt.gender) return;
+        if (q && ![r.group, r.gender, r.event, cur[i].name, cur[i].father, cur[i].cls, r.chestNo].join(' ').toLowerCase().includes(q)) return;
+
+        const tr = h('tr', { class: rowDirty(i) ? 'dirty' : '' });
+
+        const mark = () => {
+          tr.className = rowDirty(i) ? 'dirty' : '';
+          updateSummary();
+        };
+
+        const nameInp = h('input', {
+          class: 'cl-name',
+          list: 'clNameList',
+          maxlength: 60,
+          value: cur[i].name,
+          disabled: locked,
+          placeholder: 'Student Name',
+          oninput: e => { cur[i].name = e.target.value; mark(); },
+          onblur: e => {
+            const val = e.target.value.trim().toUpperCase();
+            e.target.value = val; cur[i].name = val;
+            // Auto-fill Father/DOB/Class if the same student was already entered in another event of same group+gender
+            if (val && !cur[i].father && !cur[i].dob && !cur[i].cls) {
+              const peerIdx = cur.findIndex((x, k) => k !== i && rows[k].group === r.group && rows[k].gender === r.gender && x.name.trim().toUpperCase() === val && x.father.trim());
+              if (peerIdx >= 0) {
+                cur[i].father = cur[peerIdx].father; fatherInp.value = cur[i].father;
+                cur[i].dob = cur[peerIdx].dob; dobInp.value = cur[i].dob;
+                cur[i].cls = cur[peerIdx].cls; clsSel.value = cur[i].cls;
+              }
+            }
+            refreshDatalists();
+            mark();
           }
-          r.dobIso = val; 
-          dobLabel.textContent = fmtDob(r.dobIso); 
-          mark(); 
-        } 
+        });
+
+        const fatherInp = h('input', {
+          class: 'cl-father',
+          list: 'clFatherList',
+          maxlength: 60,
+          value: cur[i].father,
+          disabled: locked,
+          placeholder: "Father's Name",
+          oninput: e => { cur[i].father = e.target.value; mark(); },
+          onblur: e => {
+            const val = e.target.value.trim().toUpperCase();
+            e.target.value = val; cur[i].father = val;
+            refreshDatalists();
+            mark();
+          }
+        });
+
+        const dobInp = h('input', {
+          class: 'cl-dob',
+          type: 'date',
+          value: cur[i].dob,
+          disabled: locked,
+          onchange: e => {
+            const val = e.target.value;
+            if (val) {
+              const ageErr = checkAge(r.group, r.event, val);
+              if (ageErr) toast('⚠️ ' + r.group + ' ' + r.gender + ' ' + r.event + ': ' + ageErr, 'error');
+            }
+            cur[i].dob = val;
+            mark();
+          }
+        });
+
+        const clsSel = select([['', 'Select Class']].concat(CLASSES.map(c => [c, c])), cur[i].cls, v => {
+          cur[i].cls = v;
+          mark();
+        }, { class: 'cl-cls', disabled: locked });
+
+        const delBtn = locked ? null : h('button', {
+          class: 'ico-btn del',
+          type: 'button',
+          title: 'Clear / Delete entry',
+          onclick: async () => {
+            if (!orig[i].name && !cur[i].name && !cur[i].father && !cur[i].dob && !cur[i].cls) return;
+            if (orig[i].name) {
+              if (!(await confirmBox('Delete entry', 'Delete ' + orig[i].name + ' from ' + r.group + ' ' + r.gender + ' ' + r.event + '?', 'Delete', 'danger'))) return;
+              const res = await busy(() => call('apiDeleteEntry', schoolNo, r.slot));
+              if (res) { hydrateFromData(res); toast('Entry deleted.', 'ok'); }
+            } else {
+              cur[i].name = cur[i].father = cur[i].dob = cur[i].cls = '';
+              nameInp.value = fatherInp.value = dobInp.value = clsSel.value = '';
+              mark();
+            }
+          }
+        }, '🗑️');
+
+        tr.append(
+          h('td', null, i + 1),
+          h('td', null, h('b', null, r.group)),
+          h('td', null, r.gender),
+          h('td', { style: { textAlign: 'left', fontWeight: '600' } }, r.event),
+          h('td', null, r.chestNo === '' ? '–' : h('span', { class: 'chest' }, r.chestNo)),
+          h('td', null, nameInp),
+          h('td', null, fatherInp),
+          h('td', null, dobInp),
+          h('td', null, clsSel),
+          locked ? null : h('td', null, delBtn)
+        );
+        tbody.appendChild(tr);
       });
 
-      const cls = select([['', 'Select class']].concat(CLASSES.map(c => [c, c])), r.cls, v => { r.cls = v; mark(); }, { disabled: locked });
-      const del = !locked && r.name && orig[i] !== '||||' ? h('button', { class: 'btn ghost small', type: 'button', title: 'Delete this entry',
-        onclick: async () => { if (!(await confirmBox('Delete entry', 'Delete ' + r.group + ' ' + r.gender + ' ' + r.event + ' - ' + r.name + '?', 'Delete', 'danger'))) return; const res = await busy(() => call('apiDeleteEntry', schoolNo, r.slot)); if (res) { applyResult(res); toast('Entry deleted', 'ok'); } } }, 'Delete') : null;
-      tr.append(h('td', null, i + 1), h('td', null, r.group), h('td', null, r.gender), h('td', null, r.event),
-        h('td', null, r.chestNo === '' ? '–' : h('span', { class: 'chest' }, r.chestNo)), h('td', null, text('name', 'Name')), h('td', null, text('father', "Father's name")),
-        h('td', null, dob, dobLabel), h('td', null, cls), h('td', null, del));
-      tbody.appendChild(tr);
-    });
-    const table = h('table', { class: 't' }, h('thead', null, h('tr', null,
-      ['Sl', 'Group', 'Gender', 'Event'].map(x => h('th', null, x)), h('th', null, 'Chest No ', st.chestFrozen ? null : h('span', { class: 'chip warn' }, 'temporary')),
-      ['Name', "Father's Name", 'Date of birth', 'Class', ''].map(x => h('th', null, x)))), tbody);
+      if (!tbody.children.length) {
+        tbody.appendChild(h('tr', null, h('td', { colspan: locked ? 9 : 10 }, emptyNote('কোনো ইভেন্ট পাওয়া যায়নি।'))));
+      }
+      updateSummary();
+    }
+
+    const filterBar = h('div', { class: 'toolbar', style: { marginTop: '8px' } },
+      h('input', { placeholder: 'Search event, name or chest no', value: filt.q, oninput: e => { filt.q = e.target.value; renderRows(); } }),
+      select([['', 'All groups'], ['A', 'Group A'], ['B', 'Group B'], ['C', 'Group C']], filt.group, v => { filt.group = v; renderRows(); }),
+      select([['', 'All genders'], ['BOYS', 'BOYS'], ['GIRLS', 'GIRLS']], filt.gender, v => { filt.gender = v; renderRows(); }),
+      summaryEl
+    );
+
+    const headers = ['Sl', 'Group', 'Gender', 'Event', 'Chest No', 'Name', "Father's Name", 'DOB', 'Class'];
+    if (!locked) headers.push('Delete');
+
+    const table = h('table', { class: 't create-tbl' },
+      h('thead', null, h('tr', null, headers.map(x => h('th', null, x)))),
+      tbody
+    );
+
     const acts = h('div', { class: 'toolbar', style: { marginTop: '12px' } },
       h('button', { class: 'btn', type: 'button', onclick: save }, 'Save'),
       h('button', { class: 'btn gold', type: 'button', onclick: submit }, 'Final Submit'),
-      role !== 'School Admin' && st.finalSubmitted ? h('button', { class: 'btn ghost', type: 'button', onclick: reopen }, 'Reopen for correction') : null);
+      role !== 'School Admin' && st.finalSubmitted ? h('button', { class: 'btn ghost', type: 'button', onclick: reopen }, 'Reopen for correction') : null
+    );
+
+    renderRows();
+
     area.replaceChildren(
-      h('div', { class: 'card' }, h('b', null, data.schoolNo + ' · ' + data.schoolName), h('div', null, 'Zone: ' + data.zoneLabel + ' · '),
-        h('span', { class: 'chip' }, st.finalSubmitted ? 'Submitted' : 'Not submitted'), ' ', h('span', { class: 'chip' }, st.chestFrozen ? 'Chest numbers final' : 'Chest numbers temporary')),
-      ...note, exportBar(() => ({ type: 'school.list', schoolNo })),
-      h('div', { class: 'toolbar', style: { marginTop: '8px' } },
-        h('button', { class: 'btn', type: 'button', onclick: bulkDownload }, 'Bulk file download'),
-        locked ? null : h('button', { class: 'btn', type: 'button', onclick: () => bulkFile.click() }, 'Excel bulk upload'), bulkFile),
-      h('div', { class: 'tw' }, table), ...(locked ? [] : [acts]));
+      dlNames, dlFathers,
+      h('div', { class: 'card' },
+        h('b', null, data.schoolNo + ' · ' + data.schoolName),
+        h('div', null, 'Zone: ' + data.zoneLabel + ' · ',
+          h('span', { class: 'chip' }, st.finalSubmitted ? 'Submitted' : 'Not submitted'), ' ',
+          h('span', { class: 'chip ' + (st.chestFrozen ? '' : 'warn') }, st.chestFrozen ? 'Chest numbers final' : 'Chest numbers temporary'))
+      ),
+      ...notes,
+      exportBar(() => ({ type: 'school.list', schoolNo })),
+      filterBar,
+      h('div', { class: 'tw' }, table),
+      ...(locked ? [] : [acts])
+    );
   }
 
   async function save() {
-    const entries = rows.map((r, i) => sig(r) !== orig[i] ? { slot: r.slot, name: r.name, father: r.father, dob: r.dobIso, cls: r.cls } : null).filter(Boolean);
-    if (!entries.length) return toast('Nothing to save.');
-    
-    // --- কড়া ভ্যালিডেশন (Save বাটনে ক্লিক করলেই চেক হবে) ---
-    for (let r of rows) {
-      if (!r.name) continue; 
-      
-      let eventsOfStudent = rows.filter(row => row.name === r.name && row.dobIso === r.dobIso);
-      
-      if (eventsOfStudent.length > 2) {
-        return toast('❌ ' + r.name + ' সর্বাধিক দু\'টি ইভেন্টে অংশগ্রহণ করতে পারবে।', 'error');
+    const changed = [];
+    for (let i = 0; i < cur.length; i++) {
+      if (!rowDirty(i)) continue;
+      const e = cur[i], r = data.rows[i];
+      const name = e.name.trim(), father = e.father.trim(), dob = e.dob.trim(), cls = e.cls.trim();
+      const any = !!(name || father || dob || cls);
+      if (any) {
+        if (!name || !father || !dob || !cls) {
+          return toast("❌ " + r.group + " " + r.gender + " " + r.event + ": Name, Father's Name, DOB এবং Class—চারটিই পূরণ করুন।", "error");
+        }
+        const ageErr = checkAge(r.group, r.event, dob);
+        if (ageErr) return toast('❌ ' + r.group + ' ' + r.gender + ' ' + r.event + ': ' + ageErr, 'error');
       }
-      
-      let eventNames = eventsOfStudent.map(e => e.event);
-      let hasSpecial = eventNames.includes('YOGA') || eventNames.includes('GYMNASTICS');
-      if (hasSpecial && eventNames.length > 1) {
-        return toast('❌ ' + r.name + ' YOGA বা GYMNASTICS-এ অংশগ্রহণ করলে অন্য কোনো ইভেন্ট নিতে পারবে না!', 'error');
-      }
-      
-      if (r.dobIso) {
-        const ageErr = checkAge(r.group, r.event, r.dobIso);
-        if (ageErr) return toast('❌ ' + r.name + ' (' + r.group + '): ' + ageErr, 'error');
-      }
+      changed.push({ slot: r.slot, name, father, dob, cls });
     }
-    // --- ভ্যালিডেশন শেষ ---
-    
-    const res = await busy(() => call('apiSaveSchoolList', schoolNo, entries));
-    if (res) { applyResult(res); toast('Saved. Chest numbers updated.', 'ok'); }
+    if (!changed.length) return toast('Nothing to save.');
+    const res = await busy(() => call('apiSaveSchoolList', schoolNo, changed));
+    if (res) { hydrateFromData(res); toast('Saved. Chest numbers updated.', 'ok'); }
   }
-  const bulkFile = h('input', { type: 'file', accept: '.xlsx', style: { display: 'none' }, onchange: bulkUpload });
-  async function bulkDownload() {
-    toast('Preparing the Excel file. It takes a few seconds.');
-    const res = await busy(() => call('apiExportReport', { type: 'school.list', schoolNo }, 'xlsx'));
-    if (res) downloadB64(res);
-  }
-  async function bulkUpload(e) {
-    const file = e.target.files && e.target.files[0];
-    e.target.value = '';
-    if (!file) return;
-    if (!/\.xlsx$/i.test(file.name)) return toast('Please choose an .xlsx file (the one downloaded with Bulk file download).', 'error');
-    if (file.size > 2 * 1024 * 1024) return toast('The file is too big (maximum 2 MB).', 'error');
-    if (!(await confirmBox('Excel bulk upload', 'The list of ' + schoolNo + ' will be replaced by the data of this file (' + file.name + '). Rows left empty in the file will be emptied. Continue?', 'Upload', 'blue'))) return;
-    const buf = new Uint8Array(await file.arrayBuffer());
-    let bin = '';
-    for (let k = 0; k < buf.length; k += 8192) bin += String.fromCharCode.apply(null, buf.subarray(k, k + 8192));
-    const r = await busyTry(() => call('apiBulkUploadList', schoolNo, btoa(bin)));
-    if (!r.ok) { if (r.error.code !== 'SESSION_EXPIRED') toast(r.error.message, 'error'); return; }
-    applyResult(r.data);
-    toast('Excel uploaded and saved. Chest numbers updated.', 'ok');
-  }
+
   async function submit() {
-    if (dirtyCount()) return toast('Please Save your changes first.', 'error');
-    
-    const msg = role === 'School Admin' 
-      ? "Are you sure to Final submit? Once you done it, you won't be able to open/edit it." 
+    if (isDirty()) return toast('Please Save your changes first.', 'error');
+    const msg = role === 'School Admin'
+      ? "Are you sure to Final submit? Once you done it, you won't be able to open/edit it."
       : "After Final Submit this school can no longer edit (you can reopen it). Do you want to continue?";
-      
     if (!(await confirmBox('Final Submit', msg, 'Confirm', 'blue'))) return;
-    
     const res = await busy(() => call('apiFinalSubmit', schoolNo));
     if (!res) return;
     toast('List submitted.', 'ok');
     if (role === 'School Admin') { await refreshMenu(); go('dashboard'); } else { await loadSchools(); }
   }
+
   async function reopen() {
     if (!(await confirmBox('Reopen list', 'Allow ' + schoolNo + ' to edit again?', 'Reopen', 'blue'))) return;
     const res = await busy(() => call('apiReopenList', schoolNo));
     if (res) { toast('List reopened.', 'ok'); await loadSchools(); }
   }
-
-  // পেজ লোড হওয়ার সময়ই বয়স চেকিংয়ের নিয়মগুলো গুগল শিট থেকে লোড করা হচ্ছে 
-  // পেজ লোড হওয়ার সময়ই বয়স চেকিংয়ের নিয়মগুলো গুগল শিট থেকে লোড করা হচ্ছে 
-  try {
-    ageRules = (await busy(() => call('apiGetAgeRules'), true)) || [];
-    if (!ageRules.length && role === 'School Admin') {
-      toast('⚠️ Age_Rules শিট থেকে ডেটা লোড হয়নি!', 'warn');
-    }
-  } catch(e) { ageRules = []; }
 
   if (role === 'School Admin') await loadSchool(); else await loadSchools();
 }
@@ -940,23 +1180,27 @@ async function pageCreateList() {
 async function pageZoneList(arg) {
   const wide = isWide();
   let zoneKey = arg || (wide ? (S.viewZone || ZONES[0].key) : S.profile.zone);
-  let schoolNo = '', schools = [], all = null;
+  let schoolNo = '', schools = [], zoneData = null;
   const f = { q: '', group: '', gender: '', cls: '' };
   const root = h('div'), head = h('div', { class: 'toolbar' }), area = h('div');
   root.append(head, area);
   setMain(root, 'Zone List - ' + zoneLabel(zoneKey));
 
+  // Single server call per zone: fetches all schools + dropdown list together (instant school switching!)
   async function loadZone() {
-    const z = await busy(() => call('apiGetSchoolsOfZone', zoneKey));
-    if (!z) return;
-    schools = z.schools; 
-    if (!schools.some(s => s.schoolNo === schoolNo)) schoolNo = ''; // 'All schools' ডিফল্ট হিসেবে সেট করা হলো
-    all = z; await loadSchool();
+    const d = await busy(() => call('apiGetZoneList', zoneKey, ''));
+    if (!d) return;
+    zoneData = d;
+    schools = d.schoolList || d.schools.map(s => ({
+      schoolNo: s.schoolNo,
+      schoolName: s.schoolName,
+      entries: (s.participants || []).length,
+      finalSubmitted: s.finalSubmitted
+    }));
+    if (!schools.some(s => s.schoolNo === schoolNo)) schoolNo = '';
+    draw();
   }
-  async function loadSchool() {
-    const d = await busy(() => call('apiGetZoneList', zoneKey, schoolNo));
-    if (d) draw(d);
-  }
+
   async function chestAction(frozen) {
     if (frozen) {
       if (!(await confirmBox('Unfreeze chest numbers', 'Chest numbers will be built again from the first row. Printed sheets will no longer match.', 'Unfreeze', 'danger'))) return;
@@ -974,71 +1218,259 @@ async function pageZoneList(arg) {
     }
     await loadZone();
   }
-  function draw(d) {
+
+  function draw() {
+    const d = zoneData;
+    if (!d) return;
     head.replaceChildren();
     if (wide) head.append(h('label', null, 'Zone'), zoneSelect(zoneKey, v => { zoneKey = v; S.viewZone = v; schoolNo = ''; setMain(root, 'Zone List - ' + zoneLabel(v)); loadZone(); }));
-    
-    // ড্রপডাউনে 'All schools' অপশন যোগ করা হলো
-    head.append(h('label', null, 'School'), select([['', 'All schools']].concat(schools.map(s => [s.schoolNo, s.schoolNo + ' - ' + s.schoolName + ' (' + s.entries + ')'])), schoolNo, v => { schoolNo = v; loadSchool(); }));
-    
+    head.append(h('label', null, 'School'), select([['', 'All schools']].concat(schools.map(s => [s.schoolNo, s.schoolNo + ' - ' + s.schoolName + ' (' + s.entries + ')'])), schoolNo, v => { schoolNo = v; draw(); }));
+
     const match = r => (!f.group || r.group === f.group) && (!f.gender || r.gender === f.gender) && (!f.cls || r.cls === f.cls) &&
-      (!f.q || [r.name, r.father, r.event, r.chestNo].join(' ').toLowerCase().includes(f.q.toLowerCase()));
-      
+      (!f.q || [r.name, r.father, r.event1, r.event2, r.chestNo].join(' ').toLowerCase().includes(f.q.toLowerCase()));
+
     const filters = h('div', { class: 'toolbar' },
-      h('input', { placeholder: 'Search name, event or chest no', oninput: e => { f.q = e.target.value; fill(); } }),
+      h('input', { placeholder: 'Search name, father, event or chest no', value: f.q, oninput: e => { f.q = e.target.value; fill(); } }),
       select([['', 'All groups'], 'A', 'B', 'C'].map(x => Array.isArray(x) ? x : [x, 'Group ' + x]), f.group, v => { f.group = v; fill(); }),
       select([['', 'All genders'], ['BOYS', 'BOYS'], ['GIRLS', 'GIRLS']], f.gender, v => { f.gender = v; fill(); }),
       select([['', 'All classes']].concat(CLASSES.map(c => [c, c])), f.cls, v => { f.cls = v; fill(); }),
-      h('button', { class: 'btn ghost small', type: 'button', onclick: () => { f.q = f.group = f.gender = f.cls = ''; draw(d); } }, 'Clear filters'));
-      
-    const listContainer = h('div'); // সব স্কুলের টেবিল ধারণ করার জন্য কন্টেইনার
-    
+      h('button', { class: 'btn ghost small', type: 'button', onclick: () => { f.q = f.group = f.gender = f.cls = ''; draw(); } }, 'Clear filters'));
+
+    const listContainer = h('div');
+    const activeSchools = schoolNo ? d.schools.filter(s => s.schoolNo === schoolNo) : d.schools;
+
     const fill = () => {
-      // যতগুলো স্কুল আসবে, সবার জন্য আলাদা কার্ড ও টেবিল তৈরি হবে
-      listContainer.replaceChildren(...d.schools.map(school => {
+      listContainer.replaceChildren(...activeSchools.map(school => {
+        const list = (school.participants || []).filter(match);
         const tbody = h('tbody');
-        tbody.append(...school.rows.map((r, i) => match(r) ? h('tr', null, h('td', null, i + 1), h('td', null, r.group), h('td', null, r.gender), h('td', null, r.event), h('td', null, r.chestNo === '' ? '–' : h('span', { class: 'chest' }, r.chestNo)), h('td', null, r.name), h('td', null, r.father), h('td', null, r.dob), h('td', null, r.cls)) : null));
-        
-        // যদি ফিল্টারের কারণে কোনো স্কুলের টেবিলে ডেটা না থাকে, তবে সেটি লুকানো থাকবে
+        tbody.append(...list.map((r, i) => h('tr', null,
+          h('td', null, i + 1),
+          h('td', null, r.chestNo === '' ? '–' : h('span', { class: 'chest' }, r.chestNo)),
+          h('td', { style: { textAlign: 'left', fontWeight: '600' } }, r.name),
+          h('td', null, r.dob),
+          h('td', { style: { textAlign: 'left' } }, r.father),
+          h('td', null, r.cls),
+          h('td', null, r.group),
+          h('td', null, r.gender),
+          h('td', null, r.event1),
+          h('td', null, r.event2 || ''),
+          h('td', null, r.schoolNo)
+        )));
+
         if (!tbody.children.length) return null;
-        
-        return h('div', { style: { marginBottom: '24px' } }, 
+
+        return h('div', { style: { marginBottom: '24px' } },
           h('div', { class: 'card', style: { marginBottom: '8px' } }, h('b', null, school.schoolNo + ' · ' + school.schoolName), h('div', null,
-            h('span', { class: 'chip' }, school.finalSubmitted ? 'Submitted' : 'Not submitted'))),
-          h('div', { class: 'tw' }, h('table', { class: 't' }, h('thead', null, h('tr', null, ['Sl', 'Group', 'Gender', 'Event', 'Chest No', 'Name', "Father's Name", 'DOB', 'Class'].map(x => h('th', null, x)))), tbody))
+            h('span', { class: 'chip' }, school.finalSubmitted ? 'Submitted' : 'Not submitted'), ' ',
+            h('span', { class: 'chip' }, list.length + ' students'))),
+          h('div', { class: 'tw' }, h('table', { class: 't' },
+            h('thead', null, h('tr', null, ['Sl No', 'Chest No', 'Name', 'DOB', "Father's Name", 'Class', 'Group', 'Gender', 'Event 1', 'Event 2', 'School No'].map(x => h('th', null, x)))),
+            tbody))
         );
       }).filter(Boolean));
+      if (!listContainer.children.length) listContainer.replaceChildren(emptyNote('কোনো এন্ট্রি পাওয়া যায়নি।'));
     };
-    
+
     fill();
-    
+
     area.replaceChildren(
-      // জোন লেভেলের স্ট্যাটাস ও চেস্ট নম্বর ফ্রিজ বাটনটি সবার উপরে রাখা হলো
       h('div', { class: 'card' }, h('b', null, 'Zone: ' + d.zoneLabel), h('div', null,
         h('span', { class: 'chip ' + (d.chestFrozen ? '' : 'warn') }, d.chestFrozen ? 'Chest numbers final' : 'Chest numbers temporary'), ' ',
         wide ? h('button', { class: 'btn ghost small', type: 'button', onclick: () => chestAction(d.chestFrozen) }, d.chestFrozen ? 'Unfreeze chest numbers' : 'Freeze chest numbers') : null)),
-        
-      h('div', { class: 'toolbar' }, 
-        schoolNo ? h('b', null, 'This school:') : null, 
+      h('div', { class: 'toolbar' },
+        schoolNo ? h('b', null, 'This school:') : null,
         schoolNo ? exportBar(() => ({ type: 'school.list', schoolNo })) : null,
         h('b', null, 'Whole zone:'), exportBar(() => ({ type: 'zone.list', zone: zoneKey }))
       ),
       filters,
-      listContainer // পরপর সমস্ত স্কুলের টেবিলগুলো এখানে দেখাবে
+      listContainer
     );
   }
   await loadZone();
 }
 
-/** Circle list and Subdivision list: preview of the printable pages with a search box. */
-function pageModelList(type, title) {
+/** Circle List: Zone-List style deduplicated view (Event 1, Event 2, Student Code) + Circle Chest Freeze button. */
+async function pageCircleList() {
+  const wide = isWide();
+  let zoneKey = '', circleData = null;
+  const f = { q: '', group: '', gender: '', cls: '' };
+  const root = h('div'), head = h('div', { class: 'toolbar' }), area = h('div');
+  root.append(head, area);
+  setMain(root, 'Circle List');
+
+  async function load() {
+    const d = await busy(() => call('apiGetCircleList', ''));
+    if (!d) return;
+    circleData = d;
+    draw();
+  }
+
+  async function circleChestAction(frozen) {
+    if (frozen) {
+      if (!(await confirmBox('Unfreeze circle chest numbers', 'Circle chest numbers will be built again from the first row. Printed sheets will no longer match.', 'Unfreeze', 'danger'))) return;
+      let r = await busyTry(() => call('apiUnfreezeCircleChest', false));
+      if (!r.ok && r.error.code === 'HAS_RESULTS') {
+        if (!(await confirmBox('Circle results will be cleared', 'Circle results are already entered. Unfreezing changes circle chest numbers, so these results will be cleared. Continue?', 'Clear results and unfreeze', 'danger'))) return;
+        r = await busyTry(() => call('apiUnfreezeCircleChest', true));
+      }
+      if (!r.ok) return toast(r.error.message, 'error');
+      toast('Circle chest numbers unfrozen.', 'ok');
+    } else {
+      const r = await busyTry(() => call('apiFreezeCircleChest'));
+      if (!r.ok) return toast(r.error.message, 'error');
+      toast('Circle chest numbers are final now.', 'ok');
+    }
+    await load();
+  }
+
+  function draw() {
+    const d = circleData;
+    if (!d) return;
+    head.replaceChildren(
+      h('label', null, 'Zone'),
+      select([['', 'All zones']].concat(ZONES.map(z => [z.key, z.label])), zoneKey, v => { zoneKey = v; draw(); })
+    );
+
+    const match = r => (!f.group || r.group === f.group) && (!f.gender || r.gender === f.gender) && (!f.cls || r.cls === f.cls) &&
+      (!f.q || [r.name, r.father, r.schoolName, r.event1, r.event2, r.chestNo].join(' ').toLowerCase().includes(f.q.toLowerCase()));
+
+    const filters = h('div', { class: 'toolbar' },
+      h('input', { placeholder: 'Search name, school, event or chest no', value: f.q, oninput: e => { f.q = e.target.value; fill(); } }),
+      select([['', 'All groups'], 'A', 'B', 'C'].map(x => Array.isArray(x) ? x : [x, 'Group ' + x]), f.group, v => { f.group = v; fill(); }),
+      select([['', 'All genders'], ['BOYS', 'BOYS'], ['GIRLS', 'GIRLS']], f.gender, v => { f.gender = v; fill(); }),
+      select([['', 'All classes']].concat(CLASSES.map(c => [c, c])), f.cls, v => { f.cls = v; fill(); }),
+      h('button', { class: 'btn ghost small', type: 'button', onclick: () => { f.q = f.group = f.gender = f.cls = ''; draw(); } }, 'Clear filters')
+    );
+
+    const listContainer = h('div');
+    const activeZones = zoneKey ? d.zones.filter(z => z.zone === zoneKey) : d.zones;
+
+    const fill = () => {
+      listContainer.replaceChildren(...activeZones.map(z => {
+        const list = (z.participants || []).filter(match);
+        const tbody = h('tbody');
+        tbody.append(...list.map((r, i) => h('tr', null,
+          h('td', null, i + 1),
+          h('td', null, r.chestNo === '' ? '–' : h('span', { class: 'chest' }, r.chestNo)),
+          h('td', { style: { textAlign: 'left', fontWeight: '600' } }, r.name),
+          h('td', null, r.dob),
+          h('td', { style: { textAlign: 'left' } }, r.father),
+          h('td', null, r.cls),
+          h('td', null, r.group),
+          h('td', null, r.gender),
+          h('td', null, r.event1),
+          h('td', null, r.event2 || ''),
+          h('td', { style: { textAlign: 'left' } }, r.schoolName)
+        )));
+
+        if (!tbody.children.length) return null;
+
+        return h('div', { style: { marginBottom: '24px' } },
+          h('div', { class: 'card', style: { marginBottom: '8px' } },
+            h('b', null, z.zoneLabel),
+            h('div', null, h('span', { class: 'chip' }, list.length + ' students'))
+          ),
+          h('div', { class: 'tw' }, h('table', { class: 't' },
+            h('thead', null, h('tr', null, ['Sl No', 'Chest No', 'Name', 'DOB', "Father's Name", 'Class', 'Group', 'Gender', 'Event 1', 'Event 2', 'Name of School'].map(x => h('th', null, x)))),
+            tbody
+          ))
+        );
+      }).filter(Boolean));
+      if (!listContainer.children.length) listContainer.replaceChildren(emptyNote('কোনো এন্ট্রি পাওয়া যায়নি।'));
+    };
+
+    fill();
+
+    area.replaceChildren(
+      h('div', { class: 'card' },
+        h('b', null, 'Circle List'),
+        h('div', null,
+          h('span', { class: 'chip ' + (d.circleChestFrozen ? '' : 'warn') }, d.circleChestFrozen ? 'Circle chest numbers final' : 'Circle chest numbers temporary'), ' ',
+          wide ? h('button', { class: 'btn ghost small', type: 'button', onclick: () => circleChestAction(d.circleChestFrozen) }, d.circleChestFrozen ? 'Unfreeze circle chest numbers' : 'Freeze circle chest numbers') : null
+        )
+      ),
+      h('div', { class: 'toolbar' },
+        zoneKey ? h('b', null, 'This zone:') : null,
+        zoneKey ? exportBar(() => ({ type: 'circle.list', zone: zoneKey })) : null,
+        h('b', null, 'Whole circle:'),
+        exportBar(() => ({ type: 'circle.list' }))
+      ),
+      filters,
+      listContainer
+    );
+  }
+
+  await load();
+}
+
+/** Subdivision / District / State Level List: Zone-List style deduplicated view (Event 1, Event 2, Student Code). */
+function pageHigherList(level, title) {
   return async function () {
-    const root = h('div'), box = h('div');
-    const search = h('input', { placeholder: 'Search in the list', oninput: e => filterRows(box, e.target.value) });
-    root.append(h('div', { class: 'toolbar' }, search), exportBar(() => ({ type })), box);
+    const f = { q: '', zone: '', group: '', gender: '', cls: '' };
+    const root = h('div'), area = h('div');
+    root.append(area);
     setMain(root, title);
-    const m = await busy(() => call('apiGetReportPreview', { type }));
-    if (m) box.replaceChildren(renderModel(m));
+
+    const d = await busy(() => call('apiGetHigherList', level));
+    if (!d) return;
+
+    const match = r => (!f.zone || r.zone === f.zone) && (!f.group || r.group === f.group) && (!f.gender || r.gender === f.gender) && (!f.cls || r.cls === f.cls) &&
+      (!f.q || [r.name, r.father, r.schoolName, r.zoneLabel, r.event1, r.event2, r.chestNo].join(' ').toLowerCase().includes(f.q.toLowerCase()));
+
+    function draw() {
+      const filters = h('div', { class: 'toolbar' },
+        h('input', { placeholder: 'Search name, school, zone, event or chest no', value: f.q, oninput: e => { f.q = e.target.value; fill(); } }),
+        select([['', 'All zones']].concat(ZONES.map(z => [z.key, z.label])), f.zone, v => { f.zone = v; fill(); }),
+        select([['', 'All groups'], 'A', 'B', 'C'].map(x => Array.isArray(x) ? x : [x, 'Group ' + x]), f.group, v => { f.group = v; fill(); }),
+        select([['', 'All genders'], ['BOYS', 'BOYS'], ['GIRLS', 'GIRLS']], f.gender, v => { f.gender = v; fill(); }),
+        select([['', 'All classes']].concat(CLASSES.map(c => [c, c])), f.cls, v => { f.cls = v; fill(); }),
+        h('button', { class: 'btn ghost small', type: 'button', onclick: () => { f.q = f.zone = f.group = f.gender = f.cls = ''; draw(); } }, 'Clear filters')
+      );
+
+      const listContainer = h('div');
+      const countChip = h('span', { class: 'chip' });
+
+      const fill = () => {
+        const list = (d.participants || []).filter(match);
+        countChip.textContent = list.length + ' students';
+        if (!list.length) {
+          listContainer.replaceChildren(emptyNote('কোনো এন্ট্রি পাওয়া যায়নি।'));
+          return;
+        }
+        const tbody = h('tbody');
+        tbody.append(...list.map((r, i) => h('tr', null,
+          h('td', null, i + 1),
+          h('td', null, r.chestNo === '' ? '–' : h('span', { class: 'chest' }, r.chestNo)),
+          h('td', { style: { textAlign: 'left', fontWeight: '600' } }, r.name),
+          h('td', null, r.dob),
+          h('td', { style: { textAlign: 'left' } }, r.father),
+          h('td', null, r.cls),
+          h('td', null, r.group),
+          h('td', null, r.gender),
+          h('td', null, r.event1),
+          h('td', null, r.event2 || ''),
+          h('td', { style: { textAlign: 'left' } }, r.schoolName),
+          h('td', null, r.zoneLabel)
+        )));
+        listContainer.replaceChildren(
+          h('div', { class: 'tw' }, h('table', { class: 't' },
+            h('thead', null, h('tr', null, ['Sl No', 'Chest No', 'Name', 'DOB', "Father's Name", 'Class', 'Group', 'Gender', 'Event 1', 'Event 2', 'Name of School', 'Zone'].map(x => h('th', null, x)))),
+            tbody
+          ))
+        );
+      };
+
+      fill();
+
+      area.replaceChildren(
+        h('div', { class: 'card' }, h('b', null, title), h('div', null, countChip)),
+        exportBar(() => ({ type: level + '.list' })),
+        filters,
+        listContainer
+      );
+    }
+
+    draw();
   };
 }
 
@@ -1431,9 +1863,9 @@ async function pageAdmins() {
       h('div', { class: 'grid2' }, groups[z].map(a => {
         const initial = (a.name || a.designation || '?').trim().charAt(0).toUpperCase();
         const avatarStyle = {
-          width: '90px',
-          height: '90px',
-          minWidth: '90px',
+          width: '74px',
+          height: '74px',
+          minWidth: '64px',
           fontSize: '22px',
           overflow: 'hidden',
           padding: '0'
@@ -2058,12 +2490,640 @@ function pageLock(page) {
   };
 }
 
+/* ====================== We the teachers ====================== */
+async function pageTeachers() {
+  const root = h('div'), head = h('div', { class: 'toolbar' }), area = h('div');
+  root.append(head, area);
+  setMain(root, 'We the teachers');
+
+  const d = await busy(() => call('apiGetTeachersData'));
+  if (!d) return;
+
+  let view = 'list';
+  const f = { q: '', zone: '', schoolNo: '' };
+
+  function draw() {
+    head.replaceChildren(
+      h('label', null, 'Select view'),
+      select([
+        ['list', '1. List of teachers'],
+        ['count', '2. Number of teachers']
+      ], view, v => { view = v; draw(); })
+    );
+
+    const availSchools = (d.summary || []).filter(s => !f.zone || s.zone === f.zone);
+    if (f.schoolNo && !availSchools.some(s => s.schoolNo === f.schoolNo)) f.schoolNo = '';
+
+    const qInp = h('input', {
+      placeholder: view === 'list' ? 'Search teacher name, school no or school' : 'Search school no or school name',
+      value: f.q,
+      style: { minWidth: '230px' },
+      oninput: e => { f.q = e.target.value; fill(); }
+    });
+    const zSel = select([['', 'All zones']].concat(ZONES.map(z => [z.key, z.label])), f.zone, v => {
+      f.zone = v; f.schoolNo = ''; draw();
+    });
+    const sSel = select(
+      [['', 'All schools']].concat(availSchools.map(s => [s.schoolNo, s.schoolNo + ' - ' + s.schoolName])),
+      f.schoolNo,
+      v => { f.schoolNo = v; fill(); }
+    );
+    const countChip = h('span', { class: 'chip', style: { marginLeft: 'auto' } });
+    const tableWrap = h('div');
+
+    const filters = h('div', { class: 'toolbar' },
+      qInp, zSel, sSel,
+      h('button', { class: 'btn ghost small', type: 'button', onclick: () => { f.q = f.zone = f.schoolNo = ''; draw(); } }, 'Clear filters'),
+      countChip
+    );
+
+    const fill = () => {
+      const q = f.q.trim().toLowerCase();
+      if (view === 'list') {
+        const list = (d.teachers || []).filter(t =>
+          (!f.zone || t.zone === f.zone) &&
+          (!f.schoolNo || t.schoolNo === f.schoolNo) &&
+          (!q || [t.schoolNo, t.schoolName, t.teacherName, t.zoneLabel].join(' ').toLowerCase().includes(q))
+        );
+        countChip.textContent = 'Showing ' + list.length + ' of ' + (d.totalTeachers || 0) + ' teachers';
+        if (!list.length) {
+          tableWrap.replaceChildren(emptyNote('কোনো শিক্ষকের তথ্য পাওয়া যায়নি।'));
+          return;
+        }
+        const tbody = h('tbody', null, list.map((t, i) => h('tr', null,
+          h('td', null, i + 1),
+          h('td', null, h('b', null, t.schoolNo)),
+          h('td', { style: { textAlign: 'left' } }, t.schoolName),
+          h('td', { style: { textAlign: 'left', fontWeight: '600' } }, t.teacherName),
+          h('td', null, t.zoneLabel)
+        )));
+        tableWrap.replaceChildren(h('div', { class: 'tw' }, h('table', { class: 't' },
+          h('thead', null, h('tr', null, ['Sl No.', 'School No', 'School Name', "Teacher's Name", 'Zone'].map(x => h('th', null, x)))),
+          tbody
+        )));
+      } else {
+        const list = (d.summary || []).filter(s =>
+          (!f.zone || s.zone === f.zone) &&
+          (!f.schoolNo || s.schoolNo === f.schoolNo) &&
+          (!q || [s.schoolNo, s.schoolName, s.zoneLabel, s.count].join(' ').toLowerCase().includes(q))
+        );
+        const totalCnt = list.reduce((acc, s) => acc + (Number(s.count) || 0), 0);
+        countChip.textContent = 'Schools: ' + list.length + ' · Total teachers: ' + totalCnt;
+        if (!list.length) {
+          tableWrap.replaceChildren(emptyNote('কোনো স্কুলের তথ্য পাওয়া যায়নি।'));
+          return;
+        }
+        const tbody = h('tbody', null,
+          list.map((s, i) => h('tr', null,
+            h('td', null, i + 1),
+            h('td', null, h('b', null, s.schoolNo)),
+            h('td', { style: { textAlign: 'left' } }, s.schoolName),
+            h('td', null, s.zoneLabel),
+            h('td', null, h('span', { class: 'chest' }, s.count))
+          )).concat([
+            h('tr', { style: { background: '#EAF3EE', fontWeight: '700' } },
+              h('td', { colspan: 4, style: { textAlign: 'right', paddingRight: '12px' } }, 'Total Teachers'),
+              h('td', null, h('b', null, totalCnt))
+            )
+          ])
+        );
+        tableWrap.replaceChildren(h('div', { class: 'tw' }, h('table', { class: 't' },
+          h('thead', null, h('tr', null, ['Sl No.', 'School No', 'School Name', 'Zone', 'Number of teachers'].map(x => h('th', null, x)))),
+          tbody
+        )));
+      }
+    };
+
+    fill();
+    area.replaceChildren(filters, tableWrap);
+  }
+
+  draw();
+}
+
+/* ====================== Update menu (Student / School / Teachers / Admin) ====================== */
+async function pageUpdate() {
+  const wide = isWide();
+  const root = h('div'), head = h('div', { class: 'toolbar' }), banner = h('div'), area = h('div');
+  root.append(head, banner, area);
+  setMain(root, 'Update');
+
+  // Zone Admin CANNOT see 'Admin update' in dropdown
+  const modeOpts = [
+    ['student', 'Student update'],
+    ['school', 'School update'],
+    ['teachers', 'Teachers update']
+  ];
+  if (wide) modeOpts.push(['admin', 'Admin update']);
+
+  let mode = 'student';
+  let selectedZone = wide ? (S.updZone || ZONES[0].key) : S.profile.zone;
+
+  function showSuccess(msg) {
+    banner.replaceChildren(h('div', { class: 'ok-banner' }, '✅ ' + msg));
+    toast(msg, 'ok');
+  }
+  function clearBanner() { banner.replaceChildren(); }
+
+  function drawHead() {
+    head.replaceChildren(
+      h('label', null, 'Update section'),
+      select(modeOpts, mode, v => { mode = v; clearBanner(); renderMode(); })
+    );
+  }
+
+  function renderMode() {
+    area.replaceChildren();
+    if (mode === 'student') renderStudentUpdate();
+    else if (mode === 'school') renderSchoolUpdate();
+    else if (mode === 'teachers') renderTeachersUpdate();
+    else if (mode === 'admin' && wide) renderAdminUpdate();
+  }
+
+  /* ---------- 1. Student update (by Zone Chest No) ---------- */
+  function renderStudentUpdate() {
+    let zoneKey = wide ? selectedZone : S.profile.zone;
+    const chestInp = h('input', {
+      inputmode: 'numeric',
+      maxlength: 5,
+      placeholder: 'Enter zone chest number',
+      style: { width: '210px' },
+      oninput: e => { e.target.value = e.target.value.replace(/\D/g, ''); },
+      onkeydown: e => { if (e.key === 'Enter') { e.preventDefault(); doSearch(); } }
+    });
+    const searchBtn = h('button', { class: 'btn', type: 'button', onclick: doSearch }, 'Search');
+    const searchBar = h('div', { class: 'toolbar' },
+      wide ? [h('label', null, 'Zone'), zoneSelect(zoneKey, v => { zoneKey = v; selectedZone = v; S.updZone = v; })] : h('span', { class: 'chip' }, 'Zone: ' + zoneLabel(zoneKey)),
+      h('label', null, 'Chest No'),
+      chestInp,
+      searchBtn
+    );
+    const formBox = h('div');
+    area.replaceChildren(searchBar, formBox);
+
+    async function doSearch() {
+      clearBanner();
+      const ch = chestInp.value.trim();
+      if (!ch) return toast('দয়া করে চেস্ট নম্বর লিখুন।', 'error');
+      const res = await busy(() => call('apiFindStudentByChest', zoneKey, Number(ch)));
+      if (!res) { formBox.replaceChildren(); return; }
+      drawStudentEditor(res);
+    }
+
+    function drawStudentEditor(stu) {
+      const rules = stu.ageRules || [];
+      let eventsChanged = false;
+      let eventsUnlocked = false;
+      const picked = {}; // ev -> targetGroup
+      (stu.events || []).forEach(ev => {
+        const match = MATRIX_EVENTS.find(e => normEv(e) === normEv(ev.event));
+        if (match) picked[match] = ev.targetGroup;
+      });
+
+      const nameInp = h('input', { value: stu.name || '', maxlength: 60, disabled: true });
+      const fatherInp = h('input', { value: stu.father || '', maxlength: 60, disabled: true });
+      const dobInp = h('input', { type: 'date', value: stu.dobIso || '', disabled: true });
+      const clsSel = select(CLASSES.map(c => [c, c]), stu.cls || CLASSES[0], null, { disabled: true });
+
+      const unlockField = el => { el.disabled = false; el.focus(); };
+      const fieldRow = (label, ctrl) => h('div', { class: 'upd-field' },
+        h('label', null, label),
+        ctrl,
+        h('button', { class: 'ico-btn', type: 'button', title: 'Edit ' + label, onclick: () => unlockField(ctrl) }, '✏️')
+      );
+
+      // Events editor (same Create List matrix rules)
+      const evBox = h('div', { class: 'ev-pills' });
+      const evEditBtn = h('button', {
+        class: 'ico-btn', type: 'button', title: 'Edit Events',
+        onclick: () => { eventsUnlocked = true; renderEventsUI(); }
+      }, '✏️');
+
+      function checkStuAge(grp, ev, dobIso) {
+        if (!rules.length || !dobIso || !grp) return null;
+        const g = String(grp).toUpperCase(), evKey = normEv(ev);
+        let best = null;
+        for (const r of rules) {
+          if (String(r.group).toUpperCase() !== g) continue;
+          const rEv = normEv(r.event);
+          if (rEv === evKey) { best = r; break; }
+          if (rEv === 'ALL' && !best) best = r;
+        }
+        if (best && (dobIso < best.start || dobIso > best.end)) {
+          return 'জন্মতারিখ (' + dobIso + ') Group ' + g + '-এর ' + ev + ' ইভেন্টের বয়সের নিয়মে (' + best.start + ' থেকে ' + best.end + ') পড়ছে না।';
+        }
+        return null;
+      }
+
+      function renderEventsUI() {
+        evBox.replaceChildren();
+        const allowed = GROUP_EVENTS[stu.group] || new Set();
+        const pickedEvs = Object.keys(picked).filter(e => picked[e]);
+        const hasSpecial = pickedEvs.some(e => SPECIAL_EVENTS.has(e));
+        const regCount = pickedEvs.filter(e => !SPECIAL_EVENTS.has(e)).length;
+
+        MATRIX_EVENTS.forEach(ev => {
+          if (!allowed.has(ev)) return;
+          const checked = !!picked[ev];
+          let dis = !eventsUnlocked;
+          if (!dis && !checked) {
+            if (hasSpecial) dis = true;
+            else if (SPECIAL_EVENTS.has(ev) && regCount >= 1) dis = true;
+            else if (!SPECIAL_EVENTS.has(ev) && regCount >= 2) dis = true;
+          }
+          const cb = h('input', {
+            type: 'checkbox',
+            checked: checked,
+            disabled: dis,
+            onchange: async () => {
+              if (!cb.checked) {
+                delete picked[ev];
+                eventsChanged = true;
+                renderEventsUI();
+                return;
+              }
+              let tGrp = stu.group;
+              if (ev === 'GYMNASTICS') {
+                if (stu.group === 'A') tGrp = 'B';
+                else if (stu.group === 'B') {
+                  const choice = await dialog('Select Gymnastics Group',
+                    h('p', { style: { margin: '0' } }, h('b', null, nameInp.value || stu.name), ' (Group B) কোন গ্রুপে GYMNASTICS খেলবে তা সিলেক্ট করুন:'),
+                    [{ label: 'Cancel', value: '', cls: 'ghost' }, { label: 'Group B', value: 'B', cls: '' }, { label: 'Group C', value: 'C', cls: 'gold' }]);
+                  if (!choice) { cb.checked = false; return; }
+                  tGrp = choice;
+                }
+              }
+              const ageErr = checkStuAge(tGrp, ev, dobInp.value || stu.dobIso);
+              if (ageErr) { cb.checked = false; return toast('❌ ' + ageErr, 'error'); }
+
+              const takenKey = tGrp + '|' + stu.gender + '|' + normEv(ev);
+              if (stu.otherTaken && stu.otherTaken[takenKey]) {
+                cb.checked = false;
+                return toast('❌ Group ' + tGrp + ' ' + stu.gender + ' ' + ev + ' ইভেন্টে ইতিমধ্যেই ' + stu.otherTaken[takenKey] + ' আছে।', 'error');
+              }
+              picked[ev] = tGrp;
+              eventsChanged = true;
+              renderEventsUI();
+            }
+          });
+          const badge = (ev === 'GYMNASTICS' && checked && (stu.group === 'A' || stu.group === 'B'))
+            ? h('span', { class: 'gbadge' }, 'Gr ' + picked[ev]) : null;
+          evBox.appendChild(h('label', { class: 'ev-pill' + (checked ? ' chk' : '') + (dis && !checked ? ' dis' : '') }, cb, ev, badge));
+        });
+      }
+
+      renderEventsUI();
+
+      const editAllBtn = h('button', {
+        class: 'btn ghost',
+        type: 'button',
+        onclick: () => {
+          [nameInp, fatherInp, dobInp, clsSel].forEach(el => { el.disabled = false; });
+          eventsUnlocked = true;
+          renderEventsUI();
+          nameInp.focus();
+        }
+      }, '✏️ Edit all');
+
+      const updateBtn = h('button', {
+        class: 'btn',
+        type: 'button',
+        onclick: async () => {
+          const payload = {
+            zone: stu.zone,
+            chestNo: stu.chestNo,
+            name: nameInp.value.trim(),
+            father: fatherInp.value.trim(),
+            dobIso: dobInp.value.trim(),
+            cls: clsSel.value,
+            group: stu.group
+          };
+          if (eventsChanged) {
+            const evList = Object.keys(picked).filter(e => picked[e]).map(e => ({ event: e, targetGroup: picked[e] }));
+            if (!evList.length) return toast('❌ অন্তত একটি ইভেন্ট সিলেক্ট থাকতে হবে।', 'error');
+            payload.events = evList;
+          }
+          const updated = await busy(() => call('apiUpdateStudentByChest', payload));
+          if (!updated) return;
+          showSuccess('Student (Chest No ' + updated.chestNo + ' - ' + updated.name + ') updated successfully.');
+          drawStudentEditor(updated);
+        }
+      }, 'Update');
+
+      formBox.replaceChildren(
+        h('div', { class: 'card' },
+          h('div', { style: { display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '10px' } },
+            h('span', { class: 'chest', style: { fontSize: '15px', padding: '4px 12px' } }, 'Chest No: ' + stu.chestNo),
+            h('b', null, stu.schoolNo + ' · ' + stu.schoolName),
+            h('span', { class: 'chip' }, stu.zoneLabel),
+            h('span', { class: 'chip' }, 'Group ' + stu.group + ' · ' + stu.gender)
+          ),
+          fieldRow('Name', nameInp),
+          fieldRow("Father's Name", fatherInp),
+          fieldRow('Date of Birth', dobInp),
+          fieldRow('Class', clsSel),
+          h('div', { class: 'upd-field' },
+            h('label', null, 'Events'),
+            evBox,
+            evEditBtn
+          ),
+          h('div', { class: 'toolbar', style: { marginTop: '14px', marginBottom: '0' } }, editAllBtn, updateBtn)
+        )
+      );
+    }
+  }
+
+  /* ---------- 2. School update ---------- */
+  async function renderSchoolUpdate() {
+    let zoneKey = wide ? selectedZone : S.profile.zone;
+    let q = '', editingNo = '', schools = [];
+    const bar = h('div', { class: 'toolbar' }), box = h('div');
+    area.replaceChildren(bar, box);
+
+    async function load() {
+      const d = await busy(() => call('apiGetSchoolsForUpdate', zoneKey));
+      if (!d) return;
+      schools = d.schools || [];
+      editingNo = '';
+      draw();
+    }
+
+    function draw() {
+      bar.replaceChildren(
+        wide ? [h('label', null, 'Select zone'), zoneSelect(zoneKey, v => { zoneKey = v; selectedZone = v; S.updZone = v; clearBanner(); load(); })]
+             : h('span', { class: 'chip' }, 'Zone: ' + zoneLabel(zoneKey)),
+        h('input', { placeholder: 'Search school no or name', value: q, oninput: e => { q = e.target.value; fill(); } })
+      );
+      fill();
+    }
+
+    function fill() {
+      const term = q.trim().toLowerCase();
+      const list = schools.filter(s => !term || [s.schoolNo, s.schoolName].join(' ').toLowerCase().includes(term));
+      if (!list.length) { box.replaceChildren(emptyNote('কোনো স্কুল পাওয়া যায়নি।')); return; }
+
+      const tbody = h('tbody', null, list.map((s, i) => {
+        if (editingNo === s.schoolNo) {
+          const inp = h('input', { value: s.schoolName, style: { width: '100%', textAlign: 'left' } });
+          setTimeout(() => inp.focus(), 0);
+          return h('tr', { class: 'dirty' },
+            h('td', null, i + 1),
+            h('td', null, h('b', null, s.schoolNo)),
+            h('td', null, inp),
+            h('td', null, s.zoneLabel),
+            h('td', null, h('div', { style: { display: 'flex', gap: '6px', justifyContent: 'center' } },
+              h('button', {
+                class: 'btn small', type: 'button',
+                onclick: async () => {
+                  const res = await busy(() => call('apiUpdateSchoolInfo', s.schoolNo, inp.value));
+                  if (!res) return;
+                  s.schoolName = res.schoolName;
+                  editingNo = '';
+                  showSuccess(res.schoolNo + ' - ' + res.schoolName + ' updated successfully.');
+                  fill();
+                }
+              }, 'Update'),
+              h('button', { class: 'btn ghost small', type: 'button', onclick: () => { editingNo = ''; fill(); } }, 'Cancel')
+            ))
+          );
+        }
+        return h('tr', null,
+          h('td', null, i + 1),
+          h('td', null, h('b', null, s.schoolNo)),
+          h('td', { style: { textAlign: 'left', fontWeight: '600' } }, s.schoolName),
+          h('td', null, s.zoneLabel),
+          h('td', null, h('button', { class: 'ico-btn', type: 'button', title: 'Edit school', onclick: () => { editingNo = s.schoolNo; fill(); } }, '✏️'))
+        );
+      }));
+
+      box.replaceChildren(h('div', { class: 'tw' }, h('table', { class: 't' },
+        h('thead', null, h('tr', null, ['Sl No.', 'School No', 'School Name', 'Zone', 'Edit'].map(x => h('th', null, x)))),
+        tbody
+      )));
+    }
+
+    await load();
+  }
+
+  /* ---------- 3. Teachers update (+ Add new teacher & Edit) ---------- */
+  async function renderTeachersUpdate() {
+    let zoneKey = wide ? selectedZone : S.profile.zone;
+    let q = '', schoolFilt = '', editingRow = 0, showAdd = false;
+    let data = { schools: [], teachers: [] };
+    const bar = h('div', { class: 'toolbar' }), addWrap = h('div'), box = h('div');
+    area.replaceChildren(bar, addWrap, box);
+
+    async function load() {
+      const d = await busy(() => call('apiGetTeachersForUpdate', zoneKey));
+      if (!d) return;
+      data = d;
+      editingRow = 0;
+      if (schoolFilt && !(data.schools || []).some(s => s.schoolNo === schoolFilt)) schoolFilt = '';
+      draw();
+    }
+
+    function drawAddBox() {
+      if (!showAdd) { addWrap.replaceChildren(); return; }
+      const schOpts = (data.schools || []).map(s => [s.schoolNo, s.schoolNo + ' - ' + s.schoolName]);
+      const schSel = select([['', 'Select School No (KW...)']].concat(schOpts), schoolFilt || '', null, { style: { minWidth: '240px' } });
+      const nameInp = h('input', { placeholder: "Enter teacher's name", style: { minWidth: '240px', flex: '1' } });
+      const saveNew = async () => {
+        if (!schSel.value) return toast('দয়া করে স্কুল নম্বর সিলেক্ট করুন।', 'error');
+        if (!nameInp.value.trim()) return toast('দয়া করে শিক্ষকের নাম লিখুন।', 'error');
+        const res = await busy(() => call('apiAddTeacher', schSel.value, nameInp.value.trim()));
+        if (!res) return;
+        showAdd = false;
+        showSuccess('New teacher "' + res.teacherName + '" (' + res.schoolNo + ') added successfully.');
+        await load();
+      };
+      nameInp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); saveNew(); } });
+
+      addWrap.replaceChildren(h('div', { class: 'add-box' },
+        h('div', { style: { fontWeight: '700', color: 'var(--dark)', marginBottom: '8px' } }, '+ Add new teacher'),
+        h('div', { class: 'toolbar', style: { marginBottom: '0' } },
+          h('label', null, 'School No'), schSel,
+          h('label', null, "Teacher's Name"), nameInp,
+          h('button', { class: 'btn', type: 'button', onclick: saveNew }, 'Save'),
+          h('button', { class: 'btn ghost', type: 'button', onclick: () => { showAdd = false; drawAddBox(); } }, 'Cancel')
+        )
+      ));
+      setTimeout(() => (schSel.value ? nameInp : schSel).focus(), 0);
+    }
+
+    function draw() {
+      const schOpts = [['', 'All schools']].concat((data.schools || []).map(s => [s.schoolNo, s.schoolNo + ' - ' + s.schoolName]));
+      bar.replaceChildren(
+        wide ? [h('label', null, 'Select zone'), select([['', 'All zones']].concat(ZONES.map(z => [z.key, z.label])), zoneKey, v => { zoneKey = v; if (v) { selectedZone = v; S.updZone = v; } schoolFilt = ''; clearBanner(); load(); })]
+             : h('span', { class: 'chip' }, 'Zone: ' + zoneLabel(zoneKey)),
+        h('button', { class: 'btn', type: 'button', onclick: () => { showAdd = !showAdd; drawAddBox(); } }, '+ Add new teacher'),
+        select(schOpts, schoolFilt, v => { schoolFilt = v; fill(); }),
+        h('input', { placeholder: 'Search teacher or school', value: q, oninput: e => { q = e.target.value; fill(); } })
+      );
+      drawAddBox();
+      fill();
+    }
+
+    function fill() {
+      const term = q.trim().toLowerCase();
+      const list = (data.teachers || []).filter(t =>
+        (!schoolFilt || t.schoolNo === schoolFilt) &&
+        (!term || [t.schoolNo, t.schoolName, t.teacherName, t.zoneLabel].join(' ').toLowerCase().includes(term))
+      );
+      if (!list.length) { box.replaceChildren(emptyNote('কোনো শিক্ষকের তথ্য পাওয়া যায়নি।')); return; }
+
+      const schOpts = (data.schools || []).map(s => [s.schoolNo, s.schoolNo + ' - ' + s.schoolName]);
+      const tbody = h('tbody', null, list.map((t, i) => {
+        if (editingRow === t.rowNum) {
+          const schSel = select(schOpts, t.schoolNo, null, { style: { minWidth: '180px' } });
+          const inp = h('input', { value: t.teacherName, style: { width: '100%', textAlign: 'left' } });
+          setTimeout(() => inp.focus(), 0);
+          return h('tr', { class: 'dirty' },
+            h('td', null, i + 1),
+            h('td', { colspan: 2 }, schSel),
+            h('td', null, inp),
+            h('td', null, t.zoneLabel),
+            h('td', null, h('div', { style: { display: 'flex', gap: '6px', justifyContent: 'center' } },
+              h('button', {
+                class: 'btn small', type: 'button',
+                onclick: async () => {
+                  const res = await busy(() => call('apiUpdateTeacher', t.rowNum, schSel.value, inp.value.trim()));
+                  if (!res) return;
+                  editingRow = 0;
+                  showSuccess('Teacher "' + res.teacherName + '" (' + res.schoolNo + ') updated successfully.');
+                  await load();
+                }
+              }, 'Update'),
+              h('button', { class: 'btn ghost small', type: 'button', onclick: () => { editingRow = 0; fill(); } }, 'Cancel')
+            ))
+          );
+        }
+        return h('tr', null,
+          h('td', null, i + 1),
+          h('td', null, h('b', null, t.schoolNo)),
+          h('td', { style: { textAlign: 'left' } }, t.schoolName),
+          h('td', { style: { textAlign: 'left', fontWeight: '600' } }, t.teacherName),
+          h('td', null, t.zoneLabel),
+          h('td', null, h('div', { style: { display: 'flex', gap: '6px', justifyContent: 'center' } },
+            h('button', { class: 'ico-btn', type: 'button', title: 'Edit teacher', onclick: () => { editingRow = t.rowNum; fill(); } }, '✏️'),
+            h('button', {
+              class: 'ico-btn del', type: 'button', title: 'Delete teacher',
+              onclick: async () => {
+                if (!(await confirmBox('Delete teacher', 'Remove "' + t.teacherName + '" (' + t.schoolNo + ') from Teachers list?', 'Delete', 'danger'))) return;
+                const res = await busy(() => call('apiDeleteTeacher', t.rowNum));
+                if (!res) return;
+                showSuccess('Teacher "' + t.teacherName + '" removed successfully.');
+                await load();
+              }
+            }, '🗑️')
+          ))
+        );
+      }));
+
+      box.replaceChildren(h('div', { class: 'tw' }, h('table', { class: 't' },
+        h('thead', null, h('tr', null, ['Sl No.', 'School No', 'School Name', "Teacher's Name", 'Zone', 'Action'].map(x => h('th', null, x)))),
+        tbody
+      )));
+    }
+
+    await load();
+  }
+
+  /* ---------- 4. Admin update (Circle Admin & Super Admin only) ---------- */
+  async function renderAdminUpdate() {
+    let q = '', zFilt = '', editingRow = 0, admins = [];
+    const bar = h('div', { class: 'toolbar' }), box = h('div');
+    area.replaceChildren(bar, box);
+
+    async function load() {
+      const d = await busy(() => call('apiGetAdminsForUpdate'));
+      if (!d) return;
+      admins = d.admins || [];
+      editingRow = 0;
+      draw();
+    }
+
+    function draw() {
+      const zOpts = [['', 'All zones & circle']].concat([...new Set(admins.map(a => a.zone))].map(z => [z, zoneLabel(z) === z ? z : zoneLabel(z)]));
+      bar.replaceChildren(
+        h('label', null, 'Zone / Circle'),
+        select(zOpts, zFilt, v => { zFilt = v; fill(); }),
+        h('input', { placeholder: 'Search name, designation or contact', value: q, oninput: e => { q = e.target.value; fill(); } })
+      );
+      fill();
+    }
+
+    function fill() {
+      const term = q.trim().toLowerCase();
+      const list = admins.filter(a =>
+        (!zFilt || a.zone === zFilt) &&
+        (!term || [a.zone, a.zoneLabel, a.designation, a.name, a.contact].join(' ').toLowerCase().includes(term))
+      );
+      if (!list.length) { box.replaceChildren(emptyNote('কোনো অ্যাডমিনের তথ্য পাওয়া যায়নি।')); return; }
+
+      const tbody = h('tbody', null, list.map((a, i) => {
+        if (editingRow === a.rowNum) {
+          const nameInp = h('input', { value: a.name || '', placeholder: 'Admin name', style: { textAlign: 'left' } });
+          const contactInp = h('input', { value: a.contact || '', placeholder: 'Phone / contact' });
+          const photoInp = h('input', { value: a.photo || '', placeholder: 'Photo URL (optional)', style: { textAlign: 'left' } });
+          setTimeout(() => nameInp.focus(), 0);
+          return h('tr', { class: 'dirty' },
+            h('td', null, i + 1),
+            h('td', null, a.zoneLabel),
+            h('td', null, a.designation),
+            h('td', null, nameInp),
+            h('td', null, contactInp),
+            h('td', null, photoInp),
+            h('td', null, h('div', { style: { display: 'flex', gap: '6px', justifyContent: 'center' } },
+              h('button', {
+                class: 'btn small', type: 'button',
+                onclick: async () => {
+                  const res = await busy(() => call('apiUpdateAdminInfo', a.rowNum, {
+                    name: nameInp.value.trim(),
+                    contact: contactInp.value.trim(),
+                    photo: photoInp.value.trim()
+                  }));
+                  if (!res) return;
+                  Object.assign(a, res);
+                  editingRow = 0;
+                  showSuccess(a.designation + ' (' + a.zoneLabel + ') updated successfully.');
+                  if (/secretary/i.test(a.designation || '')) loadBrandPhoto();
+                  fill();
+                }
+              }, 'Update'),
+              h('button', { class: 'btn ghost small', type: 'button', onclick: () => { editingRow = 0; fill(); } }, 'Cancel')
+            ))
+          );
+        }
+        return h('tr', null,
+          h('td', null, i + 1),
+          h('td', null, a.zoneLabel),
+          h('td', null, a.designation),
+          h('td', { style: { textAlign: 'left', fontWeight: '600' } }, a.name || '–'),
+          h('td', null, a.contact || '–'),
+          h('td', null, a.photo ? h('span', { class: 'chip' }, 'Photo set') : '–'),
+          h('td', null, h('button', { class: 'ico-btn', type: 'button', title: 'Edit admin', onclick: () => { editingRow = a.rowNum; fill(); } }, '✏️'))
+        );
+      }));
+
+      box.replaceChildren(h('div', { class: 'tw' }, h('table', { class: 't' },
+        h('thead', null, h('tr', null, ['Sl No.', 'Zone / Circle', 'Designation', 'Name', 'Contact', 'Photo', 'Edit'].map(x => h('th', null, x)))),
+        tbody
+      )));
+    }
+
+    await load();
+  }
+
+  drawHead();
+  renderMode();
+}
+
 const PAGES = {
   'dashboard': pageDashboard, 'archive': pageArchive, 'list.create': pageCreateList, 'list.zone': pageZoneList,
-  'list.circle': pageModelList('circle.list', 'Circle List'),
-  'list.subdivision': pageModelList('subdivision.list', 'Subdivision List'),
-  'list.district': pageModelList('district.list', 'District List'),
-  'list.state': pageModelList('state.list', 'State Level List'),
+  'list.circle': pageCircleList,
+  'list.subdivision': pageHigherList('subdivision', 'Subdivision List'),
+  'list.district': pageHigherList('district', 'District List'),
+  'list.state': pageHigherList('state', 'State Level List'),
   'chest.glance': pageGlance, 'judgement': pageJudgement,
   'result.zone': pageResultView('zone'), 'result.circle': pageResultView('circle'),
   'result.subdivision': pageResultView('subdivision'),
@@ -2075,7 +3135,7 @@ const PAGES = {
   'result.create.district': pageResultCreate('district'),
   'result.create.state': pageResultCreate('state'),
   'lock.list.school': pageLock('list.school'), 'lock.list.zone': pageLock('list.zone'), 'lock.list.circle': pageLock('list.circle'), 'lock.result.zone': pageLock('result.zone'),
-  'certificates': pageCerts, 'venue': pageVenue, 'admins': pageAdmins, 'subhechha': pageSubhechha, 'sheet.open': pageSheet
+  'certificates': pageCerts, 'teachers': pageTeachers, 'update': pageUpdate, 'venue': pageVenue, 'admins': pageAdmins, 'subhechha': pageSubhechha, 'sheet.open': pageSheet
 };
 
 // মেনুবার (#side) এবং ৩-লাইন বাটনের (#burger) বাইরে টাচ করলে মেনু বন্ধ করার কোড
