@@ -77,13 +77,15 @@ input::placeholder{color:#A3AFA8}
 #burger{display:inline-flex}
 #main{padding:18px;max-width:1400px;width:100%}
 .ph1{font-size:20px;margin-bottom:12px}
-/* Elevated Card Page Shell with Soft Colored Top Header */
+/* Elevated Card Page Shell with Sharp Full-Width Top Header */
+#main{padding:0!important;max-width:none!important;width:100%}
 .page-shell{width:100%}
 .page-hero{
   background:linear-gradient(135deg,#D5ECE0 0%,#E8F5EE 58%,#F3FAF6 100%);
-  border:1px solid #C5DFD0;
-  border-radius:16px 16px 18px 18px;
-  padding:18px 22px 42px;
+  border:0;
+  border-bottom:1px solid #C5DFD0;
+  border-radius:0;
+  padding:22px 26px 86px;
   color:var(--dark);
 }
 .page-hero h2{font-size:21px;font-weight:700;margin:0;letter-spacing:-0.01em}
@@ -92,14 +94,14 @@ input::placeholder{color:#A3AFA8}
   border-radius:16px;
   border:1px solid #DCE7E0;
   box-shadow:0 8px 26px rgba(15,61,43,0.09);
-  margin:-24px 12px 0;
+  margin:-56px 18px 22px;
   padding:18px;
   position:relative;
 }
 @media (max-width:860px){
-  .page-hero{padding:14px 16px 36px;border-radius:14px}
+  .page-hero{padding:16px 16px 68px;border-radius:0}
   .page-hero h2{font-size:18px}
-  .page-sheet{margin:-20px 4px 0;padding:12px;border-radius:14px}
+  .page-sheet{margin:-44px 10px 16px;padding:12px;border-radius:14px}
 }
 /* Universal dd-mmm-yyyy Date Input */
 .dob-wrap{position:relative;display:inline-flex;align-items:center;width:162px;min-width:162px}
