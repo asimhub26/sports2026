@@ -32,7 +32,10 @@ input::placeholder{color:#A3AFA8}
 .glass label{display:block;font-size:13px;margin-bottom:12px}
 .glass input,.glass select{width:100%;height:44px;border:0;border-radius:10px;margin-top:4px;font-size:15px;color:var(--ink)}
 .glass select.ph{color:#A3AFA8}
-.pw{position:relative}.pw button{position:absolute;right:6px;top:8px;height:30px;border:0;background:transparent;color:var(--green);font-weight:600;cursor:pointer}
+.pw{position:relative;display:block;margin-top:4px}
+.glass .pw input{margin-top:0;padding-right:44px}
+.pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border:0;background:transparent;color:var(--green);cursor:pointer;padding:0;border-radius:8px}
+.pw button:hover{background:rgba(31,107,74,.1)}
 .glass .btn{width:100%;height:46px;font-size:16px;background:var(--gold);color:var(--ink);margin-top:4px}
 .err{background:#FDECEA;color:var(--red);border-radius:8px;padding:8px 10px;margin:0 0 12px;font-size:13px}
 /* app shell */
@@ -48,7 +51,7 @@ input::placeholder{color:#A3AFA8}
 #side .brand .bphoto{
   width:72px;height:72px;border-radius:50%;object-fit:cover;
   display:block;margin:0 auto 9px;
-  border:.5px solid rgba(232,163,23,.85);
+  border:2.5px solid rgba(232,163,23,.85);
   box-shadow:0 4px 12px rgba(0,0,0,.28);
   background:rgba(255,255,255,.12);
 }
@@ -74,6 +77,71 @@ input::placeholder{color:#A3AFA8}
 #burger{display:inline-flex}
 #main{padding:18px;max-width:1400px;width:100%}
 .ph1{font-size:20px;margin-bottom:12px}
+/* Elevated Card Page Shell with Soft Colored Top Header */
+.page-shell{width:100%}
+.page-hero{
+  background:linear-gradient(135deg,#D5ECE0 0%,#E8F5EE 58%,#F3FAF6 100%);
+  border:1px solid #C5DFD0;
+  border-radius:16px 16px 18px 18px;
+  padding:18px 22px 42px;
+  color:var(--dark);
+}
+.page-hero h2{font-size:21px;font-weight:700;margin:0;letter-spacing:-0.01em}
+.page-sheet{
+  background:rgba(255,255,255,0.97);
+  border-radius:16px;
+  border:1px solid #DCE7E0;
+  box-shadow:0 8px 26px rgba(15,61,43,0.09);
+  margin:-24px 12px 0;
+  padding:18px;
+  position:relative;
+}
+@media (max-width:860px){
+  .page-hero{padding:14px 16px 36px;border-radius:14px}
+  .page-hero h2{font-size:18px}
+  .page-sheet{margin:-20px 4px 0;padding:12px;border-radius:14px}
+}
+/* Universal dd-mmm-yyyy Date Input */
+.dob-wrap{position:relative;display:inline-flex;align-items:center;width:162px;min-width:162px}
+.dob-wrap.full{width:100%;min-width:220px}
+.dob-wrap input.dob-txt{width:100%!important;min-width:0!important;padding-right:34px!important;text-align:center!important}
+.dob-wrap .dob-cal-btn{
+  position:absolute;right:4px;top:50%;transform:translateY(-50%);
+  width:28px;height:28px;border:0;background:transparent;color:var(--green);
+  display:inline-flex;align-items:center;justify-content:center;border-radius:6px;cursor:pointer;padding:0;overflow:hidden
+}
+.dob-wrap .dob-cal-btn:hover{background:rgba(31,107,74,.1)}
+.dob-wrap input.dob-native{
+  position:absolute;inset:0;width:100%!important;min-width:0!important;height:100%!important;
+  opacity:0;cursor:pointer;padding:0;margin:0;border:0
+}
+.dob-wrap.is-dis .dob-cal-btn{opacity:.4;pointer-events:none}
+/* Instant validation error state */
+.inp-err{border-color:#DC2626!important;background:#FEF2F2!important;box-shadow:0 0 0 2px rgba(220,38,38,.18)!important}
+/* Printable Certificates */
+.cert-page{page-break-after:always;break-after:page;box-sizing:border-box;background:#fff;color:#111}
+.cert-page:last-child{page-break-after:auto;break-after:auto}
+.cert-zone{
+  width:297mm;height:209mm;padding:12mm;display:flex;align-items:stretch;justify-content:stretch;
+  font-family:Georgia,"Times New Roman",serif
+}
+.cert-zone-frame{
+  flex:1;border:4px double #1F6B4A;outline:2px solid #D49A1A;outline-offset:-9px;
+  padding:14mm 18mm;display:flex;flex-direction:column;justify-content:space-between;text-align:center
+}
+.cert-zone .cz-top{font-size:15pt;font-weight:700;color:#0F3D2B;letter-spacing:.05em}
+.cert-zone .cz-sub{font-size:12pt;color:#1F6B4A;margin-top:4px;font-weight:600}
+.cert-zone .cz-title{font-size:26pt;font-weight:700;color:#B8860B;letter-spacing:.1em;margin:10px 0 6px}
+.cert-zone .cz-body{font-size:14pt;line-height:1.95;color:#14201A;margin:6px 0}
+.cert-zone .cz-name{font-size:21pt;font-weight:700;color:#0F3D2B;border-bottom:1.5px dotted #1F6B4A;padding:0 12px}
+.cert-zone .cz-val{font-weight:700;color:#14201A;border-bottom:1px dotted #666;padding:0 8px}
+.cert-zone .cz-meta{font-size:11.5pt;color:#333;margin-top:6px}
+.cert-zone .cz-sigs{display:flex;justify-content:space-between;padding:0 14mm;margin-top:14mm;font-size:11.5pt;color:#222}
+.cert-zone .cz-sig{width:68mm;border-top:1px solid #333;padding-top:4px;text-align:center}
+.cert-circle{
+  width:210mm;height:296mm;position:relative;text-align:center;
+  font-family:Georgia,"Times New Roman",serif;color:#111
+}
 .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.08);margin-bottom:12px;animation:rise .25s ease both}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
 .stat{background:#fff;border-radius:12px;padding:12px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
@@ -140,6 +208,7 @@ table.t td input[type="checkbox"]{width:18px;height:18px;min-width:18px;cursor:p
  body.printing #printRoot{display:block}
  .sheetwrap{box-shadow:none;border-radius:0;padding:0;margin:0;overflow:visible;page-break-after:always;break-after:page}
  .sheetwrap:last-child{page-break-after:auto;break-after:auto}
+ .sheetwrap.v-mid{display:flex;align-items:center;justify-content:center;min-height:100vh;box-sizing:border-box}
 }
 /* Create List Entry Table (Spacious Fields & Clean Light Borders) */
 table.t.create-tbl { width: max-content; min-width: 100%; border-collapse: collapse; border: 1px solid #C8D5CC; }
@@ -203,7 +272,7 @@ table.t.create-tbl select.cl-cls { min-width: 135px; width: 135px; height: 36px;
   <label>User Type<select id="lType" class="ph"><option value="">Select user type</option></select></label>
   <label id="lUserWrap">Username<select id="lUserSel" class="ph"><option value="">Select username</option></select>
     <input id="lUserTxt" inputmode="numeric" maxlength="11" placeholder="Type School Udise Code" hidden></label>
-  <label>Password<span class="pw"><input id="lPass" type="password" placeholder="Enter password" autocomplete="current-password"><button type="button" id="lShow">Show</button></span></label>
+  <label>Password<span class="pw"><input id="lPass" type="password" placeholder="Enter password" autocomplete="current-password"><button type="button" id="lShow" aria-label="Show password" title="Show password"></button></span></label>
   <button class="btn" id="lGo" type="submit">Log in</button>
  </form>
 </div>
@@ -357,7 +426,7 @@ const MUTATION_APIS = new Set([
   'apiSetCertificateSettings', 'apiLogout',
   'apiUpdateStudentByChest', 'apiUpdateSchoolInfo',
   'apiAddTeacher', 'apiUpdateTeacher', 'apiDeleteTeacher',
-  'apiUpdateAdminInfo'
+  'apiUpdateAdminInfo', 'apiUpdateVenueInfo'
 ]);
 
 function clearClientCache() { CLIENT_CACHE.clear(); }
@@ -421,7 +490,182 @@ function downloadB64(res) {
 
 const isWide = () => S.profile && (S.profile.role === 'Circle Admin' || S.profile.role === 'Super Admin');
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-function fmtDob(iso) { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || ''); return m ? (+m[3]) + '-' + MONTHS[+m[2] - 1] + '-' + m[1] : ''; }
+const MONTHS_UP = MONTHS.map(m => m.toUpperCase());
+
+function pad2(n) { return String(n).padStart(2, '0'); }
+
+/** Always formats YYYY-MM-DD as dd-mmm-yyyy (e.g. 09-Nov-2019). */
+function fmtDob(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || '').trim());
+  if (!m) return '';
+  const mo = +m[2];
+  if (mo < 1 || mo > 12) return '';
+  return m[3] + '-' + MONTHS[mo - 1] + '-' + m[1];
+}
+
+/** Parses dd-mmm-yyyy, dd-mm-yyyy, dd/mm/yyyy, or yyyy-mm-dd into { ok, iso, display, error }. */
+function parseDateInput(raw, opts) {
+  opts = opts || {};
+  const s = String(raw || '').trim();
+  if (!s) return { ok: true, iso: '', display: '' };
+  let y = 0, mo = 0, da = 0, m;
+  if ((m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(s))) {
+    y = +m[1]; mo = +m[2]; da = +m[3];
+  } else if ((m = /^(\d{1,2})[\s\/\-\.]+([A-Za-z]{3,})[\s\/\-\.]+(\d{4})$/.exec(s))) {
+    da = +m[1]; mo = MONTHS_UP.indexOf(m[2].slice(0, 3).toUpperCase()) + 1; y = +m[3];
+  } else if ((m = /^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/.exec(s))) {
+    da = +m[1]; mo = +m[2]; y = +m[3];
+  } else {
+    return { ok: false, iso: '', display: s, error: 'সঠিক তারিখ লিখুন (dd-mmm-yyyy, যেমন 15-Dec-2018)।' };
+  }
+  if (mo < 1 || mo > 12 || da < 1 || da > 31) {
+    return { ok: false, iso: '', display: s, error: 'সঠিক তারিখ নয় (' + s + ')।' };
+  }
+  const dt = new Date(y, mo - 1, da, 12, 0, 0);
+  if (isNaN(dt.getTime()) || dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== da) {
+    return { ok: false, iso: '', display: s, error: 'অবাস্তব তারিখ (' + s + ')। সঠিক দিন-মাস-সাল লিখুন।' };
+  }
+  if (opts.minYear && y < opts.minYear) {
+    return { ok: false, iso: '', display: s, error: 'জন্মসাল ' + opts.minYear + '-এর আগে হতে পারে না।' };
+  }
+  if (opts.noFuture) {
+    const today = new Date();
+    const todayIso = today.getFullYear() + '-' + pad2(today.getMonth() + 1) + '-' + pad2(today.getDate());
+    const isoChk = y + '-' + pad2(mo) + '-' + pad2(da);
+    if (isoChk > todayIso) return { ok: false, iso: '', display: s, error: 'জন্মতারিখ ভবিষ্যতের তারিখ হতে পারে না।' };
+  }
+  const iso = y + '-' + pad2(mo) + '-' + pad2(da);
+  return { ok: true, iso, display: pad2(da) + '-' + MONTHS[mo - 1] + '-' + y };
+}
+
+/** Converts any date string (or ISO timestamp) into dd-mmm-yyyy for display on every device. */
+function fmtDateDisplay(val) {
+  const s = String(val == null ? '' : val).trim();
+  if (!s) return '';
+  const isoPart = /^(\d{4}-\d{2}-\d{2})/.exec(s);
+  if (isoPart) return fmtDob(isoPart[1]) || s;
+  const p = parseDateInput(s);
+  return p.ok && p.display ? p.display : s;
+}
+
+/** Formats ISO timestamp (2026-11-27T10:15:00Z) as '27-Nov-2026 10:15'. */
+function fmtDateTimeDisplay(val) {
+  const s = String(val || '').trim();
+  const m = /^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2})/.exec(s);
+  return m ? (fmtDob(m[1]) + ' ' + m[2]) : fmtDateDisplay(s);
+}
+
+/**
+ * Universal dd-mmm-yyyy date input field that works identically on PC, Android & iPhone:
+ * visible text shows dd-mmm-yyyy, calendar icon opens native picker, and validates instantly.
+ */
+function createDateField(opts) {
+  opts = opts || {};
+  let isoVal = opts.valueIso || '';
+  const txt = h('input', {
+    type: 'text',
+    class: 'dob-txt' + (opts.inputClass ? ' ' + opts.inputClass : ''),
+    value: isoVal ? fmtDob(isoVal) : (opts.valueText || ''),
+    placeholder: opts.placeholder || 'dd-mmm-yyyy',
+    disabled: !!opts.disabled,
+    autocomplete: 'off',
+    'aria-label': opts.ariaLabel || 'Date'
+  });
+  const nativeInp = h('input', {
+    type: 'date',
+    class: 'dob-native',
+    value: isoVal,
+    disabled: !!opts.disabled,
+    tabindex: -1,
+    'aria-label': 'Pick date'
+  });
+  const calSvg = h('span', { class: 'ico', 'aria-hidden': 'true' });
+  calSvg.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+  const calBtn = h('span', { class: 'dob-cal-btn', title: 'Select date from calendar' }, calSvg, nativeInp);
+  const wrap = h('span', { class: 'dob-wrap' + (opts.full ? ' full' : '') + (opts.disabled ? ' is-dis' : '') }, txt, calBtn);
+
+  let lastWarned = '';
+
+  const applyAndCheck = (rawVal, triggerAlert) => {
+    const res = parseDateInput(rawVal, { minYear: opts.minYear, noFuture: opts.noFuture });
+    if (!res.ok) {
+      isoVal = '';
+      txt.classList.add('inp-err');
+      if (opts.onChange) opts.onChange('', res.error);
+      if (triggerAlert && lastWarned !== rawVal) {
+        lastWarned = rawVal;
+        if (opts.onError) opts.onError(res.error, txt);
+      }
+      return;
+    }
+    isoVal = res.iso;
+    txt.value = res.display;
+    nativeInp.value = res.iso;
+    const customErr = (res.iso && opts.validate) ? opts.validate(res.iso, res.display) : null;
+    if (customErr) {
+      txt.classList.add('inp-err');
+      if (opts.onChange) opts.onChange(res.iso, customErr);
+      if (triggerAlert && lastWarned !== res.iso) {
+        lastWarned = res.iso;
+        if (opts.onError) opts.onError(customErr, txt);
+      }
+      return;
+    }
+    lastWarned = '';
+    txt.classList.remove('inp-err');
+    if (opts.onChange) opts.onChange(res.iso, null);
+  };
+
+  nativeInp.addEventListener('change', () => {
+    if (!nativeInp.value) {
+      isoVal = ''; txt.value = ''; txt.classList.remove('inp-err'); lastWarned = '';
+      if (opts.onChange) opts.onChange('', null);
+      return;
+    }
+    applyAndCheck(nativeInp.value, true);
+  });
+
+  txt.addEventListener('input', () => {
+    lastWarned = '';
+    txt.classList.remove('inp-err');
+    const p = parseDateInput(txt.value, { minYear: opts.minYear, noFuture: opts.noFuture });
+    if (p.ok) {
+      isoVal = p.iso;
+      nativeInp.value = p.iso;
+      if (opts.onChange) opts.onChange(p.iso, null);
+    }
+  });
+
+  txt.addEventListener('blur', () => {
+    if (!txt.value.trim()) {
+      isoVal = ''; nativeInp.value = ''; txt.classList.remove('inp-err'); lastWarned = '';
+      if (opts.onChange) opts.onChange('', null);
+      return;
+    }
+    applyAndCheck(txt.value, true);
+  });
+
+  return {
+    el: wrap,
+    input: txt,
+    getIso: () => isoVal,
+    getDisplay: () => txt.value.trim(),
+    hasError: () => txt.classList.contains('inp-err'),
+    setIso: v => {
+      isoVal = v || '';
+      txt.value = isoVal ? fmtDob(isoVal) : '';
+      nativeInp.value = isoVal;
+      txt.classList.remove('inp-err');
+      lastWarned = '';
+    },
+    setDisabled: dis => {
+      txt.disabled = !!dis;
+      nativeInp.disabled = !!dis;
+      wrap.classList.toggle('is-dis', !!dis);
+    },
+    focus: () => txt.focus()
+  };
+}
 const zoneLabel = k => (ZONES.find(z => z.key === k) || { label: k }).label;
 
 function select(options, value, onchange, attrs) {
@@ -481,7 +725,7 @@ function renderSheet(sh, model) {
         const b = cell.border, e = cell.edges || {};
         if (b === 'all') st.border = '1px solid #000';
         else if (b === 'box') { if (e.t) st.borderTop = '1px solid #000'; if (e.b) st.borderBottom = '1px solid #000'; if (e.l) st.borderLeft = '1px solid #000'; if (e.r) st.borderRight = '1px solid #000'; }
-        else if (b === 'grid') st.border = '1px solid #8a8a8a';
+        else if (b === 'grid') st.border = '1px solid #C2CEC6';
         else if (b === 'bottom') st.borderBottom = '1px solid #9e9e9e';
         else if (b === 'bottom2') st.borderBottom = '2px solid #000';
         else if (b === 'line') st.borderBottom = '1px solid #000';
@@ -517,6 +761,7 @@ function printModel(model) {
     const k = model.fit === 'width' ? Math.min(1, pxW / sw) : Math.min(1, pxW / sw, pxH / sh);
     w.style.zoom = String(k);
     w.style.padding = (8 / k) + 'mm';   // looks like an 8 mm page margin after the zoom
+    if (model.verticalAlign === 'MIDDLE') w.classList.add('v-mid');
   });
   root.style.cssText = '';
   document.body.classList.add('printing');
@@ -543,7 +788,16 @@ function exportBar(getSpec) {
     mk('Excel', async spec => { toast('Preparing the Excel file. It takes a few seconds.'); downloadB64(await call('apiExportReport', spec, 'xlsx')); }, 'btn-excel'));
 }
 
-const setMain = (node, title) => { const m = $('#main'); m.replaceChildren(h('h2', { class: 'ph1' }, title), node); window.scrollTo(0, 0); };
+const setMain = (node, title) => {
+  const m = $('#main');
+  m.replaceChildren(
+    h('div', { class: 'page-shell' },
+      h('div', { class: 'page-hero' }, h('h2', null, title)),
+      h('div', { class: 'page-sheet' }, node)
+    )
+  );
+  window.scrollTo(0, 0);
+};
 const emptyNote = t => h('div', { class: 'empty' }, t);
 
 /* ====================== login, shell, menu, router ====================== */
@@ -572,7 +826,16 @@ async function initLogin() {
   $('#lType').addEventListener('change', e => { markPh(e.target); fillUsernames(); loginError(''); });
   $('#lUserSel').addEventListener('change', e => markPh(e.target));
   $('#lUserTxt').addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 11); });
-  $('#lShow').addEventListener('click', () => { const p = $('#lPass'); const show = p.type === 'password'; p.type = show ? 'text' : 'password'; $('#lShow').textContent = show ? 'Hide' : 'Show'; });
+  const EYE_OPEN = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  const EYE_OFF = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+  const syncEye = () => {
+    const p = $('#lPass'), b = $('#lShow'), vis = p.type === 'text';
+    b.innerHTML = vis ? EYE_OFF : EYE_OPEN;
+    b.setAttribute('aria-label', vis ? 'Hide password' : 'Show password');
+    b.title = vis ? 'Hide password' : 'Show password';
+  };
+  syncEye();
+  $('#lShow').addEventListener('click', () => { const p = $('#lPass'); p.type = p.type === 'password' ? 'text' : 'password'; syncEye(); });
   $('#loginForm').addEventListener('submit', async ev => {
     ev.preventDefault(); loginError('');
     const type = $('#lType').value, sa = type === 'School Admin';
@@ -834,7 +1097,7 @@ async function pageDashboard() {
     kids.push(h('div', { class: 'grid2' }, d.admins.zone.concat(d.admins.circle).map(person)));
     if (S.profile && S.profile.role === 'Super Admin') {
       kids.push(h('h3', { class: 'sec' }, 'Recent activity'));
-      kids.push(h('div', { class: 'card' }, d.recent.length ? d.recent.map(r => h('div', null, h('small', null, r.time.replace('T', ' ').slice(0, 16) + '  '), r.text)) : emptyNote('Nothing yet')));
+      kids.push(h('div', { class: 'card' }, d.recent.length ? d.recent.map(r => h('div', null, h('small', null, fmtDateTimeDisplay(r.time) + '  '), r.text)) : emptyNote('Nothing yet')));
     }
     body.replaceChildren(...kids);
   }
@@ -877,7 +1140,7 @@ async function pageCreateList() {
       if (rEv === 'ALL' && !best) best = r;
     }
     if (best && (dobIso < best.start || dobIso > best.end)) {
-      return 'জন্মতারিখ (' + dobIso + ') Group ' + g + '-এর ' + event + ' ইভেন্টের বয়সের নিয়মে (' + best.start + ' থেকে ' + best.end + ') পড়ছে না।';
+      return 'জন্মতারিখ (' + fmtDob(dobIso) + ') Group ' + g + '-এর ' + event + ' ইভেন্টের বয়সের নিয়মে (' + fmtDob(best.start) + ' থেকে ' + fmtDob(best.end) + ') পড়ছে না।';
     }
     return null;
   }
@@ -1010,8 +1273,14 @@ async function pageCreateList() {
               const peerIdx = cur.findIndex((x, k) => k !== i && rows[k].group === r.group && rows[k].gender === r.gender && x.name.trim().toUpperCase() === val && x.father.trim());
               if (peerIdx >= 0) {
                 cur[i].father = cur[peerIdx].father; fatherInp.value = cur[i].father;
-                cur[i].dob = cur[peerIdx].dob; dobInp.value = cur[i].dob;
+                cur[i].dob = cur[peerIdx].dob; dobField.setIso(cur[i].dob);
                 cur[i].cls = cur[peerIdx].cls; clsSel.value = cur[i].cls;
+                const peerAgeErr = cur[i].dob ? checkAge(r.group, r.event, cur[i].dob) : null;
+                if (peerAgeErr) {
+                  dobField.input.classList.add('inp-err');
+                  toast('⚠️ ' + r.group + ' ' + r.gender + ' ' + r.event + ': ' + peerAgeErr, 'error');
+                  dialog('Invalid Date of Birth', h('div', null, h('b', null, r.group + ' ' + r.gender + ' ' + r.event), h('p', { style: { margin: '8px 0 0' } }, peerAgeErr)), [{ label: 'OK', value: true, cls: 'danger' }]);
+                }
               }
             }
             refreshDatalists();
@@ -1035,19 +1304,23 @@ async function pageCreateList() {
           }
         });
 
-        const dobInp = h('input', {
-          class: 'cl-dob',
-          type: 'date',
-          value: cur[i].dob,
+        const dobField = createDateField({
+          valueIso: cur[i].dob,
           disabled: locked,
-          onchange: e => {
-            const val = e.target.value;
-            if (val) {
-              const ageErr = checkAge(r.group, r.event, val);
-              if (ageErr) toast('⚠️ ' + r.group + ' ' + r.gender + ' ' + r.event + ': ' + ageErr, 'error');
-            }
-            cur[i].dob = val;
-            mark();
+          minYear: 2000,
+          noFuture: true,
+          ariaLabel: 'DOB for ' + r.group + ' ' + r.gender + ' ' + r.event,
+          validate: iso => checkAge(r.group, r.event, iso),
+          onChange: iso => { cur[i].dob = iso; mark(); },
+          onError: async (msg, inpEl) => {
+            const fullMsg = r.group + ' ' + r.gender + ' ' + r.event + ': ' + msg;
+            toast('❌ ' + fullMsg, 'error');
+            await dialog('Invalid Date of Birth', h('div', null,
+              h('div', { style: { fontWeight: '700', color: 'var(--red)', marginBottom: '6px' } }, r.group + ' · ' + r.gender + ' · ' + r.event),
+              h('div', null, msg)
+            ), [{ label: 'OK', value: true, cls: 'danger' }]);
+            inpEl.focus();
+            inpEl.select();
           }
         });
 
@@ -1068,7 +1341,8 @@ async function pageCreateList() {
               if (res) { hydrateFromData(res); toast('Entry deleted.', 'ok'); }
             } else {
               cur[i].name = cur[i].father = cur[i].dob = cur[i].cls = '';
-              nameInp.value = fatherInp.value = dobInp.value = clsSel.value = '';
+              nameInp.value = fatherInp.value = clsSel.value = '';
+              dobField.setIso('');
               mark();
             }
           }
@@ -1082,7 +1356,7 @@ async function pageCreateList() {
           h('td', null, r.chestNo === '' ? '–' : h('span', { class: 'chest' }, r.chestNo)),
           h('td', null, nameInp),
           h('td', null, fatherInp),
-          h('td', null, dobInp),
+          h('td', null, dobField.el),
           h('td', null, clsSel),
           locked ? null : h('td', null, delBtn)
         );
@@ -1247,7 +1521,7 @@ async function pageZoneList(arg) {
           h('td', null, i + 1),
           h('td', null, r.chestNo === '' ? '–' : h('span', { class: 'chest' }, r.chestNo)),
           h('td', { style: { textAlign: 'left', fontWeight: '600' } }, r.name),
-          h('td', null, r.dob),
+          h('td', null, fmtDateDisplay(r.dob)),
           h('td', { style: { textAlign: 'left' } }, r.father),
           h('td', null, r.cls),
           h('td', null, r.group),
@@ -1353,7 +1627,7 @@ async function pageCircleList() {
           h('td', null, i + 1),
           h('td', null, r.chestNo === '' ? '–' : h('span', { class: 'chest' }, r.chestNo)),
           h('td', { style: { textAlign: 'left', fontWeight: '600' } }, r.name),
-          h('td', null, r.dob),
+          h('td', null, fmtDateDisplay(r.dob)),
           h('td', { style: { textAlign: 'left' } }, r.father),
           h('td', null, r.cls),
           h('td', null, r.group),
@@ -1442,7 +1716,7 @@ function pageHigherList(level, title) {
           h('td', null, i + 1),
           h('td', null, r.chestNo === '' ? '–' : h('span', { class: 'chest' }, r.chestNo)),
           h('td', { style: { textAlign: 'left', fontWeight: '600' } }, r.name),
-          h('td', null, r.dob),
+          h('td', null, fmtDateDisplay(r.dob)),
           h('td', { style: { textAlign: 'left' } }, r.father),
           h('td', null, r.cls),
           h('td', null, r.group),
@@ -1605,6 +1879,46 @@ function pageResultCreate(level) {
     const canEdit = form.chestFinal && !form.locked;
     const isZoneAdmin = level === 'zone' && S.profile.role === 'Zone Admin';
 
+    const allowedSets = form.rows.map(r => new Set(String(r.options || '').split(',').map(x => x.trim()).filter(Boolean)));
+
+    const validateResultCell = (i, showAlert) => {
+      const r = form.rows[i], inp = inputs[i];
+      const val = String(cur[i] || '').trim();
+      if (!val) {
+        inp.classList.remove('inp-err');
+        inp.dataset.warned = '';
+        return null;
+      }
+      let errMsg = '';
+      if (form.chestFinal && !allowedSets[i].has(val)) {
+        errMsg = r.group + ' ' + r.gender + ' ' + r.event + ' (' + r.position + '): চেস্ট নম্বর ' + val + ' এই ইভেন্টে নেই।' +
+          (r.options ? ' সঠিক চেস্ট নম্বর: ' + r.options : ' এই ইভেন্টে কোনো ক্যান্ডিডেট নেই।');
+      } else {
+        // Check duplicate chest number within the same event (1st / 2nd / 3rd)
+        const dupIdx = form.rows.findIndex((other, j) =>
+          j !== i && other.group === r.group && other.gender === r.gender && other.event === r.event && String(cur[j] || '').trim() === val
+        );
+        if (dupIdx >= 0) {
+          errMsg = r.group + ' ' + r.gender + ' ' + r.event + ': চেস্ট নম্বর ' + val + ' ইতিমধ্যেই ' + form.rows[dupIdx].position + ' পজিশনে দেওয়া হয়েছে। একই চেস্ট নম্বর দুবার দেওয়া যাবে না।';
+        }
+      }
+      if (errMsg) {
+        inp.classList.add('inp-err');
+        if (showAlert && inp.dataset.warned !== val) {
+          inp.dataset.warned = val;
+          toast('❌ ' + errMsg, 'error');
+          dialog('Wrong Chest Number', h('div', null,
+            h('div', { style: { fontWeight: '700', color: 'var(--red)', marginBottom: '6px' } }, r.group + ' · ' + r.gender + ' · ' + r.event + ' (' + r.position + ')'),
+            h('div', null, errMsg)
+          ), [{ label: 'OK', value: true, cls: 'danger' }]).then(() => { inp.focus(); inp.select(); });
+        }
+        return errMsg;
+      }
+      inp.classList.remove('inp-err');
+      inp.dataset.warned = '';
+      return null;
+    };
+
     const tbody = h('tbody', null, form.rows.map((r, i) => {
       const inp = h('input', {
         inputmode: 'numeric', maxlength: 5, value: r.chestNo === '' ? '' : String(r.chestNo),
@@ -1614,8 +1928,11 @@ function pageResultCreate(level) {
         oninput: e => {
           e.target.value = e.target.value.replace(/\D/g, '');
           cur[i] = e.target.value;
+          inp.classList.remove('inp-err');
+          inp.dataset.warned = '';
           inp.closest('tr').style.background = cur[i] !== orig[i] ? '#FFFBEA' : '';
-        }
+        },
+        onblur: () => { if (canEdit) validateResultCell(i, true); }
       });
       inputs.push(inp);
       const slNo = (level === 'district' || level === 'state') ? (i + 1) : r.n;
@@ -1659,6 +1976,14 @@ function pageResultCreate(level) {
     );
 
     async function save() {
+      for (let i = 0; i < form.rows.length; i++) {
+        const err = validateResultCell(i, false);
+        if (err) {
+          toast('❌ ' + err, 'error');
+          inputs[i].focus();
+          return;
+        }
+      }
       const entries = form.rows.map((r, i) => cur[i] !== orig[i] ? { n: r.n, chestNo: cur[i] } : null).filter(Boolean);
       if (!entries.length) return toast('Nothing to save.');
       msg.replaceChildren();
@@ -1698,12 +2023,223 @@ async function pageCerts() {
   root.append(head, box, set);
   setMain(root, 'Certificates');
   const picked = new Set();
+  let certSettings = { topMm: 85, gapMm: 14, nameSize: 22, textSize: 13, showCertify: true };
+  let venuesList = [];
+
+  function findVenueInfo(lvl, zKey) {
+    const want = (lvl === 'circle' ? 'KHANAKUL WEST CIRCLE' : String(zKey || '').toUpperCase()).trim();
+    const hit = (venuesList || []).find(v => String(v.zone || '').trim().toUpperCase() === want);
+    return hit ? { venue: hit.venue || '', date: hit.date ? fmtDateDisplay(hit.date) : '' } : { venue: '', date: '' };
+  }
+
+  function liveCircleSettings() {
+    const readNum = (id, fallback) => {
+      const el = $('#' + id);
+      return el && el.value !== '' && !isNaN(Number(el.value)) ? Number(el.value) : fallback;
+    };
+    const showEl = $('#cs_show');
+    return {
+      topMm: readNum('cs_topMm', certSettings.topMm || 85),
+      gapMm: readNum('cs_gapMm', certSettings.gapMm || 14),
+      nameSize: readNum('cs_nameSize', certSettings.nameSize || 22),
+      textSize: readNum('cs_textSize', certSettings.textSize || 13),
+      showCertify: showEl ? showEl.checked : (certSettings.showCertify !== false)
+    };
+  }
+
+  function printCertificates(list, lvl, zKey, labelText) {
+    if (!list.length) return toast('প্রিন্ট করার মতো কোনো সার্টিফিকেট নেই।', 'error');
+    const ven = findVenueInfo(lvl, zKey);
+    const pr = $('#printRoot');
+    const isCircle = lvl === 'circle';
+    const cs = isCircle ? liveCircleSettings() : null;
+
+    $('#pageStyle').textContent = isCircle
+      ? '@page{size:A4 portrait;margin:0}'
+      : '@page{size:A4 landscape;margin:0}';
+
+    pr.replaceChildren(...list.map(x => {
+      if (isCircle) {
+        const lines = [];
+        let y = cs.topMm;
+        if (cs.showCertify) {
+          lines.push(h('div', { style: { position: 'absolute', left: '15mm', right: '15mm', top: y + 'mm', fontSize: cs.textSize + 'pt', fontStyle: 'italic' } }, 'This is to certify that'));
+          y += cs.gapMm;
+        }
+        lines.push(h('div', { style: { position: 'absolute', left: '15mm', right: '15mm', top: y + 'mm', fontSize: cs.nameSize + 'pt', fontWeight: '700' } }, x.name || ''));
+        y += cs.gapMm;
+        lines.push(h('div', { style: { position: 'absolute', left: '15mm', right: '15mm', top: y + 'mm', fontSize: cs.textSize + 'pt' } }, (x.schoolName || '') + (x.zoneLabel ? ' (' + x.zoneLabel + ' Zone)' : '')));
+        y += cs.gapMm;
+        lines.push(h('div', { style: { position: 'absolute', left: '15mm', right: '15mm', top: y + 'mm', fontSize: cs.textSize + 'pt', fontWeight: '600' } }, 'Secured ' + (x.position || '') + ' Position in Group ' + (x.group || '') + ' ' + (x.gender || '') + ' — ' + (x.event || '')));
+        if (ven.date || ven.venue) {
+          y += cs.gapMm;
+          lines.push(h('div', { style: { position: 'absolute', left: '15mm', right: '15mm', top: y + 'mm', fontSize: Math.max(10, cs.textSize - 1) + 'pt' } }, [ven.venue ? 'Venue: ' + ven.venue : '', ven.date ? 'Date: ' + ven.date : ''].filter(Boolean).join('   |   ')));
+        }
+        return h('div', { class: 'cert-page cert-circle' }, lines);
+      }
+
+      const zoneTitle = (labelText || zoneLabel(zKey) || '').toUpperCase();
+      return h('div', { class: 'cert-page cert-zone' },
+        h('div', { class: 'cert-zone-frame' },
+          h('div', null,
+            h('div', { class: 'cz-top' }, 'KHANAKUL WEST CIRCLE ANNUAL SPORTS - 2026'),
+            h('div', { class: 'cz-sub' }, 'ZONE LEVEL SPORTS — ' + zoneTitle),
+            h('div', { class: 'cz-title' }, 'CERTIFICATE OF MERIT')
+          ),
+          h('div', { class: 'cz-body' },
+            'This is to certify that ',
+            h('span', { class: 'cz-name' }, x.name || ''),
+            h('br'),
+            'of ',
+            h('span', { class: 'cz-val' }, x.schoolName || ''),
+            h('br'),
+            'has secured ',
+            h('span', { class: 'cz-val' }, x.position || ''),
+            ' position in ',
+            h('span', { class: 'cz-val' }, 'Group ' + (x.group || '') + ' ' + (x.gender || '') + ' — ' + (x.event || '')),
+            (ven.venue || ven.date) ? h('div', { class: 'cz-meta' },
+              [ven.venue ? 'Venue: ' + ven.venue : '', ven.date ? 'Date: ' + ven.date : ''].filter(Boolean).join('   ·   ')
+            ) : null
+          ),
+          h('div', { class: 'cz-sigs' },
+            h('div', { class: 'cz-sig' }, 'Convener / Zone Admin'),
+            h('div', { class: 'cz-sig' }, 'Secretary, Circle Sports')
+          )
+        )
+      );
+    }));
+
+    document.body.classList.add('printing');
+    const done = () => { document.body.classList.remove('printing'); pr.replaceChildren(); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done);
+    window.print();
+    setTimeout(done, 2000);
+  }
+
+  async function downloadCertificatesPdf(list, lvl, zKey, labelText) {
+    if (!list.length) return toast('ডাউনলোড করার মতো কোনো সার্টিফিকেট নেই।', 'error');
+    toast('Preparing ' + list.length + ' certificate(s) PDF...');
+    try {
+      await loadArchivePdfLibs();
+    } catch (e) {
+      return toast('PDF লাইব্রেরি লোড করা যায়নি। দয়া করে Print বাটন ব্যবহার করে Save as PDF করুন।', 'error');
+    }
+    const { jsPDF } = window.jspdf;
+    const isCircle = lvl === 'circle';
+    const ven = findVenueInfo(lvl, zKey);
+    const cs = isCircle ? liveCircleSettings() : null;
+    const pdf = new jsPDF({ orientation: isCircle ? 'portrait' : 'landscape', unit: 'mm', format: 'a4' });
+
+    list.forEach((x, idx) => {
+      if (idx > 0) pdf.addPage('a4', isCircle ? 'portrait' : 'landscape');
+      const pw = pdf.internal.pageSize.getWidth();
+      const ph = pdf.internal.pageSize.getHeight();
+      const cx = pw / 2;
+
+      if (isCircle) {
+        let y = cs.topMm;
+        pdf.setTextColor(20, 32, 26);
+        if (cs.showCertify) {
+          pdf.setFont('times', 'italic');
+          pdf.setFontSize(cs.textSize);
+          pdf.text('This is to certify that', cx, y, { align: 'center' });
+          y += cs.gapMm;
+        }
+        pdf.setFont('times', 'bold');
+        pdf.setFontSize(cs.nameSize);
+        pdf.text(String(x.name || ''), cx, y, { align: 'center' });
+        y += cs.gapMm;
+
+        pdf.setFont('times', 'normal');
+        pdf.setFontSize(cs.textSize);
+        pdf.text((x.schoolName || '') + (x.zoneLabel ? ' (' + x.zoneLabel + ' Zone)' : ''), cx, y, { align: 'center' });
+        y += cs.gapMm;
+
+        pdf.setFont('times', 'bold');
+        pdf.setFontSize(cs.textSize);
+        pdf.text('Secured ' + (x.position || '') + ' Position in Group ' + (x.group || '') + ' ' + (x.gender || '') + ' - ' + (x.event || ''), cx, y, { align: 'center' });
+        if (ven.venue || ven.date) {
+          y += cs.gapMm;
+          pdf.setFont('times', 'normal');
+          pdf.setFontSize(Math.max(10, cs.textSize - 1));
+          pdf.text([ven.venue ? 'Venue: ' + ven.venue : '', ven.date ? 'Date: ' + ven.date : ''].filter(Boolean).join('   |   '), cx, y, { align: 'center' });
+        }
+      } else {
+        // Formal double border (Green & Gold)
+        pdf.setDrawColor(31, 107, 74);
+        pdf.setLineWidth(1.4);
+        pdf.rect(12, 12, pw - 24, ph - 24);
+        pdf.setDrawColor(212, 154, 26);
+        pdf.setLineWidth(0.7);
+        pdf.rect(16, 16, pw - 32, ph - 32);
+
+        pdf.setFont('times', 'bold');
+        pdf.setFontSize(17);
+        pdf.setTextColor(15, 61, 43);
+        pdf.text('KHANAKUL WEST CIRCLE ANNUAL SPORTS - 2026', cx, 36, { align: 'center' });
+
+        pdf.setFontSize(13);
+        pdf.setTextColor(31, 107, 74);
+        pdf.text('ZONE LEVEL SPORTS — ' + String(labelText || zoneLabel(zKey) || '').toUpperCase(), cx, 46, { align: 'center' });
+
+        pdf.setFontSize(28);
+        pdf.setTextColor(184, 134, 11);
+        pdf.text('CERTIFICATE OF MERIT', cx, 66, { align: 'center' });
+
+        pdf.setFont('times', 'italic');
+        pdf.setFontSize(14);
+        pdf.setTextColor(40, 40, 40);
+        pdf.text('This is to certify that', cx, 84, { align: 'center' });
+
+        pdf.setFont('times', 'bold');
+        pdf.setFontSize(22);
+        pdf.setTextColor(15, 61, 43);
+        pdf.text(String(x.name || ''), cx, 98, { align: 'center' });
+
+        pdf.setFont('times', 'normal');
+        pdf.setFontSize(14);
+        pdf.setTextColor(30, 30, 30);
+        pdf.text('of  ' + String(x.schoolName || ''), cx, 112, { align: 'center' });
+
+        pdf.setFont('times', 'bold');
+        pdf.setFontSize(15);
+        pdf.text('has secured  ' + String(x.position || '') + '  Position in  Group ' + String(x.group || '') + ' ' + String(x.gender || '') + ' — ' + String(x.event || ''), cx, 128, { align: 'center' });
+
+        if (ven.venue || ven.date) {
+          pdf.setFont('times', 'normal');
+          pdf.setFontSize(12);
+          pdf.setTextColor(70, 70, 70);
+          pdf.text([ven.venue ? 'Venue: ' + ven.venue : '', ven.date ? 'Date: ' + ven.date : ''].filter(Boolean).join('   |   '), cx, 144, { align: 'center' });
+        }
+
+        pdf.setDrawColor(60, 60, 60);
+        pdf.setLineWidth(0.4);
+        pdf.line(36, 174, 106, 174);
+        pdf.line(pw - 106, 174, pw - 36, 174);
+        pdf.setFont('times', 'normal');
+        pdf.setFontSize(12);
+        pdf.setTextColor(30, 30, 30);
+        pdf.text('Convener / Zone Admin', 71, 181, { align: 'center' });
+        pdf.text('Secretary, Circle Sports', pw - 71, 181, { align: 'center' });
+      }
+    });
+
+    const fname = 'Certificates_' + (isCircle ? 'Circle' : String(labelText || zKey).replace(/[^A-Za-z0-9]+/g, '_')) + '.pdf';
+    pdf.save(fname);
+    toast(list.length + ' certificate(s) PDF ready.', 'ok');
+  }
 
   async function load() {
     head.replaceChildren();
     set.replaceChildren();
     if (wide) head.append(h('label', null, 'Certificates of'), select([['zone', 'Zone sports'], ['circle', 'Circle sports']], level, v => { level = v; picked.clear(); load(); }));
     if (wide && level === 'zone') head.append(h('label', null, 'Zone'), zoneSelect(zoneKey, v => { zoneKey = v; S.viewZone = v; picked.clear(); load(); }));
+
+    if (!venuesList.length) {
+      try { venuesList = (await call('apiGetVenues')) || []; } catch (e) { venuesList = []; }
+    }
+    loadArchivePdfLibs().catch(() => {});
+
     const r = await busyTry(() => call('apiGetCertificateList', level, zoneKey));
     if (!r.ok) {
       box.replaceChildren(h('div', { class: 'note bad' }, r.error.message));
@@ -1738,11 +2274,33 @@ async function pageCerts() {
 
     const tbody = h('tbody');
     const countChip = h('span', { class: 'chip', style: { marginLeft: 'auto' } });
-    const selBtn = h('button', { class: 'btn', type: 'button', onclick: () => picked.size ? makePdf([...picked], 'the selected certificates') : toast('Tick at least one certificate.', 'error') }, 'Download selected');
     let visible = [];
 
+    const getTargetList = () => picked.size ? rows.filter(x => picked.has(x.n)) : visible;
+
+    const printBtn = h('button', {
+      class: 'btn ghost',
+      type: 'button',
+      onclick: () => printCertificates(getTargetList(), level, zoneKey, d.label)
+    }, '🖨️ Print');
+
+    const selBtn = h('button', {
+      class: 'btn btn-pdf',
+      type: 'button',
+      onclick: () => picked.size
+        ? downloadCertificatesPdf(rows.filter(x => picked.has(x.n)), level, zoneKey, d.label)
+        : toast('Tick at least one certificate.', 'error')
+    }, 'Download selected PDF');
+
+    const allBtn = h('button', {
+      class: 'btn gold',
+      type: 'button',
+      onclick: () => downloadCertificatesPdf(visible.length ? visible : rows, level, zoneKey, d.label)
+    }, 'Download all PDF');
+
     const updateSelUI = () => {
-      selBtn.textContent = picked.size ? 'Download selected (' + picked.size + ')' : 'Download selected';
+      printBtn.textContent = picked.size ? '🖨️ Print selected (' + picked.size + ')' : '🖨️ Print (' + visible.length + ')';
+      selBtn.textContent = picked.size ? 'Download selected PDF (' + picked.size + ')' : 'Download selected PDF';
       countChip.textContent = 'Showing ' + visible.length + ' of ' + rows.length + (picked.size ? ' · Selected: ' + picked.size : '');
     };
 
@@ -1759,8 +2317,8 @@ async function pageCerts() {
           h('td', null, cb),
           h('td', null, x.position),
           h('td', null, x.group + ' ' + x.gender + ' ' + x.event),
-          h('td', null, x.name),
-          h('td', null, x.schoolName + (x.zoneLabel ? ' (' + x.zoneLabel + ')' : ''))
+          h('td', { style: { textAlign: 'left', fontWeight: '600' } }, x.name),
+          h('td', { style: { textAlign: 'left' } }, x.schoolName + (x.zoneLabel ? ' (' + x.zoneLabel + ')' : ''))
         );
       }));
       if (!visible.length) {
@@ -1784,13 +2342,6 @@ async function pageCerts() {
       fill();
     };
 
-    const makePdf = async (ids, label) => {
-      toast('Preparing ' + label + '. It takes a few seconds.');
-      const res = await busyTry(() => call('apiExportCertificates', level, zoneKey, ids));
-      if (!res.ok) return toast(res.error.message, 'error');
-      downloadB64(res.data); toast(res.data.count + ' certificate(s) ready. Open the PDF and print.', 'ok');
-    };
-
     fill();
 
     box.replaceChildren(
@@ -1806,8 +2357,9 @@ async function pageCerts() {
             fill();
           }
         }, 'Select all / none'),
+        printBtn,
         selBtn,
-        h('button', { class: 'btn gold', type: 'button', onclick: () => makePdf([], 'all certificates') }, 'Download all (max ' + d.maxPerPrint + ')'),
+        allBtn,
         countChip
       ),
       h('div', { class: 'toolbar' },
@@ -1826,6 +2378,7 @@ async function pageCerts() {
     const r = await busyTry(() => call('apiGetCertificateSettings'));
     if (!r.ok) return;
     const s = r.data;
+    certSettings = Object.assign({}, certSettings, s);
     const num = (label, key, step) => h('label', { style: { display: 'block', marginBottom: '8px' } }, label, h('br'), h('input', { type: 'number', step: step || 1, value: s[key], id: 'cs_' + key, style: { width: '140px' } }));
     const chk = h('input', { type: 'checkbox', id: 'cs_show' }); chk.checked = s.showCertify;
     set.replaceChildren(h('div', { class: 'card' }, h('h3', { class: 'sec' }, 'Position on your pre-printed paper'),
@@ -1835,8 +2388,9 @@ async function pageCerts() {
       h('div', { class: 'toolbar', style: { marginTop: '10px' } },
         h('button', { class: 'btn', type: 'button', onclick: async () => {
           const v = k => Number($('#cs_' + k).value);
-          const res = await busyTry(() => call('apiSetCertificateSettings', { topMm: v('topMm'), gapMm: v('gapMm'), nameSize: v('nameSize'), textSize: v('textSize'), showCertify: chk.checked }));
-          res.ok ? toast('Saved.', 'ok') : toast(res.error.message, 'error'); } }, 'Save positions'),
+          const payload = { topMm: v('topMm'), gapMm: v('gapMm'), nameSize: v('nameSize'), textSize: v('textSize'), showCertify: chk.checked };
+          const res = await busyTry(() => call('apiSetCertificateSettings', payload));
+          if (res.ok) { certSettings = payload; toast('Saved.', 'ok'); } else toast(res.error.message, 'error'); } }, 'Save positions'),
         h('button', { class: 'btn ghost', type: 'button', onclick: async () => {
           const res = await busyTry(() => call('apiCertificateCalibration'));
           res.ok ? downloadB64(res.data) : toast(res.error.message, 'error'); } }, 'Download test page'))));
@@ -1848,7 +2402,7 @@ async function pageVenue() {
   const root = h('div'); setMain(root, 'Venue');
   const rows = await busy(() => call('apiGetVenues'));
   if (!rows) return;
-  root.append(rows.length ? h('div', { class: 'grid2' }, rows.map(v => h('div', { class: 'card' }, h('b', null, v.zone), h('div', null, 'Venue: ' + (v.venue || 'not entered yet')), h('div', null, 'Date: ' + (v.date || 'not entered yet'))))) : emptyNote('No venue information found.'));
+  root.append(rows.length ? h('div', { class: 'grid2' }, rows.map(v => h('div', { class: 'card' }, h('b', null, v.zone), h('div', null, 'Venue: ' + (v.venue || 'not entered yet')), h('div', null, 'Date: ' + (v.date ? fmtDateDisplay(v.date) : 'not entered yet'))))) : emptyNote('No venue information found.'));
 }
 
 async function pageAdmins() {
@@ -2356,7 +2910,7 @@ async function pageArchive() {
           h('td', null, r['Chest No'] ? h('span', { class: 'chest' }, r['Chest No']) : '–'),
           h('td', null, r.Name),
           h('td', null, r["Father's Name"]),
-          h('td', null, r.DOB),
+          h('td', null, fmtDateDisplay(r.DOB)),
           h('td', null, r.Class),
           h('td', null, schoolDisp)
         );
@@ -2612,7 +3166,8 @@ async function pageUpdate() {
   const modeOpts = [
     ['student', 'Student update'],
     ['school', 'School update'],
-    ['teachers', 'Teachers update']
+    ['teachers', 'Teachers update'],
+    ['venue', 'Venue update']
   ];
   if (wide) modeOpts.push(['admin', 'Admin update']);
 
@@ -2637,6 +3192,7 @@ async function pageUpdate() {
     if (mode === 'student') renderStudentUpdate();
     else if (mode === 'school') renderSchoolUpdate();
     else if (mode === 'teachers') renderTeachersUpdate();
+    else if (mode === 'venue') renderVenueUpdate();
     else if (mode === 'admin' && wide) renderAdminUpdate();
   }
 
@@ -2682,14 +3238,24 @@ async function pageUpdate() {
 
       const nameInp = h('input', { value: stu.name || '', maxlength: 60, disabled: true });
       const fatherInp = h('input', { value: stu.father || '', maxlength: 60, disabled: true });
-      const dobInp = h('input', { type: 'date', value: stu.dobIso || '', disabled: true });
+      const dobField = createDateField({
+        valueIso: stu.dobIso || '',
+        disabled: true,
+        full: true,
+        minYear: 2000,
+        noFuture: true,
+        onError: (msg, inpEl) => {
+          toast('❌ ' + msg, 'error');
+          dialog('Invalid Date of Birth', h('div', null, msg), [{ label: 'OK', value: true, cls: 'danger' }]).then(() => { inpEl.focus(); inpEl.select(); });
+        }
+      });
       const clsSel = select(CLASSES.map(c => [c, c]), stu.cls || CLASSES[0], null, { disabled: true });
 
       const unlockField = el => { el.disabled = false; el.focus(); };
-      const fieldRow = (label, ctrl) => h('div', { class: 'upd-field' },
+      const fieldRow = (label, ctrl, onUnlock) => h('div', { class: 'upd-field' },
         h('label', null, label),
         ctrl,
-        h('button', { class: 'ico-btn', type: 'button', title: 'Edit ' + label, onclick: () => unlockField(ctrl) }, '✏️')
+        h('button', { class: 'ico-btn', type: 'button', title: 'Edit ' + label, onclick: () => onUnlock ? onUnlock() : unlockField(ctrl) }, '✏️')
       );
 
       // Events editor (same Create List matrix rules)
@@ -2710,7 +3276,7 @@ async function pageUpdate() {
           if (rEv === 'ALL' && !best) best = r;
         }
         if (best && (dobIso < best.start || dobIso > best.end)) {
-          return 'জন্মতারিখ (' + dobIso + ') Group ' + g + '-এর ' + ev + ' ইভেন্টের বয়সের নিয়মে (' + best.start + ' থেকে ' + best.end + ') পড়ছে না।';
+          return 'জন্মতারিখ (' + fmtDob(dobIso) + ') Group ' + g + '-এর ' + ev + ' ইভেন্টের বয়সের নিয়মে (' + fmtDob(best.start) + ' থেকে ' + fmtDob(best.end) + ') পড়ছে না।';
         }
         return null;
       }
@@ -2753,7 +3319,7 @@ async function pageUpdate() {
                   tGrp = choice;
                 }
               }
-              const ageErr = checkStuAge(tGrp, ev, dobInp.value || stu.dobIso);
+              const ageErr = checkStuAge(tGrp, ev, dobField.getIso() || stu.dobIso);
               if (ageErr) { cb.checked = false; return toast('❌ ' + ageErr, 'error'); }
 
               const takenKey = tGrp + '|' + stu.gender + '|' + normEv(ev);
@@ -2778,7 +3344,8 @@ async function pageUpdate() {
         class: 'btn ghost',
         type: 'button',
         onclick: () => {
-          [nameInp, fatherInp, dobInp, clsSel].forEach(el => { el.disabled = false; });
+          [nameInp, fatherInp, clsSel].forEach(el => { el.disabled = false; });
+          dobField.setDisabled(false);
           eventsUnlocked = true;
           renderEventsUI();
           nameInp.focus();
@@ -2789,12 +3356,15 @@ async function pageUpdate() {
         class: 'btn',
         type: 'button',
         onclick: async () => {
+          if (dobField.hasError() || !dobField.getIso()) {
+            return toast('❌ দয়া করে সঠিক জন্মতারিখ (dd-mmm-yyyy) দিন।', 'error');
+          }
           const payload = {
             zone: stu.zone,
             chestNo: stu.chestNo,
             name: nameInp.value.trim(),
             father: fatherInp.value.trim(),
-            dobIso: dobInp.value.trim(),
+            dobIso: dobField.getIso(),
             cls: clsSel.value,
             group: stu.group
           };
@@ -2820,7 +3390,7 @@ async function pageUpdate() {
           ),
           fieldRow('Name', nameInp),
           fieldRow("Father's Name", fatherInp),
-          fieldRow('Date of Birth', dobInp),
+          fieldRow('Date of Birth', dobField.el, () => { dobField.setDisabled(false); dobField.focus(); }),
           fieldRow('Class', clsSel),
           h('div', { class: 'upd-field' },
             h('label', null, 'Events'),
@@ -3028,7 +3598,89 @@ async function pageUpdate() {
     await load();
   }
 
-  /* ---------- 4. Admin update (Circle Admin & Super Admin only) ---------- */
+  /* ---------- 4. Venue update (Zone Admin: own zone; Circle/Super: all) ---------- */
+  async function renderVenueUpdate() {
+    let q = '', editingRow = 0, venues = [];
+    const bar = h('div', { class: 'toolbar' }), box = h('div');
+    area.replaceChildren(bar, box);
+
+    async function load() {
+      const d = await busy(() => call('apiGetVenuesForUpdate'));
+      if (!d) return;
+      venues = d.venues || [];
+      editingRow = 0;
+      draw();
+    }
+
+    function draw() {
+      bar.replaceChildren(
+        h('input', { placeholder: 'Search zone, venue or date', value: q, oninput: e => { q = e.target.value; fill(); } })
+      );
+      fill();
+    }
+
+    function fill() {
+      const term = q.trim().toLowerCase();
+      const list = venues.filter(v =>
+        !term || [v.zone, v.zoneLabel, v.venue, v.date].join(' ').toLowerCase().includes(term)
+      );
+      if (!list.length) { box.replaceChildren(emptyNote('কোনো ভেন্যুর তথ্য পাওয়া যায়নি।')); return; }
+
+      const tbody = h('tbody', null, list.map((v, i) => {
+        if (editingRow === v.rowNum) {
+          const venueInp = h('input', { value: v.venue || '', placeholder: 'Venue name', style: { width: '100%', textAlign: 'left' } });
+          const dateField = createDateField({
+            valueIso: v.dateIso || '',
+            valueText: v.date ? fmtDateDisplay(v.date) : '',
+            placeholder: 'dd-mmm-yyyy',
+            onError: msg => toast('❌ ' + msg, 'error')
+          });
+          setTimeout(() => venueInp.focus(), 0);
+          return h('tr', { class: 'dirty' },
+            h('td', null, i + 1),
+            h('td', { style: { fontWeight: '600' } }, v.zoneLabel),
+            h('td', null, venueInp),
+            h('td', null, dateField.el),
+            h('td', null, h('div', { style: { display: 'flex', gap: '6px', justifyContent: 'center' } },
+              h('button', {
+                class: 'btn small', type: 'button',
+                onclick: async () => {
+                  if (dateField.hasError()) return toast('❌ দয়া করে সঠিক তারিখ (dd-mmm-yyyy) লিখুন।', 'error');
+                  const res = await busy(() => call('apiUpdateVenueInfo', v.rowNum, {
+                    venue: venueInp.value.trim(),
+                    dateIso: dateField.getIso(),
+                    date: dateField.getDisplay()
+                  }));
+                  if (!res) return;
+                  Object.assign(v, res);
+                  editingRow = 0;
+                  showSuccess('Venue (' + v.zoneLabel + ') updated successfully.');
+                  fill();
+                }
+              }, 'Update'),
+              h('button', { class: 'btn ghost small', type: 'button', onclick: () => { editingRow = 0; fill(); } }, 'Cancel')
+            ))
+          );
+        }
+        return h('tr', null,
+          h('td', null, i + 1),
+          h('td', { style: { fontWeight: '600' } }, v.zoneLabel),
+          h('td', { style: { textAlign: 'left' } }, v.venue || '–'),
+          h('td', null, v.date ? fmtDateDisplay(v.date) : '–'),
+          h('td', null, h('button', { class: 'ico-btn', type: 'button', title: 'Edit venue', onclick: () => { editingRow = v.rowNum; fill(); } }, '✏️'))
+        );
+      }));
+
+      box.replaceChildren(h('div', { class: 'tw' }, h('table', { class: 't' },
+        h('thead', null, h('tr', null, ['Sl No.', 'Zone / Circle', 'Venue', 'Date', 'Edit'].map(x => h('th', null, x)))),
+        tbody
+      )));
+    }
+
+    await load();
+  }
+
+  /* ---------- 5. Admin update (Circle Admin & Super Admin only) ---------- */
   async function renderAdminUpdate() {
     let q = '', zFilt = '', editingRow = 0, admins = [];
     const bar = h('div', { class: 'toolbar' }), box = h('div');
