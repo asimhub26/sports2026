@@ -23,7 +23,7 @@ input:focus,select:focus,button:focus-visible{outline:2px solid var(--gold);outl
 input::placeholder{color:#A3AFA8}
 /* login */
 #login{min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(135deg,#0B2F21,#1F6B4A 60%,#2E8B57)}
- .glass{width:100%;max-width:420px;padding:30px;border-radius:20px;background: linear-gradient(rgba(11, 47, 33, 0.7), rgba(31, 107, 74, 0.7)), url('https://github.com/asimhub26/sports2026/blob/main/Paddy%20drop.jpg?raw=true') no-repeat center center; background-size: cover; border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(4px);box-shadow:0 20px 50px rgba(0,0,0,.3);color:#fff;animation:rise .5s ease both}
+ .glass{width:100%;max-width:420px;padding:30px;border-radius:20px;background: linear-gradient(rgba(11, 47, 33, 0.7), rgba(31, 107, 74, 0.7)),url('Paddy%20drop.jpg') no-repeat center center; background-size: cover; border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(4px);box-shadow:0 20px 50px rgba(0,0,0,.3);color:#fff;animation:rise .5s ease both}
 
 /*.glass{width:100%;max-width:420px;padding:30px;border-radius:20px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 20px 50px rgba(0,0,0,.3);color:#fff;animation:rise .5s ease both}*/
 
@@ -895,7 +895,7 @@ async function loadBrandPhoto(circleAdmins) {
     }
     const sec = list.find(a => /circle/i.test(a.zone || '') && /secretary/i.test(a.designation || '') && a.photo)
       || list.find(a => /secretary/i.test(a.designation || '') && a.photo);
-    url = sec ? sec.photo : '';
+    url = fixPhotoUrl(sec ? sec.photo : '');
   }
   if (!url) { img.hidden = true; return; }
   img.onerror = () => { img.hidden = true; };
@@ -2746,7 +2746,7 @@ async function pageAdmins() {
         const avatar = a.photo
           ? h('div', { class: 'avatar', style: avatarStyle },
               h('img', {
-                src: a.photo,
+                src: fixPhotoUrl(a.photo),
                 alt: a.name || a.designation || 'Admin',
                 loading: 'lazy',
                 style: { width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%', display: 'block' },
