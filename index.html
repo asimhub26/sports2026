@@ -1253,6 +1253,64 @@ async function pageCreateList() {
     };
 
     const tbody = h('tbody');
+    // Bulk Excel Download & Upload (Locked template)
+    const fileInp = h('input', {
+      type: 'file',
+      accept: '.xlsx',
+      hidden: true,
+      onchange: async e => {
+        const file = e.target.files && e.target.files[0];
+        e.target.value = '';
+        if (!file) return;
+        if (!/\.xlsx$/i.test(file.name)) {
+          return toast('❌ Shudhu .xlsx (Excel) file upload korun.', 'error');
+        }
+        if (file.size > 2 * 1024 * 1024) {
+          return toast('❌ File size 2 MB-er kom hote hobe.', 'error');
+        }
+        const ok = await confirmBox(
+          'Bulk Excel Upload',
+          '"' + file.name + '" file theke ' + data.schoolNo + '-er somosto 32-ti row update kora hobe. Continue korben?',
+          'Upload & Save',
+          'blue'
+        );
+        if (!ok) return;
+        const b64 = await new Promise((resolve, reject) => {
+          const fr = new FileReader();
+          fr.onload = () => resolve(String(fr.result || '').split(',')[1] || '');
+          fr.onerror = () => reject(new Error('File pora jayni.'));
+          fr.readAsDataURL(file);
+        }).catch(err => { toast('❌ ' + err.message, 'error'); return ''; });
+        if (!b64) return;
+
+        const r = await busyTry(() => call('apiBulkUploadList', schoolNo, b64));
+        if (!r.ok) {
+          toast('❌ ' + r.error.message, 'error');
+          await dialog('Bulk Upload Error', h('div', { style: { color: 'var(--red)' } }, r.error.message), [{ label: 'OK', value: true, cls: 'danger' }]);
+          return;
+        }
+        hydrateFromData(r.data);
+        toast('✅ Bulk Excel upload sofol hoyechhe! Chest number update hoye gechhe.', 'ok');
+      }
+    });
+
+    const bulkBar = locked ? null : h('div', { class: 'toolbar', style: { marginBottom: '10px' } },
+      fileInp,
+      h('button', {
+        class: 'btn ghost btn-excel',
+        type: 'button',
+        onclick: async () => {
+          toast('Locked Excel template toiri hochhe, koyek second opekha korun...');
+          const res = await busy(() => call('apiDownloadBulkTemplate', schoolNo));
+          if (res) { downloadB64(res); toast('✅ Bulk Excel template download hoyechhe.', 'ok'); }
+        }
+      }, '📥 Bulk Excel Download'),
+      h('button', {
+        class: 'btn blue',
+        type: 'button',
+        onclick: () => fileInp.click()
+      }, '📤 Bulk Excel Upload')
+    );
 
     function renderRows() {
       tbody.replaceChildren();
@@ -1403,65 +1461,6 @@ async function pageCreateList() {
       role !== 'School Admin' && st.finalSubmitted ? h('button', { class: 'btn ghost', type: 'button', onclick: reopen }, 'Reopen for correction') : null
     );
 
-   // Bulk Excel Download & Upload (Locked template)
-    const fileInp = h('input', {
-      type: 'file',
-      accept: '.xlsx',
-      hidden: true,
-      onchange: async e => {
-        const file = e.target.files && e.target.files[0];
-        e.target.value = '';
-        if (!file) return;
-        if (!/\.xlsx$/i.test(file.name)) {
-          return toast('❌ Shudhu .xlsx (Excel) file upload korun.', 'error');
-        }
-        if (file.size > 2 * 1024 * 1024) {
-          return toast('❌ File size 2 MB-er kom hote hobe.', 'error');
-        }
-        const ok = await confirmBox(
-          'Bulk Excel Upload',
-          '"' + file.name + '" file theke ' + data.schoolNo + '-er somosto 32-ti row update kora hobe. Continue korben?',
-          'Upload & Save',
-          'blue'
-        );
-        if (!ok) return;
-        const b64 = await new Promise((resolve, reject) => {
-          const fr = new FileReader();
-          fr.onload = () => resolve(String(fr.result || '').split(',')[1] || '');
-          fr.onerror = () => reject(new Error('File pora jayni.'));
-          fr.readAsDataURL(file);
-        }).catch(err => { toast('❌ ' + err.message, 'error'); return ''; });
-        if (!b64) return;
-
-        const r = await busyTry(() => call('apiBulkUploadList', schoolNo, b64));
-        if (!r.ok) {
-          toast('❌ ' + r.error.message, 'error');
-          await dialog('Bulk Upload Error', h('div', { style: { color: 'var(--red)' } }, r.error.message), [{ label: 'OK', value: true, cls: 'danger' }]);
-          return;
-        }
-        hydrateFromData(r.data);
-        toast('✅ Bulk Excel upload sofol hoyechhe! Chest number update hoye gechhe.', 'ok');
-      }
-    });
-
-    const bulkBar = locked ? null : h('div', { class: 'toolbar', style: { marginBottom: '10px' } },
-      fileInp,
-      h('button', {
-        class: 'btn ghost btn-excel',
-        type: 'button',
-        onclick: async () => {
-          toast('Locked Excel template toiri hochhe, koyek second opekha korun...');
-          const res = await busy(() => call('apiDownloadBulkTemplate', schoolNo));
-          if (res) { downloadB64(res); toast('✅ Bulk Excel template download hoyechhe.', 'ok'); }
-        }
-      }, '📥 Bulk Excel Download'),
-      h('button', {
-        class: 'btn blue',
-        type: 'button',
-        onclick: () => fileInp.click()
-      }, '📤 Bulk Excel Upload')
-    );
-
     renderRows();
 
     area.replaceChildren(
@@ -1473,7 +1472,9 @@ async function pageCreateList() {
           h('span', { class: 'chip ' + (st.chestFrozen ? '' : 'warn') }, st.chestFrozen ? 'Chest numbers final' : 'Chest numbers temporary'))
       ),
       ...notes,
-      exportBar(
+      exportBar(() => ({ type: 'school.list', schoolNo })),
+      bulkBar,
+      filterBar,
       h('div', { class: 'tw' }, table),
       ...(locked ? [] : [acts])
     );
