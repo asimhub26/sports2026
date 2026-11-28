@@ -2029,15 +2029,129 @@ function pageResultCreate(level) {
 }
 
 /* ====================== Certificates, Venue, Admins, Subhechha, Google Sheet ====================== */
+/* ====================== Certificates (Zone Default + Circle Landscape Pre-Printed / With Graphics) ====================== */
+
+// ১. আপনার প্রি-প্রিন্টেড Circle Certificate-এর JPG/PNG ছবির GitHub Raw লিংক:
+const CIRCLE_CERT_BG_URL = 'https://raw.githubusercontent.com/asimhub26/sports2026/main/circle_cert_bg.jpg';
+
+// ২. Circle Certificate-এর পজিশন, ফন্ট সাইজ ও কালার কন্ট্রোল (এখান থেকেই সবকিছু নিজে পাল্টাতে পারবেন)
+const CIRCLE_CERT_STYLE = {
+  topMm: 95,          // পেজের একদম উপর থেকে প্রথম লাইনের দূরত্ব (mm) -> বাড়ালে নিচে নামবে, কমালে উপরে উঠবে
+  lineGapMm: 12,      // প্রতিটি লাইনের মাঝের ফাঁকা (mm) -> বাড়ালে লাইনগুলো ছড়াবে, কমালে কাছাকাছি আসবে
+  showCertify: true,  // true = "This is to certify that" প্রিন্ট হবে, false = হবে না
+  showVenueDate: false, // true = নিচে Venue ও Date প্রিন্ট হবে, false = হবে না
+
+  // ফন্ট সাইজ (pt)
+  textSize: 15,       // সাধারণ লেখা ("This is to certify that", "of", "has secured" ইত্যাদি)
+  nameSize: 22,       // ছাত্র/ছাত্রীর নাম
+  schoolSize: 16,     // স্কুলের নাম ও জোন
+  groupSize: 15,      // Group ও Gender
+  eventSize: 17,      // ইভেন্টের নাম
+  positionSize: 17,   // পজিশন (1st / 2nd / 3rd)
+
+  // রঙ (যেকোনো Hex কালার কোড বসাতে পারেন)
+  textColor: '#1E293B',     // সাধারণ লেখা (গাঢ় ধূসর/কালো)
+  nameColor: '#C62828',     // ছাত্র/ছাত্রীর নাম (লাল / Red)
+  schoolColor: '#1B5E20',   // স্কুলের নাম (সবুজ / Green)
+  positionColor: '#D97706', // পজিশন (গাঢ় অরেঞ্জ/গোল্ড)
+  groupColor: '#6A1B9A',    // Group ও Gender (বেগুনি / Purple)
+  eventColor: '#1565C0'     // ইভেন্টের নাম (নীল / Blue)
+};
+
 async function pageCerts() {
   const wide = isWide();
   let level = 'zone', zoneKey = wide ? (S.viewZone || ZONES[0].key) : S.profile.zone;
+  let withGraphics = false; // ডিফল্ট Unchecked (শুধু ক্যান্ডিডেট ইনফরমেশন প্রিন্ট হবে)
   const root = h('div'), head = h('div', { class: 'toolbar' }), box = h('div'), set = h('div');
   root.append(head, box, set);
   setMain(root, 'Certificates');
   const picked = new Set();
-  let certSettings = { topMm: 85, gapMm: 14, nameSize: 22, textSize: 13, showCertify: true };
+  let printedSet = new Set();
+  let certSettings = {
+    topMm: CIRCLE_CERT_STYLE.topMm,
+    gapMm: CIRCLE_CERT_STYLE.lineGapMm,
+    nameSize: CIRCLE_CERT_STYLE.nameSize,
+    textSize: CIRCLE_CERT_STYLE.textSize,
+    showCertify: CIRCLE_CERT_STYLE.showCertify
+  };
   let venuesList = [];
+  let cachedBgDataUrl = null;
+
+  // প্রতিটি সার্টিফিকেটের ইউনিক কী (রেজাল্ট বদলে নতুন নাম এলে সেটি অটোমেটিক Not Printed দেখাবে)
+  const certKey = x => x.n + '|' + String(x.name || '').trim().toUpperCase();
+
+  /* ===== OPTION 1: LOCAL STORAGE (একটি ল্যাপটপের জন্য — সুপার ফাস্ট, বর্তমানে ACTIVE) ===== */
+  async function loadPrintedSet(lvl, zKey) {
+    try {
+      const raw = localStorage.getItem('kw_cert_printed_' + (lvl === 'circle' ? 'CIRCLE' : zKey));
+      return new Set(raw ? JSON.parse(raw) : []);
+    } catch (e) { return new Set(); }
+  }
+  async function savePrintedSet(lvl, zKey, setObj) {
+    try {
+      localStorage.setItem('kw_cert_printed_' + (lvl === 'circle' ? 'CIRCLE' : zKey), JSON.stringify([...setObj]));
+    } catch (e) {}
+  }
+  /* ===== END OPTION 1 ===== */
+
+  /* ===== OPTION 2: GOOGLE SHEET SYNC (একাধিক ডিভাইসের জন্য — চালু করতে উপরের Option 1 কমেন্ট করে এর কমেন্ট তুলুন) =====
+  async function loadPrintedSet(lvl, zKey) {
+    try {
+      const arr = await call('apiGetPrintedCerts', lvl, zKey);
+      return new Set(Array.isArray(arr) ? arr : []);
+    } catch (e) { return new Set(); }
+  }
+  async function savePrintedSet(lvl, zKey, setObj) {
+    try {
+      await call('apiSavePrintedCerts', lvl, zKey, [...setObj]);
+    } catch (e) { toast('Printed status সেভ হয়নি: ' + e.message, 'error'); }
+  }
+  ===== END OPTION 2 ===== */
+
+  function hexToRgb(hex) {
+    const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(String(hex || '#111111').trim());
+    return m ? [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16)] : [17, 17, 17];
+  }
+
+  function loadImageDataUrl(url) {
+    if (cachedBgDataUrl) return Promise.resolve(cachedBgDataUrl);
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        try {
+          const cv = document.createElement('canvas');
+          cv.width = img.naturalWidth;
+          cv.height = img.naturalHeight;
+          cv.getContext('2d').drawImage(img, 0, 0);
+          cachedBgDataUrl = cv.toDataURL('image/jpeg', 0.92);
+          resolve(cachedBgDataUrl);
+        } catch (err) { reject(err); }
+      };
+      img.onerror = () => reject(new Error('Background image load failed'));
+      img.src = url + (url.includes('?') ? '&' : '?') + 't=' + Date.now();
+    });
+  }
+
+  function drawCenteredSegments(pdf, segs, cx, y) {
+    let totalW = 0;
+    const measured = segs.map(s => {
+      pdf.setFont('times', s.style || 'normal');
+      pdf.setFontSize(s.size);
+      const w = pdf.getTextWidth(s.text);
+      totalW += w;
+      return Object.assign({}, s, { w });
+    });
+    let x = cx - totalW / 2;
+    measured.forEach(s => {
+      const [r, g, b] = hexToRgb(s.color);
+      pdf.setFont('times', s.style || 'normal');
+      pdf.setFontSize(s.size);
+      pdf.setTextColor(r, g, b);
+      pdf.text(s.text, x, y);
+      x += s.w;
+    });
+  }
 
   function findVenueInfo(lvl, zKey) {
     const want = (lvl === 'circle' ? 'KHANAKUL WEST CIRCLE' : String(zKey || '').toUpperCase()).trim();
@@ -2052,45 +2166,86 @@ async function pageCerts() {
     };
     const showEl = $('#cs_show');
     return {
-      topMm: readNum('cs_topMm', certSettings.topMm || 85),
-      gapMm: readNum('cs_gapMm', certSettings.gapMm || 14),
-      nameSize: readNum('cs_nameSize', certSettings.nameSize || 22),
-      textSize: readNum('cs_textSize', certSettings.textSize || 13),
+      topMm: readNum('cs_topMm', certSettings.topMm || CIRCLE_CERT_STYLE.topMm),
+      gapMm: readNum('cs_gapMm', certSettings.gapMm || CIRCLE_CERT_STYLE.lineGapMm),
+      nameSize: readNum('cs_nameSize', certSettings.nameSize || CIRCLE_CERT_STYLE.nameSize),
+      textSize: readNum('cs_textSize', certSettings.textSize || CIRCLE_CERT_STYLE.textSize),
       showCertify: showEl ? showEl.checked : (certSettings.showCertify !== false)
     };
   }
 
-  function printCertificates(list, lvl, zKey, labelText) {
+  function buildCircleLines(x, cs, ven) {
+    const ST = CIRCLE_CERT_STYLE;
+    const lines = [];
+    // লাইন ১: This is to certify that [NAME]
+    const l1 = [];
+    if (cs.showCertify) {
+      l1.push({ text: 'This is to certify that  ', size: cs.textSize, color: ST.textColor, style: 'italic' });
+    }
+    l1.push({ text: String(x.name || ''), size: cs.nameSize, color: ST.nameColor, style: 'bold' });
+    lines.push(l1);
+
+    // লাইন ২: of [SCHOOL NAME (Zone)]
+    lines.push([
+      { text: 'of  ', size: cs.textSize, color: ST.textColor, style: 'normal' },
+      { text: (x.schoolName || '') + (x.zoneLabel ? ' (' + x.zoneLabel + ' Zone)' : ''), size: ST.schoolSize, color: ST.schoolColor, style: 'bold' }
+    ]);
+
+    // লাইন ৩: has secured [1st] position in [Group A BOYS] — [100M RUN]
+    lines.push([
+      { text: 'has secured  ', size: cs.textSize, color: ST.textColor, style: 'normal' },
+      { text: String(x.position || ''), size: ST.positionSize, color: ST.positionColor, style: 'bold' },
+      { text: '  position in  ', size: cs.textSize, color: ST.textColor, style: 'normal' },
+      { text: 'Group ' + (x.group || '') + ' ' + (x.gender || ''), size: ST.groupSize, color: ST.groupColor, style: 'bold' },
+      { text: '  —  ', size: cs.textSize, color: ST.textColor, style: 'normal' },
+      { text: String(x.event || ''), size: ST.eventSize, color: ST.eventColor, style: 'bold' }
+    ]);
+
+    // লাইন ৪ (ঐচ্ছিক): Venue ও Date
+    if (ST.showVenueDate && (ven.venue || ven.date)) {
+      lines.push([
+        { text: [ven.venue ? 'Venue: ' + ven.venue : '', ven.date ? 'Date: ' + ven.date : ''].filter(Boolean).join('   |   '), size: Math.max(10, cs.textSize - 2), color: ST.textColor, style: 'normal' }
+      ]);
+    }
+    return lines;
+  }
+
+  function printCertificates(list, lvl, zKey, labelText, onDone) {
     if (!list.length) return toast('প্রিন্ট করার মতো কোনো সার্টিফিকেট নেই।', 'error');
     const ven = findVenueInfo(lvl, zKey);
     const pr = $('#printRoot');
     const isCircle = lvl === 'circle';
     const cs = isCircle ? liveCircleSettings() : null;
 
-    $('#pageStyle').textContent = isCircle
-      ? '@page{size:A4 portrait;margin:0}'
-      : '@page{size:A4 landscape;margin:0}';
+    // Zone এবং Circle দুটোই A4 Landscape
+    $('#pageStyle').textContent = '@page{size:A4 landscape;margin:0}';
 
     pr.replaceChildren(...list.map(x => {
       if (isCircle) {
-        const lines = [];
+        const lines = buildCircleLines(x, cs, ven);
         let y = cs.topMm;
-        if (cs.showCertify) {
-          lines.push(h('div', { style: { position: 'absolute', left: '15mm', right: '15mm', top: y + 'mm', fontSize: cs.textSize + 'pt', fontStyle: 'italic' } }, 'This is to certify that'));
+        const lineNodes = lines.map(segs => {
+          const row = h('div', {
+            style: { position: 'absolute', left: '16mm', right: '16mm', top: y + 'mm', lineHeight: '1.35' }
+          }, segs.map(s => h('span', {
+            style: {
+              fontSize: s.size + 'pt',
+              color: s.color,
+              fontWeight: s.style === 'bold' ? '700' : '400',
+              fontStyle: s.style === 'italic' ? 'italic' : 'normal'
+            }
+          }, s.text)));
           y += cs.gapMm;
-        }
-        lines.push(h('div', { style: { position: 'absolute', left: '15mm', right: '15mm', top: y + 'mm', fontSize: cs.nameSize + 'pt', fontWeight: '700' } }, x.name || ''));
-        y += cs.gapMm;
-        lines.push(h('div', { style: { position: 'absolute', left: '15mm', right: '15mm', top: y + 'mm', fontSize: cs.textSize + 'pt' } }, (x.schoolName || '') + (x.zoneLabel ? ' (' + x.zoneLabel + ' Zone)' : '')));
-        y += cs.gapMm;
-        lines.push(h('div', { style: { position: 'absolute', left: '15mm', right: '15mm', top: y + 'mm', fontSize: cs.textSize + 'pt', fontWeight: '600' } }, 'Secured ' + (x.position || '') + ' Position in Group ' + (x.group || '') + ' ' + (x.gender || '') + ' — ' + (x.event || '')));
-        if (ven.date || ven.venue) {
-          y += cs.gapMm;
-          lines.push(h('div', { style: { position: 'absolute', left: '15mm', right: '15mm', top: y + 'mm', fontSize: Math.max(10, cs.textSize - 1) + 'pt' } }, [ven.venue ? 'Venue: ' + ven.venue : '', ven.date ? 'Date: ' + ven.date : ''].filter(Boolean).join('   |   ')));
-        }
-        return h('div', { class: 'cert-page cert-circle' }, lines);
+          return row;
+        });
+
+        return h('div', { class: 'cert-page cert-circle' },
+          withGraphics ? h('img', { class: 'cc-bg', src: CIRCLE_CERT_BG_URL, alt: '' }) : null,
+          h('div', { class: 'cc-layer' }, lineNodes)
+        );
       }
 
+      // Zone Certificate (ডিফল্ট ডিজাইন অপরিবর্তিত)
       const zoneTitle = (labelText || zoneLabel(zKey) || '').toUpperCase();
       return h('div', { class: 'cert-page cert-zone' },
         h('div', { class: 'cert-zone-frame' },
@@ -2123,13 +2278,21 @@ async function pageCerts() {
     }));
 
     document.body.classList.add('printing');
-    const done = () => { document.body.classList.remove('printing'); pr.replaceChildren(); window.removeEventListener('afterprint', done); };
+    let finished = false;
+    const done = () => {
+      if (finished) return;
+      finished = true;
+      document.body.classList.remove('printing');
+      pr.replaceChildren();
+      window.removeEventListener('afterprint', done);
+      if (onDone) onDone();
+    };
     window.addEventListener('afterprint', done);
     window.print();
     setTimeout(done, 2000);
   }
 
-  async function downloadCertificatesPdf(list, lvl, zKey, labelText) {
+  async function downloadCertificatesPdf(list, lvl, zKey, labelText, onDone) {
     if (!list.length) return toast('ডাউনলোড করার মতো কোনো সার্টিফিকেট নেই।', 'error');
     toast('Preparing ' + list.length + ' certificate(s) PDF...');
     try {
@@ -2141,44 +2304,35 @@ async function pageCerts() {
     const isCircle = lvl === 'circle';
     const ven = findVenueInfo(lvl, zKey);
     const cs = isCircle ? liveCircleSettings() : null;
-    const pdf = new jsPDF({ orientation: isCircle ? 'portrait' : 'landscape', unit: 'mm', format: 'a4' });
+
+    let bgData = null;
+    if (isCircle && withGraphics) {
+      try {
+        bgData = await loadImageDataUrl(CIRCLE_CERT_BG_URL);
+      } catch (e) {
+        toast('⚠️ Graphics ছবিটি (circle_cert_bg.jpg) লোড হয়নি, শুধু টেক্সট দিয়ে PDF তৈরি হচ্ছে।', 'error');
+      }
+    }
+
+    // Zone এবং Circle দুটোই A4 Landscape
+    const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
 
     list.forEach((x, idx) => {
-      if (idx > 0) pdf.addPage('a4', isCircle ? 'portrait' : 'landscape');
+      if (idx > 0) pdf.addPage('a4', 'landscape');
       const pw = pdf.internal.pageSize.getWidth();
       const ph = pdf.internal.pageSize.getHeight();
       const cx = pw / 2;
 
       if (isCircle) {
+        if (bgData) pdf.addImage(bgData, 'JPEG', 0, 0, pw, ph);
+        const lines = buildCircleLines(x, cs, ven);
         let y = cs.topMm;
-        pdf.setTextColor(20, 32, 26);
-        if (cs.showCertify) {
-          pdf.setFont('times', 'italic');
-          pdf.setFontSize(cs.textSize);
-          pdf.text('This is to certify that', cx, y, { align: 'center' });
+        lines.forEach(segs => {
+          drawCenteredSegments(pdf, segs, cx, y);
           y += cs.gapMm;
-        }
-        pdf.setFont('times', 'bold');
-        pdf.setFontSize(cs.nameSize);
-        pdf.text(String(x.name || ''), cx, y, { align: 'center' });
-        y += cs.gapMm;
-
-        pdf.setFont('times', 'normal');
-        pdf.setFontSize(cs.textSize);
-        pdf.text((x.schoolName || '') + (x.zoneLabel ? ' (' + x.zoneLabel + ' Zone)' : ''), cx, y, { align: 'center' });
-        y += cs.gapMm;
-
-        pdf.setFont('times', 'bold');
-        pdf.setFontSize(cs.textSize);
-        pdf.text('Secured ' + (x.position || '') + ' Position in Group ' + (x.group || '') + ' ' + (x.gender || '') + ' - ' + (x.event || ''), cx, y, { align: 'center' });
-        if (ven.venue || ven.date) {
-          y += cs.gapMm;
-          pdf.setFont('times', 'normal');
-          pdf.setFontSize(Math.max(10, cs.textSize - 1));
-          pdf.text([ven.venue ? 'Venue: ' + ven.venue : '', ven.date ? 'Date: ' + ven.date : ''].filter(Boolean).join('   |   '), cx, y, { align: 'center' });
-        }
+        });
       } else {
-        // Formal double border (Green & Gold)
+        // Zone Certificate (ডিফল্ট ডিজাইন অপরিবর্তিত)
         pdf.setDrawColor(31, 107, 74);
         pdf.setLineWidth(1.4);
         pdf.rect(12, 12, pw - 24, ph - 24);
@@ -2237,9 +2391,10 @@ async function pageCerts() {
       }
     });
 
-    const fname = 'Certificates_' + (isCircle ? 'Circle' : String(labelText || zKey).replace(/[^A-Za-z0-9]+/g, '_')) + '.pdf';
+    const fname = 'Certificates_' + (isCircle ? ('Circle' + (withGraphics ? '_WithGraphics' : '')) : String(labelText || zKey).replace(/[^A-Za-z0-9]+/g, '_')) + '.pdf';
     pdf.save(fname);
     toast(list.length + ' certificate(s) PDF ready.', 'ok');
+    if (onDone) onDone();
   }
 
   async function load() {
@@ -2253,7 +2408,12 @@ async function pageCerts() {
     }
     loadArchivePdfLibs().catch(() => {});
 
-    const r = await busyTry(() => call('apiGetCertificateList', level, zoneKey));
+    const [r, pSet] = await Promise.all([
+      busyTry(() => call('apiGetCertificateList', level, zoneKey)),
+      loadPrintedSet(level, zoneKey)
+    ]);
+    printedSet = pSet;
+
     if (!r.ok) {
       box.replaceChildren(h('div', { class: 'note bad' }, r.error.message));
       if (level === 'circle' && wide) await drawSettings();
@@ -2264,82 +2424,152 @@ async function pageCerts() {
 
     if (!rows.length) {
       box.replaceChildren(
-        h('div', { class: 'note ok' }, level === 'zone' ? 'Certificates are made from the saved results of ' + d.label + '. A result entered now appears here at once.' : 'Circle certificates print only the changing words (name, school, event, position) on your pre-printed A4 paper.'),
+        h('div', { class: 'note ok' }, level === 'zone' ? 'Certificates are made from the saved results of ' + d.label + '. A result entered now appears here at once.' : 'Circle certificates (A4 Landscape): Unchecked থাকলে শুধু ক্যান্ডিডেট ইনফরমেশন প্রিন্ট হবে, আর "With graphics" টিক দিলে ব্যাকগ্রাউন্ড পেপারসহ প্রিন্ট/PDF হবে।'),
         emptyNote('No result has been entered yet, so there is no certificate.')
       );
       if (level === 'circle' && wide) await drawSettings();
       return;
     }
 
-    const f = { q: '', group: '', gender: '', event: '', pos: '', school: '', zone: '' };
+    const f = { q: '', group: '', gender: '', event: '', pos: '', school: '', zone: '', printState: 'unprinted' };
     const events = [...new Set(rows.map(x => x.event).filter(Boolean))];
     const schools = [...new Set(rows.map(x => x.schoolName).filter(Boolean))].sort();
     const zones = level === 'circle' ? [...new Set(rows.map(x => x.zoneLabel).filter(Boolean))].sort() : [];
 
-    const match = x =>
-      (!f.group || x.group === f.group) &&
-      (!f.gender || x.gender === f.gender) &&
-      (!f.event || x.event === f.event) &&
-      (!f.pos || x.position === f.pos) &&
-      (!f.school || x.schoolName === f.school) &&
-      (!f.zone || x.zoneLabel === f.zone) &&
-      (!f.q || [x.name, x.schoolName, x.zoneLabel, x.event, x.group, x.gender, x.position].join(' ').toLowerCase().includes(f.q.toLowerCase()));
+    const match = x => {
+      const isPr = printedSet.has(certKey(x));
+      if (f.printState === 'unprinted' && isPr) return false;
+      if (f.printState === 'printed' && !isPr) return false;
+      return (!f.group || x.group === f.group) &&
+        (!f.gender || x.gender === f.gender) &&
+        (!f.event || x.event === f.event) &&
+        (!f.pos || x.position === f.pos) &&
+        (!f.school || x.schoolName === f.school) &&
+        (!f.zone || x.zoneLabel === f.zone) &&
+        (!f.q || [x.name, x.schoolName, x.zoneLabel, x.event, x.group, x.gender, x.position].join(' ').toLowerCase().includes(f.q.toLowerCase()));
+    };
 
     const tbody = h('tbody');
     const countChip = h('span', { class: 'chip', style: { marginLeft: 'auto' } });
     let visible = [];
+
+    const markPrinted = async list => {
+      list.forEach(x => {
+        printedSet.add(certKey(x));
+        picked.delete(x.n);
+      });
+      fill();
+      await savePrintedSet(level, zoneKey, printedSet);
+    };
 
     const getTargetList = () => picked.size ? rows.filter(x => picked.has(x.n)) : visible;
 
     const printBtn = h('button', {
       class: 'btn ghost',
       type: 'button',
-      onclick: () => printCertificates(getTargetList(), level, zoneKey, d.label)
+      onclick: () => {
+        const list = getTargetList();
+        printCertificates(list, level, zoneKey, d.label, () => markPrinted(list));
+      }
     }, '🖨️ Print');
 
     const selBtn = h('button', {
       class: 'btn btn-pdf',
       type: 'button',
-      onclick: () => picked.size
-        ? downloadCertificatesPdf(rows.filter(x => picked.has(x.n)), level, zoneKey, d.label)
-        : toast('Tick at least one certificate.', 'error')
+      onclick: () => {
+        if (!picked.size) return toast('Tick at least one certificate.', 'error');
+        const list = rows.filter(x => picked.has(x.n));
+        downloadCertificatesPdf(list, level, zoneKey, d.label, () => markPrinted(list));
+      }
     }, 'Download selected PDF');
 
     const allBtn = h('button', {
       class: 'btn gold',
       type: 'button',
-      onclick: () => downloadCertificatesPdf(visible.length ? visible : rows, level, zoneKey, d.label)
+      onclick: () => {
+        const list = visible.length ? visible : rows;
+        downloadCertificatesPdf(list, level, zoneKey, d.label, () => markPrinted(list));
+      }
     }, 'Download all PDF');
 
+    const resetBtn = h('button', {
+      class: 'btn ghost small',
+      type: 'button',
+      title: 'সব Printed টিক মুছে নতুন করে শুরু করুন',
+      onclick: async () => {
+        if (!printedSet.size) return toast('কোনো Printed মার্ক নেই।');
+        if (!(await confirmBox('Reset printed marks', 'এই তালিকার সমস্ত Printed মার্ক মুছে ফেলবেন?', 'Reset', 'danger'))) return;
+        printedSet.clear();
+        fill();
+        await savePrintedSet(level, zoneKey, printedSet);
+        toast('Printed মার্ক রিসেট করা হয়েছে।', 'ok');
+      }
+    }, 'Reset printed');
+
+    // শুধু Circle Certificate-এর জন্য "With graphics" চেকবক্স (ডিফল্ট Unchecked)
+    const gfxCb = level === 'circle' ? h('label', {
+      style: { display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '5px 10px', borderRadius: '8px', background: '#FFF7ED', border: '1px solid #FDBA74', fontWeight: '600', color: '#9A3412', cursor: 'pointer' }
+    },
+      h('input', {
+        type: 'checkbox',
+        checked: withGraphics,
+        style: { width: '16px', height: '16px', minWidth: '16px', accentColor: '#C85A00' },
+        onchange: e => { withGraphics = e.target.checked; }
+      }),
+      'With graphics'
+    ) : null;
+
     const updateSelUI = () => {
+      const totalPrinted = rows.filter(x => printedSet.has(certKey(x))).length;
       printBtn.textContent = picked.size ? '🖨️ Print selected (' + picked.size + ')' : '🖨️ Print (' + visible.length + ')';
       selBtn.textContent = picked.size ? 'Download selected PDF (' + picked.size + ')' : 'Download selected PDF';
-      countChip.textContent = 'Showing ' + visible.length + ' of ' + rows.length + (picked.size ? ' · Selected: ' + picked.size : '');
+      countChip.textContent = 'Showing ' + visible.length + ' · Printed: ' + totalPrinted + '/' + rows.length + (picked.size ? ' · Selected: ' + picked.size : '');
     };
 
     const fill = () => {
       visible = rows.filter(match);
       tbody.replaceChildren(...visible.map(x => {
+        const key = certKey(x);
+        const isPr = printedSet.has(key);
+
         const cb = h('input', {
           type: 'checkbox',
           'aria-label': 'Select ' + x.name,
           onchange: e => { e.target.checked ? picked.add(x.n) : picked.delete(x.n); updateSelUI(); }
         });
         cb.checked = picked.has(x.n);
-        return h('tr', null,
+
+        const prCb = h('input', {
+          type: 'checkbox',
+          checked: isPr,
+          title: isPr ? 'Printed (পুনরায় প্রিন্ট করতে টিক তুলুন)' : 'Not printed (ম্যানুয়ালি Printed মার্ক করতে টিক দিন)',
+          onchange: async e => {
+            if (e.target.checked) { printedSet.add(key); picked.delete(x.n); }
+            else { printedSet.delete(key); }
+            fill();
+            await savePrintedSet(level, zoneKey, printedSet);
+          }
+        });
+
+        return h('tr', { class: isPr ? 'cert-printed' : '' },
           h('td', null, cb),
           h('td', null, x.position),
           h('td', null, x.group + ' ' + x.gender + ' ' + x.event),
           h('td', { style: { textAlign: 'left', fontWeight: '600' } }, x.name),
-          h('td', { style: { textAlign: 'left' } }, x.schoolName + (x.zoneLabel ? ' (' + x.zoneLabel + ')' : ''))
+          h('td', { style: { textAlign: 'left' } }, x.schoolName + (x.zoneLabel ? ' (' + x.zoneLabel + ')' : '')),
+          h('td', null, prCb, isPr ? h('span', { class: 'p-badge' }, 'Printed') : null)
         );
       }));
       if (!visible.length) {
-        tbody.appendChild(h('tr', null, h('td', { colspan: 5 }, emptyNote('No matching certificate found.'))));
+        const msg = f.printState === 'unprinted'
+          ? '🎉 সব সার্টিফিকেট প্রিন্ট হয়ে গেছে! (আগেরগুলো দেখতে উপরের ফিল্টার থেকে "Printed" বা "All" সিলেক্ট করুন)'
+          : 'No matching certificate found.';
+        tbody.appendChild(h('tr', null, h('td', { colspan: 6 }, emptyNote(msg))));
       }
       updateSelUI();
     };
 
+    const prSel = select([['unprinted', 'Not Printed'], ['printed', 'Printed'], ['all', 'All']], 'unprinted', v => { f.printState = v; fill(); });
     const qInp = h('input', { placeholder: 'Search name, school or event', oninput: e => { f.q = e.target.value; fill(); } });
     const gSel = select([['', 'All groups'], ['A', 'Group A'], ['B', 'Group B'], ['C', 'Group C']], '', v => { f.group = v; fill(); });
     const genSel = select([['', 'All genders'], ['BOYS', 'BOYS'], ['GIRLS', 'GIRLS']], '', v => { f.gender = v; fill(); });
@@ -2350,7 +2580,9 @@ async function pageCerts() {
 
     const clearFilters = () => {
       f.q = f.group = f.gender = f.event = f.pos = f.school = f.zone = '';
+      f.printState = 'unprinted';
       qInp.value = gSel.value = genSel.value = evSel.value = posSel.value = schSel.value = '';
+      prSel.value = 'unprinted';
       if (zSel) zSel.value = '';
       fill();
     };
@@ -2358,7 +2590,9 @@ async function pageCerts() {
     fill();
 
     box.replaceChildren(
-      h('div', { class: 'note ok' }, level === 'zone' ? 'Certificates are made from the saved results of ' + d.label + '. A result entered now appears here at once.' : 'Circle certificates print only the changing words (name, school, event, position) on your pre-printed A4 paper.'),
+      h('div', { class: 'note ok' }, level === 'zone'
+        ? 'Certificates are made from the saved results of ' + d.label + '. প্রিন্ট বা PDF ডাউনলোড করলেই সেটি অটোমেটিক "Printed" মার্ক হয়ে যাবে।'
+        : 'Circle Certificate (A4 Landscape): Unchecked থাকলে শুধু ক্যান্ডিডেট ইনফরমেশন প্রিন্ট হবে। "With graphics" টিক দিলে আপনার প্রি-প্রিন্টেড গ্রাফিক্স পেপারসহ প্রিন্ট/PDF হবে।'),
       h('div', { class: 'toolbar' },
         h('button', {
           class: 'btn ghost',
@@ -2370,17 +2604,19 @@ async function pageCerts() {
             fill();
           }
         }, 'Select all / none'),
+        gfxCb,
         printBtn,
         selBtn,
         allBtn,
+        resetBtn,
         countChip
       ),
       h('div', { class: 'toolbar' },
-        qInp, gSel, genSel, evSel, posSel, schSel, zSel,
+        prSel, qInp, gSel, genSel, evSel, posSel, schSel, zSel,
         h('button', { class: 'btn ghost small', type: 'button', onclick: clearFilters }, 'Clear filters')
       ),
       h('div', { class: 'tw' }, h('table', { class: 't' },
-        h('thead', null, h('tr', null, ['', 'Position', 'Event', 'Name', 'School'].map(x => h('th', null, x)))),
+        h('thead', null, h('tr', null, ['', 'Position', 'Event', 'Name', 'School', 'Printed'].map(x => h('th', null, x)))),
         tbody
       ))
     );
@@ -2394,9 +2630,9 @@ async function pageCerts() {
     certSettings = Object.assign({}, certSettings, s);
     const num = (label, key, step) => h('label', { style: { display: 'block', marginBottom: '8px' } }, label, h('br'), h('input', { type: 'number', step: step || 1, value: s[key], id: 'cs_' + key, style: { width: '140px' } }));
     const chk = h('input', { type: 'checkbox', id: 'cs_show' }); chk.checked = s.showCertify;
-    set.replaceChildren(h('div', { class: 'card' }, h('h3', { class: 'sec' }, 'Position on your pre-printed paper'),
+    set.replaceChildren(h('div', { class: 'card' }, h('h3', { class: 'sec' }, 'Position on your pre-printed paper (A4 Landscape)'),
       h('p', null, 'Print the test page on your paper, look where the words fall, and change these numbers (millimetres) until they fit.'),
-      num('Distance of the first line from the top edge (mm)', 'topMm'), num('Distance between lines (mm)', 'gapMm'), num('Name size', 'nameSize'), num('Other text size', 'textSize'),
+      num('Distance of the first line from the top edge (mm)', 'topMm'), num('Distance between lines (mm)', 'gapMm'), num('Name size (pt)', 'nameSize'), num('Other text size (pt)', 'textSize'),
       h('label', null, chk, ' Print the words "This is to certify that"'),
       h('div', { class: 'toolbar', style: { marginTop: '10px' } },
         h('button', { class: 'btn', type: 'button', onclick: async () => {
@@ -2410,6 +2646,7 @@ async function pageCerts() {
   }
   await load();
 }
+
 
 async function pageVenue() {
   const root = h('div'); setMain(root, 'Venue');
