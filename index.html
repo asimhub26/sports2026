@@ -874,7 +874,16 @@ async function initLogin() {
 
 // Sorasori GitHub photo link dite chaile ekhane bosan; faka rakhle Admins sheet theke Secretary-r chhobi auto nebe
 const SECRETARY_PHOTO_URL = 'sis2.jpg';
-
+/** Converts github.com / raw.githubusercontent.com links to fast GitHub Pages URLs (works on all mobile networks). */
+function fixPhotoUrl(url) {
+  const s = String(url || '').trim();
+  if (!s) return '';
+  const m1 = /^https?:\/\/github\.com\/asimhub26\/sports2026\/blob\/main\/(.+?)(\?.*)?$/i.exec(s);
+  if (m1) return 'https://asimhub26.github.io/sports2026/' + m1[1];
+  const m2 = /^https?:\/\/raw\.githubusercontent\.com\/asimhub26\/sports2026\/(?:refs\/heads\/)?main\/(.+?)(\?.*)?$/i.exec(s);
+  if (m2) return 'https://asimhub26.github.io/sports2026/' + m2[1];
+  return s;
+}
 async function loadBrandPhoto(circleAdmins) {
   const img = $('#brandPhoto');
   if (!img) return;
