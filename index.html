@@ -142,9 +142,19 @@ input::placeholder{color:#A3AFA8}
 .cert-zone .cz-sigs{display:flex;justify-content:space-between;padding:0 14mm;margin-top:14mm;font-size:11.5pt;color:#222}
 .cert-zone .cz-sig{width:68mm;border-top:1px solid #333;padding-top:4px;text-align:center}
 .cert-circle{
-  width:210mm;height:296mm;position:relative;text-align:center;
-  font-family:Georgia,"Times New Roman",serif;color:#111
+  width:297mm;height:209mm;position:relative;overflow:hidden;
+  text-align:center;font-family:Georgia,"Times New Roman",serif;color:#111;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
 }
+.cert-circle .cc-bg{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;
+}
+.cert-circle .cc-layer{
+  position:relative;z-index:1;width:100%;height:100%;
+}
+tr.cert-printed td { background: #F0FDF4; }
+.p-badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 99px; background: #DCFCE7; color: #166534; font-weight: 600; margin-left: 5px; }
+
 .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.08);margin-bottom:12px;animation:rise .25s ease both}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
 .stat{background:#fff;border-radius:12px;padding:12px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
